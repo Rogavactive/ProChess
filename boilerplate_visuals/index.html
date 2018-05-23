@@ -6,11 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--scale to the device parameters-->
     <link rel="shortcut icon" href="src/favicon.ico">
-    <link rel="stylesheet" type="text/css" media="screen" href="index.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="index.css" type="text/css" media="screen"  />
+    <link rel="stylesheet" href="animate.css" />
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
 </head>
 <body>
+	<div class="content">
+		<img class="logo-image animated-logo" src="src/chess_icon.png">
+		<div class="text-container">
+			<p class="content-text animated-text"> Play chess any time...</p>
+		</div>
+	</div>
     <div class="auth-box"> 
         <form action="LoginServlet" method="POST" id="LoginForm">
             <i class="material-icons">account_circle</i>
@@ -20,10 +27,12 @@
             <input placeholder="Password" name="password" type="password">
             <button type="submit" form="LoginForm" value="Login" >Login</button>
         </form>
-        <img class="google-img" src="src/login_with_google.png">
+        <a class="google-img-anchor" href="">
+        	<img class="google-img" src="src/google_plus.jpg">
+    	</a>
         <!-- surati shesacvlelia -->
         <hr>
-        <a href="register.html">Register</a>
+        <a class="register-btn" href="register.html">Register</a>
     </div>
 </body>
 </html>

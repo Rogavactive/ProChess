@@ -1,9 +1,5 @@
 body{
-    background-color: rgb(15, 14, 14);
-}
-
-p{
-    color:green;
+    background-color: rgb(8, 8, 8);
 }
 
 .auth-box{
@@ -72,7 +68,7 @@ button:hover{
     color:white;
 }
 
-a{
+.register-btn{
     text-decoration: none;
     font-family: 'Lato', Arial, Helvetica, sans-serif;
     color:black;
@@ -87,7 +83,7 @@ a{
     font-size: 17px;
 }
 
-a:hover{
+.register-btn:hover{
     background-color:black;
     color:white;
 }
@@ -96,7 +92,12 @@ a:hover{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.google-img:hover{
+	opacity: .8;
 }
 
 hr{
@@ -107,3 +108,34 @@ hr{
     opacity: .5;
 }
 
+.logo-image{
+    position: absolute;
+    margin-left: 0;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 50px;
+}
+
+.text-container{
+    position: absolute;
+    margin:auto;
+    top: 0;
+    right: 15px;
+    bottom: 0;
+    left: 0;
+    padding: 10px 10px;
+    width: 600px;
+    height: 100px;
+}
+
+.content-text{
+	color:white;
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    font-size:40px;
+    letter-spacing: 2px;
+    word-spacing: 15px;
+}
