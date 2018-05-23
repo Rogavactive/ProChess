@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Pro Chess</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--scale to the device parameters-->
+    <link rel="shortcut icon" href="src/favicon.ico">
+    <link rel="stylesheet" type="text/css" media="screen" href="index.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+</head>
+<body>
+    <div class="auth-box"> 
+        <form action="LoginServlet" method="POST" id="LoginForm">
+            <i class="material-icons">account_circle</i>
+            <input placeholder="Username" name="username" type="text">
+            <br>
+            <i class="material-icons">lock</i>
+            <input placeholder="Password" name="password" type="password">
+            <button type="submit" form="LoginForm" value="Login" >Login</button>
+        </form>
+        <img class="google-img" src="src/login_with_google.png">
+        <!-- surati shesacvlelia -->
+        <hr>
+        <a href="register.html">Register</a>
+    </div>
+</body>
+</html>
