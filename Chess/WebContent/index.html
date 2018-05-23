@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Pro Chess</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--scale to the device parameters-->
+    <link rel="shortcut icon" href="src/favicon.ico">
+    <link rel="stylesheet" href="css/index.css" type="text/css" media="screen"  />
+    <link rel="stylesheet" href="css/animate.css" />
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+</head>
+<body>
+	<div class="content">
+		<img class="logo-image animated-logo" src="src/chess_icon.png">
+		<div class="text-container">
+			<p class="content-text animated-text"> Play chess any time...</p>
+		</div>
+	</div>
+    <div class="auth-box"> 
+        <form action="LoginServlet" method="POST" id="LoginForm">
+            <i class="material-icons">account_circle</i>
+            <input placeholder="Username" name="username" type="text" maxlength="20">
+            <br>
+            <i class="material-icons">lock</i>
+            <input placeholder="Password" name="password" type="password" maxlength="20">
+            <button type="submit" form="LoginForm" value="Login" >Login</button>
+        </form>
+        <a class="google-img-anchor" href="">
+        	<img class="google-img" src="src/google_plus.jpg">
+    	</a>
+        <hr>
+        <a class="register-btn" href="register.html">Register</a>
+    </div>
+</body>
+</html>
