@@ -13,8 +13,8 @@ body{
     left: 0;
     padding: 10px 10px;
     width: 300px;
-    height: 500px;
-    border-radius: 8%;
+    height: 400px;
+    border-radius: 5%;
     background-color: #F5EEEE;
 }
 
@@ -41,11 +41,26 @@ input::-webkit-input-placeholder {
     font-family: 'Lato', Arial, Helvetica, sans-serif;
 }
 
-.material-icons {
+.register-icons{
     position:relative;
     top:10px;
     font-size: 30px !important;
     margin: 10px 0;
+}
+
+.hint-icons{
+    top:4px;
+    position:relative;
+    font-size: 20px !important;
+    color:white;
+}
+
+.hint-accept{
+    color:green;
+}
+
+.hint-reject{
+    color:red;
 }
 
 .google-img{
@@ -83,4 +98,29 @@ button:disabled{
     opacity: .6;
     pointer-events: none;
     border-color:rgb(49, 47, 47)
+}
+
+.password-hint{
+    display:none;
+    margin:auto;
+    top: 0;
+    right: 15px;
+    bottom: 0;
+    left: 0;
+    padding: 5px 5px;
+    width: 270px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: #F5EEEE;
+    background-color: black;
+}
+
+
+.pass-hint-p{
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    padding:auto;
+    font-size: 14px;
+    margin:auto;
+    padding:0;
+    color:white;
 }

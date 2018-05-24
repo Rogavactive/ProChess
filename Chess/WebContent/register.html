@@ -13,13 +13,21 @@
     <script type="text/javascript" src="js/register_socket.js"></script>
 </head>
 <body>
-    <div class="register-box animated-form"> 
+    <div class="register-box animated-form" id="register-box-id"> 
         <form action="RegisterServlet" method="POST" id="RegisterForm">
-            <i class="material-icons">account_circle</i>
+            <i class="material-icons register-icons">account_circle</i>
             <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20">
             <br>
-            <i class="material-icons">lock</i>
+            <i class="material-icons register-icons">lock</i>
             <input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
+            <div class="password-hint" id="pass-hint-container">
+                <p class="pass-hint-p" id="pass-hint-length"></p>
+                <p class="pass-hint-p" id="pass-hint-ascii"></p>
+                <p class="pass-hint-p" id="pass-hint-numletter"></p>
+                <p class="pass-hint-p" id="pass-hint-similarity"></p>
+            </div>
+            <i class="material-icons register-icons">lock</i>
+            <input id="repeat-password-input" placeholder="Repeat Password" type="password" maxlength="20">
             <button type="submit" form="RegisterForm" id="register-btn" >Register</button>
         </form>
         <a class="google-img-anchor" href="">
