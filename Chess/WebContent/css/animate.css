@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
-.animated-logo{
+.animated-appear{
   -webkit-animation-duration: 3s;
   animation-duration: 3s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-  -webkit-animation-name: animated-logo;
-  animation-name: animated-logo;
+  -webkit-animation-name: animated-appear;
+  animation-name: animated-appear;
 }
 
 .animated-text{
@@ -32,8 +32,8 @@
 @-webkit-keyframes animated-form {
   from {
     opacity: 0;
-    -webkit-transform: translate3d(25%,0, 0);
-    transform: translate3d(25%,0, 0);
+    -webkit-transform: translate3d(-25%,0, 0);
+    transform: translate3d(-25%,0, 0);
   }
 
   to {
@@ -46,8 +46,8 @@
 @keyframes animated-form {
   from {
     opacity: 0;
-    -webkit-transform: translate3d(25%,0, 0);
-    transform: translate3d(25%,0, 0);
+    -webkit-transform: translate3d(-25%,0, 0);
+    transform: translate3d(-25%,0, 0);
   }
 
   to {
@@ -86,7 +86,7 @@
   }
 }
 
-@-webkit-keyframes animated-logo {
+@-webkit-keyframes animated-appear {
   from {
     opacity: 0;
   }
@@ -96,7 +96,7 @@
   }
 }
 
-@keyframes animated-logo {
+@keyframes animated-appear {
   from {
     opacity: 0;
   }

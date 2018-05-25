@@ -5,34 +5,49 @@
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--scale to the device parameters-->
+    <!--bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!--bootstrap-->
     <link rel="shortcut icon" href="src/favicon.ico">
     <link rel="stylesheet" href="css/animate.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="css/register.css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"  />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
-    <script type="text/javascript" src="js/register_socket.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
 </head>
 <body>
-    <div class="register-box animated-form" id="register-box-id"> 
-        <form action="RegisterServlet" method="POST" id="RegisterForm">
-            <i class="material-icons register-icons">account_circle</i>
-            <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20">
-            <br>
-            <i class="material-icons register-icons">lock</i>
-            <input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
-            <div class="password-hint" id="pass-hint-container">
-                <p class="pass-hint-p" id="pass-hint-length"></p>
-                <p class="pass-hint-p" id="pass-hint-ascii"></p>
-                <p class="pass-hint-p" id="pass-hint-numletter"></p>
-                <p class="pass-hint-p" id="pass-hint-similarity"></p>
+    <div class="main-container container">
+        <div>
+            <div class="auth-box animated-form container" id="register-box-id"> 
+                <form action="RegisterServlet" method="POST" id="RegisterForm">
+                    <i class="material-icons material-icons-custom">account_circle</i>
+                    <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20">
+                    <br>
+                    <i class="material-icons material-icons-custom">email</i>
+                    <input id="email-input" placeholder="Email" name="mail" type="text">
+                    <br>
+                    <i class="material-icons material-icons-custom register-icons">lock</i>
+                    <input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
+                    <div class="password-hint container" id="pass-hint-container" style="height:0px">
+                        <p class="pass-hint-p" id="pass-hint-length"></p>
+                        <p class="pass-hint-p" id="pass-hint-ascii"></p>
+                        <p class="pass-hint-p" id="pass-hint-numletter"></p>
+                        <p class="pass-hint-p" id="pass-hint-similarity"></p>
+                    </div>
+                    <i class="material-icons material-icons-custom register-icons">lock</i>
+                    <input id="repeat-password-input" placeholder="Repeat Password" type="password" maxlength="20">
+                    <p class="repeat-password-input-p" id="repeat-password-input-p">Passwords do not match.</p>
+                    <button type="submit" form="RegisterForm" id="register-btn" >Register</button>
+                </form>
+                <a class="google-img-anchor" href="">
+                    <img class="google-img" src="src/google_plus.jpg">
+                </a>
             </div>
-            <i class="material-icons register-icons">lock</i>
-            <input id="repeat-password-input" placeholder="Repeat Password" type="password" maxlength="20">
-            <button type="submit" form="RegisterForm" id="register-btn" >Register</button>
-        </form>
-        <a class="google-img-anchor" href="">
-            <img class="google-img" src="src/google_plus.jpg">
-        </a>
+        </div>
     </div>
 </body>
 </html>
