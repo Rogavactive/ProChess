@@ -1,9 +1,7 @@
-function disableBtn(){
-    document.getElementById("register-btn").disabled=true;
-}
-
-function enableBtn(){
-    document.getElementById("register-btn").disabled=false;
+function configureBtn(){
+    var cond = similarityCheckCond&&asciiCheckCond&&numAndLetterCheckCond&&lenCheckCond&&passwordMatch
+    document.getElementById("register-btn").disabled=!cond
+    return cond
 }
 
 var lenCheckCond = false
@@ -73,7 +71,6 @@ function checkPass(password){
     if(password.length==0){
         setAllFalse()
         setAllLabels()
-        enableBtn()
         return
     }
     if(re_password_triggered){
@@ -84,10 +81,7 @@ function checkPass(password){
     checkNumAndLetter(password)
     checkSimiliarity(password)
     setAllLabels()
-    if(similarityCheckCond&&asciiCheckCond&&numAndLetterCheckCond&&lenCheckCond&&passwordMatch)
-        enableBtn()
-    else
-        disableBtn()
+    configureBtn()
 }
 
 
@@ -163,16 +157,89 @@ function checkPasswordMatch(){
     var rep_password = document.getElementById('repeat-password-input').value
     if(passwordMatch!=(password===rep_password)){
         passwordMatch = password===rep_password
+        configureBtn()
         if(passwordMatch){
-            enableBtn()
             passPdissappear()
         }
         else{
-            disableBtn()
             passPappear()
         }
     }
 }
+
+function checkForm(e) {
+    var cond = configureBtn()
+    cond = checkEmptyFields()&&cond
+    if(cond)
+        return cond
+    if (e.preventDefault){
+        e.preventDefault()
+    }
+    return cond
+}
+
+function checkEmptyFields(){
+    var cond = true
+    if(checkUsernameEmpty())
+        cond=false
+    if(checkEmailEmpty())
+        cond=false
+    if(checkPassEmpty())
+        cond=false
+    if(checkRepPassEmpty())
+        cond=false
+    return cond
+}
+
+function animateWarningInput(elem,condition){
+    if(!condition){
+        elem.style.backgroundColor = "white"
+        return
+    }
+    var elem_opacity = 0
+    var id = setInterval(frame, 0.5)
+    function frame() {
+        if (elem_opacity>=0.45) {
+            clearInterval(id);
+        } else {
+            elem_opacity = elem_opacity+0.005 
+            elem.style.backgroundColor = "rgba(245, 6, 78,"+elem_opacity+")"
+        }
+    }
+}
+
+function checkUsernameEmpty(){
+    var elem = document.getElementById("username-input")
+    var cond = elem.value===""
+    animateWarningInput(elem,cond)
+    //animation here
+    return cond
+}
+
+function checkEmailEmpty(){
+    var elem = document.getElementById("email-input")
+    var cond = elem.value===""
+    animateWarningInput(elem,cond)
+    //animation here
+    return cond
+}
+
+function checkPassEmpty(){
+    var elem = document.getElementById("password-input")
+    var cond = elem.value===""
+    animateWarningInput(elem,cond)
+    //animation here
+    return cond
+}
+
+function checkRepPassEmpty(){
+    var elem = document.getElementById("repeat-password-input")
+    var cond = elem.value===""
+    animateWarningInput(elem,cond)
+    //animation here
+    return cond
+}
+
 
 window.onload = function(){
     document.getElementById("password-input").addEventListener('input', function(evt){
@@ -196,4 +263,10 @@ window.onload = function(){
         if(re_password_triggered)
             checkPasswordMatch()
     });
+    var form = document.getElementById('RegisterForm');
+    if (form.attachEvent) {
+        form.attachEvent("submit", checkForm);
+    } else {
+        form.addEventListener("submit", checkForm);
+    }
 }
