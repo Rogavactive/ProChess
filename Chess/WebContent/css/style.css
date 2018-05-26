@@ -1,4 +1,3 @@
-
 input{
     margin-bottom: 5px;
     width:85%;
@@ -44,7 +43,7 @@ input::-webkit-input-placeholder {
     margin-bottom: 20px;    
     padding: 10px 10px;
     max-width: 300px;
-    border-radius: 7%;
+    border-radius: 15px;
     background-color: #F5EEEE;
     height:100%;
 }

@@ -124,13 +124,15 @@ function hintAppear(){
     var elem = document.getElementById("pass-hint-container");
     elem.style.display = "block"
     var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
+    elem.style.opacity = elem_height/155.0 + ""
     var id = setInterval(frame, 0.5)
     function frame() {
         if (elem_height>=122) {
             clearInterval(id);
         } else {
-            elem_height+=2
+            elem_height+=1.75
             elem.style.height = elem_height +"px"
+            elem.style.opacity = elem_height/150.0 + ""
         }
     }
     //ver davakavshire porcentebit amitom fiqsirebul heightamde amyavs (122px)
@@ -139,14 +141,16 @@ function hintAppear(){
 function hintDissappear(){
     var elem = document.getElementById("pass-hint-container");
     var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
+    elem.style.opacity = elem_height/155.0 + ""
     var id = setInterval(frame, 0.5);
     function frame() {
         if (elem_height<=0) {
             elem.style.display = "none"
             clearInterval(id);
         } else {
-            elem_height-=2; 
+            elem_height-=1.75; 
             elem.style.height = elem_height +"px"
+            elem.style.opacity = elem_height/150.0 + ""
         }
     }
 }
