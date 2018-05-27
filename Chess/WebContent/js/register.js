@@ -4,6 +4,9 @@ function configureBtn(){
     return cond
 }
 
+var emailTimeout = null
+var usernameTimeout = null
+
 var lenCheckCond = false
 var asciiCheckCond = false
 var numAndLetterCheckCond = false
@@ -85,10 +88,10 @@ function checkPass(password){
 }
 
 
-function passPappear(){
+function pAppear(elem){
     if(passwordMatch)
         return
-    var elem = document.getElementById("repeat-password-input-p");  
+    var elem = document.getElementById(elem);  
     elem.style.display = "block"
     var elem_opacity = 0;
     var id = setInterval(frame, 0.5);
@@ -102,10 +105,10 @@ function passPappear(){
     }
 }
 
-function passPdissappear(){
+function pDissappear(elem){
     if(!passwordMatch)
         return
-    var elem = document.getElementById("repeat-password-input-p");   
+    var elem = document.getElementById(elem);   
     var elem_opacity = 1;
     var id = setInterval(frame, 0.5);
     function frame() {
@@ -124,7 +127,7 @@ function hintAppear(){
     var elem = document.getElementById("pass-hint-container");
     elem.style.display = "block"
     var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
-    elem.style.opacity = elem_height/155.0 + ""
+    elem.style.opacity = elem_height/140.0 + ""
     var id = setInterval(frame, 0.5)
     function frame() {
         if (elem_height>=122) {
@@ -132,7 +135,7 @@ function hintAppear(){
         } else {
             elem_height+=1.75
             elem.style.height = elem_height +"px"
-            elem.style.opacity = elem_height/150.0 + ""
+            elem.style.opacity = elem_height/140.0 + ""
         }
     }
     //ver davakavshire porcentebit amitom fiqsirebul heightamde amyavs (122px)
@@ -141,7 +144,7 @@ function hintAppear(){
 function hintDissappear(){
     var elem = document.getElementById("pass-hint-container");
     var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
-    elem.style.opacity = elem_height/155.0 + ""
+    elem.style.opacity = elem_height/140.0 + ""
     var id = setInterval(frame, 0.5);
     function frame() {
         if (elem_height<=0) {
@@ -150,7 +153,7 @@ function hintDissappear(){
         } else {
             elem_height-=1.75; 
             elem.style.height = elem_height +"px"
-            elem.style.opacity = elem_height/150.0 + ""
+            elem.style.opacity = elem_height/140.0 + ""
         }
     }
 }
@@ -163,23 +166,31 @@ function checkPasswordMatch(){
         passwordMatch = password===rep_password
         configureBtn()
         if(passwordMatch){
-            passPdissappear()
+            pDissappear("repeat-password-input-p")
         }
         else{
-            passPappear()
+            pAppear("repeat-password-input-p")
         }
     }
 }
 
-function checkForm(e) {
-    var cond = configureBtn()
-    cond = checkEmptyFields()&&cond
-    if(cond)
-        return cond
-    if (e.preventDefault){
-        e.preventDefault()
+function validateEmail(){
+    condition =  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById('email-input').value)
+    if(!condition&&(document.getElementById("email-input").value!='')){
+        clearTimeout(emailTimeout)
+        $('#email-input').popover('show');
+        emailTimeout = setTimeout(function(){
+            $('#email-input').popover('hide')
+        }, 2000)
     }
-    return cond
+    return condition
+}
+
+function checkForm() {
+    var cond1 = configureBtn()
+    var cond2 = checkEmptyFields()
+    var cond3 = validateEmail()
+    return cond1&&cond2&&cond3
 }
 
 function checkEmptyFields(){
@@ -216,7 +227,6 @@ function checkUsernameEmpty(){
     var elem = document.getElementById("username-input")
     var cond = elem.value===""
     animateWarningInput(elem,cond)
-    //animation here
     return cond
 }
 
@@ -224,7 +234,6 @@ function checkEmailEmpty(){
     var elem = document.getElementById("email-input")
     var cond = elem.value===""
     animateWarningInput(elem,cond)
-    //animation here
     return cond
 }
 
@@ -232,7 +241,6 @@ function checkPassEmpty(){
     var elem = document.getElementById("password-input")
     var cond = elem.value===""
     animateWarningInput(elem,cond)
-    //animation here
     return cond
 }
 
@@ -240,8 +248,42 @@ function checkRepPassEmpty(){
     var elem = document.getElementById("repeat-password-input")
     var cond = elem.value===""
     animateWarningInput(elem,cond)
-    //animation here
     return cond
+}
+
+
+function checkAvailable(){
+    var processForm = true
+    // var oReq = new XMLHttpRequest();
+    // oReq.addEventListener("load", function(){
+    //     console.log(this.responseText)
+    // })
+    // oReq.open("POST","RegisterServlet")
+    // console.log("modis")
+    // oReq.send()
+
+    var usernameAvaliable = false;
+    var emailAvaliable = false;
+
+    if(!usernameAvaliable){
+        processForm = false
+        clearTimeout(usernameTimeout)
+        $('#username-input').popover('show');
+        usernameTimeout = setTimeout(function(){
+            $('#username-input').popover('hide')
+        }, 2000)
+    }
+
+    if(!emailAvaliable){
+        processForm = false
+        clearTimeout(emailTimeout)
+        $('#email-input').popover('show');
+        emailTimeout = setTimeout(function(){
+            $('#email-input').popover('hide')
+        }, 2000)
+    }
+
+    return processForm
 }
 
 
@@ -267,10 +309,13 @@ window.onload = function(){
         if(re_password_triggered)
             checkPasswordMatch()
     });
-    var form = document.getElementById('RegisterForm');
-    if (form.attachEvent) {
-        form.attachEvent("submit", checkForm);
-    } else {
-        form.addEventListener("submit", checkForm);
+
+    document.getElementById('register-btn').onclick = function(){
+        var formcond = checkForm()
+        formcond = formcond&&checkAvailable()
+        if(formcond){
+            document.getElementById('RegisterForm').submit()
+        }
     }
+    
 }

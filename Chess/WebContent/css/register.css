@@ -40,14 +40,6 @@ html, body{
 }
 
 
-.pass-hint-p{
-    font-family: 'Lato', Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    margin:auto;
-    padding:0;
-    color:white;
-}
-
 .main-container{
     background-color: rgb(8,8,8);
     height:100%;
@@ -57,7 +49,16 @@ html, body{
 
 }
 
-.repeat-password-input-p{
+.pass-hint-p{
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin:auto;
+    padding:0;
+    color:white;
+}
+
+
+.warning-input-p{
     display:none;
     text-align: left;
     font-size: 70%;

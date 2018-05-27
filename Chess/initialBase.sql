@@ -1,0 +1,21 @@
+drop database if exists accountsDB;
+create database accountsDB;
+USE accountsDB;
+  
+DROP TABLE IF EXISTS accounts;
+ -- remove table if it already exists and start from scratch
+
+CREATE TABLE accounts (
+	ID INT auto_increment,
+    username nvarchar(64),
+    pass_hash nvarchar(128),
+    email nvarchar(64),
+    primary key (ID),
+    unique(ID,username,email)
+);
+
+-- 
+-- select count(ID) as count_matches from accounts
+-- 	where username = "aa" and pass_hash = "aa";
+
+select * from accounts;
