@@ -15,6 +15,9 @@ CREATE TABLE accounts (
 );
 
 -- 
+-- insert into accounts(username,pass_hash,email) values
+-- ("rogavactive","D1m1tr110","droga16@freeuni.edu.ge");
+-- 
 -- select count(ID) as count_matches from accounts
 -- 	where username = "aa" and pass_hash = "aa";
 

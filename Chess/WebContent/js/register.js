@@ -34,7 +34,7 @@ function checkLen(password){
 }
 
 function checkASCII(password) {
-    asciiCheckCond = /^[\x20-\x7E]*$/.test(password)
+    asciiCheckCond = /^[A-Za-z][A-Za-z0-9]*$/.test(password)
 }
 
 function checkNumAndLetter(password){
@@ -253,17 +253,39 @@ function checkRepPassEmpty(){
 
 
 function checkAvailable(){
-    var processForm = true
-    // var oReq = new XMLHttpRequest();
-    // oReq.addEventListener("load", function(){
-    //     console.log(this.responseText)
-    // })
-    // oReq.open("POST","RegisterServlet")
-    // console.log("modis")
-    // oReq.send()
+    var formCondition = checkForm()
+    if(!formCondition){
+        return false
+    }
 
+    var processForm = true
+    
     var usernameAvaliable = false;
     var emailAvaliable = false;
+    
+    
+    try{
+	    $.ajax({url:"RegisterServlet",
+	    	type: 'POST',
+	    	data:{
+				username: $("#username-input").val(),
+				email: $("#email-input").val(),
+				registerType: "ajax"
+			},
+			success: function(data){
+				var res = data.split(" ");
+				if(res[0]==="true"){
+					usernameAvaliable = true
+				}
+				if(res[1]==="true"){
+					emailAvaliable = true
+				}
+			},
+			async:false
+	    });
+    }catch(err){
+    	console.log(err.message)
+    }
 
     if(!usernameAvaliable){
         processForm = false
@@ -309,13 +331,4 @@ window.onload = function(){
         if(re_password_triggered)
             checkPasswordMatch()
     });
-
-    document.getElementById('register-btn').onclick = function(){
-        var formcond = checkForm()
-        formcond = formcond&&checkAvailable()
-        if(formcond){
-            document.getElementById('RegisterForm').submit()
-        }
-    }
-    
 }

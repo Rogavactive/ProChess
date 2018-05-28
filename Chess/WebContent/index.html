@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--bootstrap-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	<!--bootstrap-->
@@ -26,14 +26,14 @@
 	<div class="main-container container align-middle">
 		<div class="page-container row">
 		    <div class="auth-box container col"> 
-		        <form action="LoginServlet" method="POST" id="LoginForm">
+		        <form action="LoginServlet" onsubmit="return checkAvailable()" method="POST" id="LoginForm">
 		            <i class="material-icons material-icons-custom">account_circle</i>
-		            <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20" data-placement="top" data-toggle="popover" data-content="Such user does not exist.">
+		            <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20" data-placement="top" data-toggle="popover" data-trigger="manual" data-content="Such user does not exist.">
 		            <br>
 		            <i class="material-icons material-icons-custom">lock</i>
 					<input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
-					<input name="registerType" type="hidden" value="direct">
-		            <button type="button" id="login-btn" >Login</button>
+					<input name="loginType" type="hidden" value="direct">
+		            <button type="submit" id="login-btn" >Login</button>
 		        </form>
 		        <a class="google-img-anchor" href="">
 		        	<img class="google-img" src="src/google_plus.jpg">
