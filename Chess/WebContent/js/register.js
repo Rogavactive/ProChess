@@ -225,7 +225,7 @@ function animateWarningInput(elem,condition){
 
 function checkUsernameEmpty(){
     var elem = document.getElementById("username-input")
-    var cond = elem.value===""
+    var cond = elem.value.length < 8
     animateWarningInput(elem,cond)
     return cond
 }

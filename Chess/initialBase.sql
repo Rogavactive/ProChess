@@ -11,13 +11,15 @@ CREATE TABLE accounts (
     pass_hash nvarchar(128),
     email nvarchar(64),
     primary key (ID),
-    unique(ID,username,email)
+    unique key (username),
+    unique key (email)
 );
 
--- 
--- insert into accounts(username,pass_hash,email) values
--- ("rogavactive","D1m1tr110","droga16@freeuni.edu.ge");
--- 
+select email from accounts where username="rogavactive";
+
+insert into accounts(username,pass_hash,email) values
+("rogavactive","D1m1tr110","droga16@freeuni.edu.ge");
+
 -- select count(ID) as count_matches from accounts
 -- 	where username = "aa" and pass_hash = "aa";
 

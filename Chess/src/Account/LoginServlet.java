@@ -38,25 +38,23 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String reqType = request.getParameter("loginType");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
+		Account acc = manager.accountExists(username, password);
 		if(reqType.equals("ajax")) {
-			AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
-			if(manager.accountExists(username, password)) {
+			if(acc!=null) {
 				response.getWriter().write("true");
 			}else {
 				response.getWriter().write("false");
 			}
 		}else if(reqType.equals("direct")) {
-			AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
 			//security check again
-			if(manager.accountExists(username, password)) {
-				request.getSession().setAttribute("account", new Account(username));
-				request.getRequestDispatcher("welcome.jsp").forward(request, response);
+			if(acc!=null) {
+				request.getSession().setAttribute("Account", acc);
+				request.getRequestDispatcher("main.jsp").forward(request, response);
 			}else {
-				request.getRequestDispatcher("login.jsp").forward(request, response);
+				request.getRequestDispatcher("login.html").forward(request, response);
 			}	
 		}
 	}
