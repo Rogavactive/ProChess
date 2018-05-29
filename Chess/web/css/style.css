@@ -1,0 +1,82 @@
+input{
+    margin-bottom: 5px;
+    width:85%;
+    height:30px;
+
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    font-size: 110%;
+    padding: 5px 10px;
+    outline: 0;
+    -webkit-appearance: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+input::-webkit-input-placeholder {
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+
+.google-img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.google-img:hover{
+    opacity: .8;
+}
+
+
+.auth-box{
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+    max-width: 300px;
+    border-radius: 15px;
+    background-color: #F5EEEE;
+    height:100%;
+}
+
+.material-icons-custom{
+    position:relative;
+    top:10px;
+    font-size: 200% !important;
+    margin-bottom: 5px;
+}
+
+button{
+    margin:8px 3%;
+    width: 94%;
+    padding: 5px 0;
+    background-color:white;
+    border-style: solid;
+    border-width: 2px;
+    border-color:black;
+    border-radius:10px;
+    cursor:pointer;
+    font-size: 17px;
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+
+button:hover{
+    background-color:black;
+    color:white;
+}
+
+button:disabled{
+    opacity: .6;
+    pointer-events: none;
+    border-color:rgb(49, 47, 47)
+}
+

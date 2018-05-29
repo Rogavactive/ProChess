@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pro Chess</title>
+    <!--scale to the device parameters-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!--bootstrap-->
+    <!--icon-->
+    <link rel="shortcut icon" href="src/favicon.ico">
+    <!--my styles-->
+    <link rel="stylesheet" href="css/index.css" type="text/css" media="screen"  />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"  />
+    <link rel="stylesheet" href="css/animate.css" />
+    <script type="text/javascript" src="js/index.js"></script>
+    <!--google font and icons-->
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+</head>
+<body>
+<div class="main-container container align-middle">
+    <div class="page-container row">
+        <div class="auth-box container col">
+            <form action="LoginServlet" onsubmit="return checkAvailable()" method="POST" id="LoginForm">
+                <i class="material-icons material-icons-custom">account_circle</i>
+                <input id="username-input" placeholder="Username" name="username" type="text" maxlength="20" data-placement="top" data-toggle="popover" data-trigger="manual" data-content="Such user does not exist.">
+                <br>
+                <i class="material-icons material-icons-custom">lock</i>
+                <input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
+                <input name="loginType" type="hidden" value="direct">
+                <button type="submit" id="login-btn" >Login</button>
+            </form>
+            <a class="google-img-anchor" href="">
+                <img class="google-img" src="src/google_plus.jpg">
+            </a>
+            <hr class="my-2">
+            <form action="register.html" id="Register">
+                <button type="submit" value="Register" form="Register" >Register</button>
+            </form>
+        </div>
+        <div class="col chess-logo-container">
+            <img class="animated-appear chess-logo" src="src/chess_icon.png">
+        </div>
+        <div class="col content-text-container">
+            <p class="content-text animated-text"> Play chess any time...</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
