@@ -4,16 +4,6 @@ html, body{
     margin:0;
 }
 
-/* TODO: HIDE SLIDER WHILE ANIMATION!!! */
-
-
-/*.register-icons{
-    position:relative;
-    top:10px;
-    font-size: 30px !important;
-    margin: 10px 0;
-}*/
-
 .hint-icons{
     font-size: 200% !important;
     margin:auto;

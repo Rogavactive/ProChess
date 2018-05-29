@@ -20,7 +20,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     // ServletContextListener implementation
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
-        sce.getServletContext().setAttribute("AccManager",new AccountManager());
+        sce.getServletContext().setAttribute("AccManager", new AccountManager());
       /* This method is called when the servlet context is
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
@@ -28,7 +28,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-        ((AccountManager)sce.getServletContext().getAttribute("AccManager")).dispose();
+        ((AccountManager) sce.getServletContext().getAttribute("AccManager")).dispose();
       /* This method is invoked when the Servlet Context 
          (the Web application) is undeployed or 
          Application Server shuts down.

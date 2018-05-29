@@ -15,18 +15,18 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
         Account acc = manager.accountExists(username, password);
-        if(reqType.equals("ajax")) {
-            if(acc!=null) {
+        if (reqType.equals("ajax")) {
+            if (acc != null) {
                 response.getWriter().write("true");
-            }else {
+            } else {
                 response.getWriter().write("false");
             }
-        }else if(reqType.equals("direct")) {
+        } else if (reqType.equals("direct")) {
             //security check again
-            if(acc!=null) {
+            if (acc != null) {
                 request.getSession().setAttribute("Account", acc);
                 request.getRequestDispatcher("main.jsp").forward(request, response);
-            }else {
+            } else {
                 request.getRequestDispatcher("login.html").forward(request, response);
             }
         }

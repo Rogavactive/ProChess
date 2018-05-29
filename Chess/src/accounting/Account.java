@@ -15,7 +15,9 @@ public class Account {
         return username;
     }
 
-    public String getEmail() { return email;}
+    public String getEmail() {
+        return email;
+    }
 
     public boolean changePassword(String oldpass, String newpass) {
         return manager.setPassword(oldpass, newpass, username);

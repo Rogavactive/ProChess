@@ -1,8 +1,8 @@
-var checkTimeout = null
+var checkTimeout = null;
 
 
 function checkAvailable(){
-    var response = false
+    var response = false;
 
     try{
         $.ajax({url:"LoginServlet",
@@ -14,7 +14,7 @@ function checkAvailable(){
 
             },
             success: function(data){
-                if(data=="true"){
+                if(data==="true"){
                     response=true
                 }
             },
@@ -25,7 +25,7 @@ function checkAvailable(){
     }
 
     if(!response){
-        clearTimeout(checkTimeout)
+        clearTimeout(checkTimeout);
         $('#username-input').popover('show');
         checkTimeout = setTimeout(function(){
             $('#username-input').popover('hide')

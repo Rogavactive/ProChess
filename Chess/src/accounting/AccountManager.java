@@ -1,4 +1,5 @@
 package accounting;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,10 +15,12 @@ public class AccountManager {
         connectDB(null);
     }
 
-    AccountManager(String dbName){connectDB(dbName);}
+    AccountManager(String dbName) {
+        connectDB(dbName);
+    }
 
     private void connectDB(String dbName) {
-        if(dbName==null)
+        if (dbName == null)
             dbName = MyDBInfo.MYSQL_DATABASE_NAME;
         try {
             Class.forName("com.mysql.jdbc.Driver"); // Called to just initialize JDBC driver
@@ -46,7 +49,7 @@ public class AccountManager {
         try {
             PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
             stmt.executeUpdate();
-            return new Account(username,email,this);
+            return new Account(username, email, this);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -62,14 +65,14 @@ public class AccountManager {
             PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
             ResultSet rslt = stmt.executeQuery();
             rslt.next();
-            if( 0 != Integer.parseInt(rslt.getString(1))) {
-                String emailStatement = "select email from accounts where username=\'"+username+"\';";
+            if (0 != Integer.parseInt(rslt.getString(1))) {
+                String emailStatement = "select email from accounts where username=\'" + username + "\';";
                 PreparedStatement emailStmt = (PreparedStatement) conn.prepareStatement(emailStatement);
                 ResultSet email_rslt = emailStmt.executeQuery();
                 email_rslt.next();
                 String email = email_rslt.getString(1);
                 System.out.println(email);
-                return new Account(username,email,this);
+                return new Account(username, email, this);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,12 +86,12 @@ public class AccountManager {
         return executeExists(sqlQuerryStatement);
     }
 
-    private boolean executeExists(String querryStatement){
+    private boolean executeExists(String querryStatement) {
         try {
             PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(querryStatement);
             ResultSet rslt = stmt.executeQuery();
             rslt.next();
-            return 0!=Integer.parseInt(rslt.getString(1));
+            return 0 != Integer.parseInt(rslt.getString(1));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,7 +101,7 @@ public class AccountManager {
 
     public boolean existsUsername(String username) {
         String sqlQuerryStatement = "select count(ID) as count_matches from accounts\n" +
-                "	where username = \'"+username+"\';";
+                "	where username = \'" + username + "\';";
         return executeExists(sqlQuerryStatement);
     }
 
@@ -107,7 +110,7 @@ public class AccountManager {
         return false;
     }
 
-    public Account googleAccountExists(String email, String password){
+    public Account googleAccountExists(String email, String password) {
         String pass_hash = hash(password);
         //TODO look for this combination and if acc exists return it, otherwise null.
         return null;

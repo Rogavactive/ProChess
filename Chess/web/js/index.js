@@ -1,33 +1,34 @@
 var checkTimeout = null;
 
 
-function checkAvailable(){
+function checkAvailable() {
     var response = false;
 
-    try{
-        $.ajax({url:"LoginServlet",
+    try {
+        $.ajax({
+            url: "LoginServlet",
             type: 'POST',
-            data:{
+            data: {
                 username: $("#username-input").val(),
                 password: $("#password-input").val(),
                 loginType: "ajax"
 
             },
-            success: function(data){
-                if(data==="true"){
-                    response=true
+            success: function (data) {
+                if (data === "true") {
+                    response = true
                 }
             },
-            async:false
+            async: false
         });
-    }catch(err){
+    } catch (err) {
         console.log(err.message)
     }
 
-    if(!response){
+    if (!response) {
         clearTimeout(checkTimeout);
         $('#username-input').popover('show');
-        checkTimeout = setTimeout(function(){
+        checkTimeout = setTimeout(function () {
             $('#username-input').popover('hide')
         }, 2000)
     }
