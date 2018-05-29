@@ -1,30 +1,30 @@
 function configureBtn(){
-    var cond = similarityCheckCond&&asciiCheckCond&&numAndLetterCheckCond&&lenCheckCond&&passwordMatch
-    document.getElementById("register-btn").disabled=!cond
+    var cond = similarityCheckCond&&asciiCheckCond&&numAndLetterCheckCond&&lenCheckCond&&passwordMatch;
+    document.getElementById("register-btn").disabled=!cond;
     return cond
 }
 
-var emailTimeout = null
-var usernameTimeout = null
+var emailTimeout = null;
+var usernameTimeout = null;
 
-var lenCheckCond = false
-var asciiCheckCond = false
-var numAndLetterCheckCond = false
-var similarityCheckCond = false
-var passwordMatch=true
-var re_password_triggered=false
+var lenCheckCond = false;
+var asciiCheckCond = false;
+var numAndLetterCheckCond = false;
+var similarityCheckCond = false;
+var passwordMatch=true;
+var re_password_triggered=false;
 
 function setAllFalse(){
-    lenCheckCond = false
-    asciiCheckCond = false
-    numAndLetterCheckCond = false
+    lenCheckCond = false;
+    asciiCheckCond = false;
+    numAndLetterCheckCond = false;
     similarityCheckCond = false
 }
 
 function setAllLabels(){
-    setLenP(lenCheckCond)
-    setASCIIP(asciiCheckCond)
-    setNumAndLetterP(numAndLetterCheckCond)
+    setLenP(lenCheckCond);
+    setASCIIP(asciiCheckCond);
+    setNumAndLetterP(numAndLetterCheckCond);
     setSimilarityP(similarityCheckCond)
 }
 
@@ -42,15 +42,15 @@ function checkNumAndLetter(password){
 }
 
 function checkSimiliarity(password){
-    similarityCheckCond = !(password==document.getElementById("username-input").value)
+    similarityCheckCond = !(password===document.getElementById("username-input").value)
 }
 
 function setHintById(condition, hint_text, hint_id){
-    var inner_html = ""
+    var inner_html = "";
     if(condition)
-        inner_html = "<i class=\"material-icons hint-icons align-middle hint-accept\">check</i>"
+        inner_html = "<i class=\"material-icons hint-icons align-middle hint-accept\">check</i>";
     else
-        inner_html = "<i class=\"material-icons hint-icons align-middle hint-reject\">close</i>"
+        inner_html = "<i class=\"material-icons hint-icons align-middle hint-reject\">close</i>";
     document.getElementById(hint_id).innerHTML = inner_html + hint_text
 }
 
@@ -71,28 +71,28 @@ function setSimilarityP(condition){
 }
 
 function checkPass(password){
-    if(password.length==0){
-        setAllFalse()
-        setAllLabels()
+    if(password.length===0){
+        setAllFalse();
+        setAllLabels();
         return
     }
     if(re_password_triggered){
         checkPasswordMatch()
     }
-    checkLen(password)
-    checkASCII(password)
-    checkNumAndLetter(password)
-    checkSimiliarity(password)
-    setAllLabels()
+    checkLen(password);
+    checkASCII(password);
+    checkNumAndLetter(password);
+    checkSimiliarity(password);
+    setAllLabels();
     configureBtn()
 }
 
 
 function pAppear(elem){
     if(passwordMatch)
-        return
-    var elem = document.getElementById(elem);
-    elem.style.display = "block"
+        return;
+    var docelem = document.getElementById(elem);
+    docelem.style.display = "block";
     var elem_opacity = 0;
     var id = setInterval(frame, 0.5);
     function frame() {
@@ -100,15 +100,15 @@ function pAppear(elem){
             clearInterval(id);
         } else {
             elem_opacity=elem_opacity+0.01;
-            elem.style.opacity = "" + elem_opacity
+            docelem.style.opacity = "" + elem_opacity
         }
     }
 }
 
 function pDissappear(elem){
     if(!passwordMatch)
-        return
-    var elem = document.getElementById(elem);
+        return;
+    var docelem = document.getElementById(elem);
     var elem_opacity = 1;
     var id = setInterval(frame, 0.5);
     function frame() {
@@ -118,23 +118,23 @@ function pDissappear(elem){
             //ar gaqreba , adgils igives ikavebs bolomde
         } else {
             elem_opacity=elem_opacity-0.01;
-            elem.style.opacity = "" + elem_opacity
+            docelem.style.opacity = "" + elem_opacity
         }
     }
 }
 
 function hintAppear(){
     var elem = document.getElementById("pass-hint-container");
-    elem.style.display = "block"
-    var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
-    elem.style.opacity = elem_height/140.0 + ""
-    var id = setInterval(frame, 0.5)
+    elem.style.display = "block";
+    var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1;
+    elem.style.opacity = elem_height/140.0 + "";
+    var id = setInterval(frame, 0.5);
     function frame() {
         if (elem_height>=122) {
             clearInterval(id);
         } else {
-            elem_height+=1.75
-            elem.style.height = elem_height +"px"
+            elem_height+=1.75;
+            elem.style.height = elem_height +"px";
             elem.style.opacity = elem_height/140.0 + ""
         }
     }
@@ -143,16 +143,16 @@ function hintAppear(){
 
 function hintDissappear(){
     var elem = document.getElementById("pass-hint-container");
-    var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1
-    elem.style.opacity = elem_height/140.0 + ""
+    var elem_height = elem.style.height.substring(0,elem.style.height.length-2)/1;
+    elem.style.opacity = elem_height/140.0 + "";
     var id = setInterval(frame, 0.5);
     function frame() {
         if (elem_height<=0) {
-            elem.style.display = "none"
+            elem.style.display = "none";
             clearInterval(id);
         } else {
             elem_height-=1.75;
-            elem.style.height = elem_height +"px"
+            elem.style.height = elem_height +"px";
             elem.style.opacity = elem_height/140.0 + ""
         }
     }
@@ -160,11 +160,11 @@ function hintDissappear(){
 
 
 function checkPasswordMatch(){
-    var password = document.getElementById('password-input').value
-    var rep_password = document.getElementById('repeat-password-input').value
-    if(passwordMatch!=(password===rep_password)){
-        passwordMatch = password===rep_password
-        configureBtn()
+    var password = document.getElementById('password-input').value;
+    var rep_password = document.getElementById('repeat-password-input').value;
+    if(passwordMatch!==(password===rep_password)){
+        passwordMatch = password===rep_password;
+        configureBtn();
         if(passwordMatch){
             pDissappear("repeat-password-input-p")
         }
@@ -175,9 +175,9 @@ function checkPasswordMatch(){
 }
 
 function validateEmail(){
-    condition =  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById('email-input').value)
-    if(!condition&&(document.getElementById("email-input").value!='')){
-        clearTimeout(emailTimeout)
+    condition =  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(document.getElementById('email-input').value);
+    if(!condition&&(document.getElementById("email-input").value!=='')){
+        clearTimeout(emailTimeout);
         $('#email-input').popover('show');
         emailTimeout = setTimeout(function(){
             $('#email-input').popover('hide')
@@ -187,78 +187,78 @@ function validateEmail(){
 }
 
 function checkForm() {
-    var cond1 = configureBtn()
-    var cond2 = checkEmptyFields()
-    var cond3 = validateEmail()
+    var cond1 = configureBtn();
+    var cond2 = checkEmptyFields();
+    var cond3 = validateEmail();
     return cond1&&cond2&&cond3
 }
 
 function checkEmptyFields(){
-    var cond = true
+    var cond = true;
     if(checkUsernameEmpty())
-        cond=false
+        cond=false;
     if(checkEmailEmpty())
-        cond=false
+        cond=false;
     if(checkPassEmpty())
-        cond=false
+        cond=false;
     if(checkRepPassEmpty())
-        cond=false
+        cond=false;
     return cond
 }
 
 function animateWarningInput(elem,condition){
     if(!condition){
-        elem.style.backgroundColor = "white"
+        elem.style.backgroundColor = "white";
         return
     }
-    var elem_opacity = 0
-    var id = setInterval(frame, 0.5)
+    var elem_opacity = 0;
+    var id = setInterval(frame, 0.5);
     function frame() {
         if (elem_opacity>=0.45) {
             clearInterval(id);
         } else {
-            elem_opacity = elem_opacity+0.005
+            elem_opacity = elem_opacity+0.005;
             elem.style.backgroundColor = "rgba(245, 6, 78,"+elem_opacity+")"
         }
     }
 }
 
 function checkUsernameEmpty(){
-    var elem = document.getElementById("username-input")
-    var cond = elem.value.length < 8
-    animateWarningInput(elem,cond)
+    var elem = document.getElementById("username-input");
+    var cond = elem.value.length < 8;
+    animateWarningInput(elem,cond);
     return cond
 }
 
 function checkEmailEmpty(){
-    var elem = document.getElementById("email-input")
-    var cond = elem.value===""
-    animateWarningInput(elem,cond)
+    var elem = document.getElementById("email-input");
+    var cond = elem.value==="";
+    animateWarningInput(elem,cond);
     return cond
 }
 
 function checkPassEmpty(){
-    var elem = document.getElementById("password-input")
-    var cond = elem.value===""
-    animateWarningInput(elem,cond)
+    var elem = document.getElementById("password-input");
+    var cond = elem.value==="";
+    animateWarningInput(elem,cond);
     return cond
 }
 
 function checkRepPassEmpty(){
-    var elem = document.getElementById("repeat-password-input")
-    var cond = elem.value===""
-    animateWarningInput(elem,cond)
+    var elem = document.getElementById("repeat-password-input");
+    var cond = elem.value==="";
+    animateWarningInput(elem,cond);
     return cond
 }
 
 
 function checkAvailable(){
-    var formCondition = checkForm()
+    var formCondition = checkForm();
     if(!formCondition){
         return false
     }
 
-    var processForm = true
+    var processForm = true;
 
     var usernameAvaliable = false;
     var emailAvaliable = false;
@@ -288,8 +288,8 @@ function checkAvailable(){
     }
 
     if(!usernameAvaliable){
-        processForm = false
-        clearTimeout(usernameTimeout)
+        processForm = false;
+        clearTimeout(usernameTimeout);
         $('#username-input').popover('show');
         usernameTimeout = setTimeout(function(){
             $('#username-input').popover('hide')
@@ -297,8 +297,8 @@ function checkAvailable(){
     }
 
     if(!emailAvaliable){
-        processForm = false
-        clearTimeout(emailTimeout)
+        processForm = false;
+        clearTimeout(emailTimeout);
         $('#email-input').popover('show');
         emailTimeout = setTimeout(function(){
             $('#email-input').popover('hide')
@@ -310,25 +310,25 @@ function checkAvailable(){
 
 
 window.onload = function(){
-    document.getElementById("password-input").addEventListener('input', function(evt){
+    document.getElementById("password-input").addEventListener('input', function(){
         checkPass(this.value)
     });
-    document.getElementById("username-input").addEventListener('input', function(evt){
+    document.getElementById("username-input").addEventListener('input', function(){
         checkPass(document.getElementById("password-input").value)
     });
-    document.getElementById("password-input").addEventListener('focusout', function(evt){
+    document.getElementById("password-input").addEventListener('focusout', function(){
         hintDissappear()
     });
-    document.getElementById("password-input").addEventListener('focus', function(evt){
-        setAllLabels()
+    document.getElementById("password-input").addEventListener('focus', function(){
+        setAllLabels();
         hintAppear()
     });
-    document.getElementById("repeat-password-input").addEventListener('focusout', function(evt){
-        re_password_triggered = true
+    document.getElementById("repeat-password-input").addEventListener('focusout', function(){
+        re_password_triggered = true;
         checkPasswordMatch()
     });
-    document.getElementById("repeat-password-input").addEventListener('input', function(evt){
+    document.getElementById("repeat-password-input").addEventListener('input', function(){
         if(re_password_triggered)
             checkPasswordMatch()
     });
-}
+};

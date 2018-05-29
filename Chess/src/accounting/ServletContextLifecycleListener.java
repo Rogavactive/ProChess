@@ -28,6 +28,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
+        ((AccountManager)sce.getServletContext().getAttribute("AccManager")).dispose();
       /* This method is invoked when the Servlet Context 
          (the Web application) is undeployed or 
          Application Server shuts down.
