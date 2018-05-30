@@ -71,7 +71,6 @@ public class AccountManager {
                 ResultSet email_rslt = emailStmt.executeQuery();
                 email_rslt.next();
                 String email = email_rslt.getString(1);
-                System.out.println(email);
                 return new Account(username, email, this);
             }
         } catch (SQLException e) {

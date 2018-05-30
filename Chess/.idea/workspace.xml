@@ -6,13 +6,20 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4bedd56-7df9-4401-be38-f3d73c5db075" name="Default" comment="small visual improvements">
+    <list default="true" id="f4bedd56-7df9-4401-be38-f3d73c5db075" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Chess.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/animate.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/animate.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/register.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/js/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/js/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chess_war_exploded/register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/accounting/AccountManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounting/AccountManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/css/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/register.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/js/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/accounting/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounting/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/accounting/RegisterServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounting/RegisterServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/main.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/register.html" afterDir="false" />
     </list>
@@ -62,38 +69,41 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AccountManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/accounting/AccountManager.java">
+    <leaf>
+      <file leaf-file-name="main.jsp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/main.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-687">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="148">
+              <caret line="37" column="104" selection-start-line="37" selection-start-column="104" selection-end-line="37" selection-end-column="104" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/css/register.css">
+      <file leaf-file-name="LoginServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/accounting/LoginServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+            <state relative-caret-position="420">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/register.html">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="15">
+              <caret line="1" column="115" selection-start-line="1" selection-start-column="115" selection-end-line="1" selection-end-column="115" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/css/main.css">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -103,11 +113,18 @@
       <list>
         <option value="Jsp File" />
         <option value="HTML File" />
+        <option value="Class" />
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>dispa</find>
+      <find>system.out.pr</find>
+      <find>comes here</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -115,24 +132,26 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/css/index.css" />
-        <option value="$PROJECT_DIR$/web/css/style.css" />
-        <option value="$PROJECT_DIR$/web/css/animate.css" />
         <option value="$PROJECT_DIR$/src/accounting/MyDBInfo.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c54e8462-3b6f-4deb-bd80-6f61fa9c8a31/console_1.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c54e8462-3b6f-4deb-bd80-6f61fa9c8a31/console.sql" />
+        <option value="$PROJECT_DIR$/web/css/register.css" />
         <option value="$PROJECT_DIR$/src/accounting/Account.java" />
-        <option value="$PROJECT_DIR$/src/accounting/RegisterServlet.java" />
-        <option value="$PROJECT_DIR$/src/accounting/LoginServlet.java" />
-        <option value="$PROJECT_DIR$/web/index.html" />
-        <option value="$PROJECT_DIR$/web/register.html" />
-        <option value="$PROJECT_DIR$/web/main.jsp" />
+        <option value="$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java" />
+        <option value="$PROJECT_DIR$/web/css/animate.css" />
+        <option value="$PROJECT_DIR$/web/css/style.css" />
         <option value="$PROJECT_DIR$/web/js/index.js" />
         <option value="$PROJECT_DIR$/web/js/register.js" />
-        <option value="$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c54e8462-3b6f-4deb-bd80-6f61fa9c8a31/console_1.sql" />
         <option value="$PROJECT_DIR$/initialBase.sql" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c54e8462-3b6f-4deb-bd80-6f61fa9c8a31/console.sql" />
+        <option value="$PROJECT_DIR$/web/css/index.css" />
+        <option value="$PROJECT_DIR$/web/index.html" />
+        <option value="$PROJECT_DIR$/web/css/main.css" />
+        <option value="$PROJECT_DIR$/web/register.html" />
+        <option value="$PROJECT_DIR$/src/accounting/RegisterServlet.java" />
+        <option value="$PROJECT_DIR$/src/accounting/LoginServlet.java" />
+        <option value="$PROJECT_DIR$/web/js/main.js" />
         <option value="$PROJECT_DIR$/src/accounting/AccountManager.java" />
-        <option value="$PROJECT_DIR$/web/css/register.css" />
+        <option value="$PROJECT_DIR$/web/main.jsp" />
       </list>
     </option>
   </component>
@@ -159,10 +178,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="25" />
-    <option name="width" value="1299" />
-    <option name="height" value="743" />
+    <option name="x" value="-53" />
+    <option name="y" value="79" />
+    <option name="width" value="1289" />
+    <option name="height" value="555" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -182,15 +201,32 @@
             <path>
               <item name="Chess" type="b2602c69:ProjectViewProjectNode" />
               <item name="Chess" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chess" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chess" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="accounting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chess" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chess" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chess" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chess" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -347,12 +383,28 @@
       <option name="presentableId" value="Default" />
       <updated>1527618992070</updated>
       <workItem from="1527619010297" duration="4591000" />
-      <workItem from="1527623769467" duration="6415000" />
+      <workItem from="1527623769467" duration="7090000" />
+      <workItem from="1527669358684" duration="4091000" />
     </task>
+    <task id="LOCAL-00001" summary="small visual improvements">
+      <created>1527630448662</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1527630448662</updated>
+    </task>
+    <task id="LOCAL-00002" summary="small visual improvements">
+      <created>1527630790605</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1527630790605</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11006000" />
+    <option name="totallyTimeSpent" value="15772000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -380,25 +432,25 @@
       <window_info id="UI Designer" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Messages" order="7" visible="true" weight="0.3295082" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.3295082" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.19180328" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.28196722" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.20695102" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49779737" visible="true" weight="0.21707901" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28196722" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.20655738" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49779737" visible="true" weight="0.22027135" />
       <window_info id="Web" order="2" sideWeight="0.50220263" side_tool="true" weight="0.20939185" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Database Console" weight="0.3295082" />
+      <window_info anchor="bottom" id="Database Console" order="8" weight="0.3295082" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -422,6 +474,8 @@
           <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#356#357#0" expanded="true" />
+            <element signature="e#389#390#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -437,96 +491,9 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/web/index.jsp" />
-    <entry file="file://$PROJECT_DIR$/web/css/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="82" selection-start-line="82" selection-end-line="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/animate.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1262">
-          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/accounting/ServletContextListener.java" />
-    <entry file="file://$PROJECT_DIR$/src/accounting/MyDBInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/accounting/Account.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="31" lean-forward="true" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/accounting/LoginServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="11" column="122" selection-start-line="11" selection-start-column="122" selection-end-line="11" selection-end-column="122" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/accounting/RegisterServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-180">
-          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/favicon.ico">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/main.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/register.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="934">
-          <caret line="303" column="12" selection-start-line="303" selection-start-column="12" selection-end-line="303" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="30" column="9" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c54e8462-3b6f-4deb-bd80-6f61fa9c8a31/console_1.sql">
       <provider selected="true" editor-type-id="text-editor">
@@ -542,36 +509,143 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/accounting/MyDBInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/accounting/ServletContextLifecycleListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="30" column="9" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/animate.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1215">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/initialBase.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="9" lean-forward="true" selection-end-line="25" selection-end-column="23" />
+        <state relative-caret-position="240">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/register.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="310" column="12" selection-start-line="310" selection-start-column="12" selection-end-line="310" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="23" column="51" lean-forward="true" selection-start-line="23" selection-start-column="51" selection-end-line="23" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-195">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/register.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-15">
+          <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/accounting/Account.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+          <folding>
+            <element signature="e#401#402#0" expanded="true" />
+            <element signature="e#429#430#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/css/main.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="115" selection-start-line="1" selection-start-column="115" selection-end-line="1" selection-end-column="115" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/accounting/AccountManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-687">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="-422">
+          <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#356#357#0" expanded="true" />
+            <element signature="e#389#390#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/accounting/RegisterServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/css/register.css">
+    <entry file="file://$PROJECT_DIR$/web/register.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+        <state relative-caret-position="150">
+          <caret line="10" column="71" selection-start-line="10" selection-start-column="71" selection-end-line="10" selection-end-column="71" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/register.html">
+    <entry file="file://$PROJECT_DIR$/src/accounting/LoginServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        <state relative-caret-position="420">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/main.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="37" column="104" selection-start-line="37" selection-start-column="104" selection-end-line="37" selection-end-column="104" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

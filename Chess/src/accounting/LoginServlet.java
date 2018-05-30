@@ -25,9 +25,9 @@ public class LoginServlet extends HttpServlet {
             //security check again
             if (acc != null) {
                 request.getSession().setAttribute("Account", acc);
-                request.getRequestDispatcher("main.jsp").forward(request, response);
+                response.sendRedirect("main.jsp");
             } else {
-                request.getRequestDispatcher("login.html").forward(request, response);
+                response.sendRedirect("login.html");
             }
         }
     }

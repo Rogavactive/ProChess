@@ -1,16 +1,16 @@
-html, body{
+html, body {
     background-color: rgb(8, 8, 8);
-    height:100%;
-    margin:0;
+    height: 100%;
+    margin: 0;
 }
 
 /*img{
   vertical-align: middle;
 }*/
 
-.main-container{
-    background-color: rgb(8,8,8);
-    height:100%;
+.main-container {
+    background-color: rgb(8, 8, 8);
+    height: 100%;
 
     display: flex;
     align-items: center;
@@ -18,39 +18,38 @@ html, body{
 
 }
 
-.page-container{
+.page-container {
     margin-top: 10%;
-    background-color: rgb(8,8,8);
+    background-color: rgb(8, 8, 8);
 }
 
-hr{
-    color:black !important;
-    margin:0 !important;
-    margin-top:5px !important;
+hr {
+    color: black !important;
+    margin: 0 !important;
+    margin-top: 5px !important;
     /* color:#666; */
     outline: 0;
     opacity: .8;
 }
 
-.content-text{
+.content-text {
     text-align: center;
 
-    color:white;
+    color: white;
     font-family: 'Lato', Arial, Helvetica, sans-serif;
-    font-size:250%;
+    font-size: 250%;
     letter-spacing: 3px;
     word-spacing: 20px;
 }
 
-
-.chess-logo-container{
-    display:block;
-    margin:auto;
-    text-align:center;
+.chess-logo-container {
+    display: block;
+    margin: auto;
+    text-align: center;
 }
 
-.content-text-container{
-    display:flex;
-    justify-content:center;
+.content-text-container {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }

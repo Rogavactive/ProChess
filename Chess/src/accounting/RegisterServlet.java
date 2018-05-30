@@ -1,6 +1,5 @@
 package accounting;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,7 @@ import java.io.IOException;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String reqType = request.getParameter("registerType");
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
         String username = request.getParameter("username");
@@ -33,13 +32,13 @@ public class RegisterServlet extends HttpServlet {
             if (validate(password, username, email, manager)) {
                 Account acc = manager.register(username, email, password);
                 if (acc == null) {
-                    request.getRequestDispatcher("register.html").forward(request, response);
+                    response.sendRedirect("register.html");
                     return;
                 }
                 request.getSession().setAttribute("Account", acc);
-                request.getRequestDispatcher("main.jsp").forward(request, response);
+                response.sendRedirect("main.jsp");
             } else {
-                request.getRequestDispatcher("register.html").forward(request, response);
+                response.sendRedirect("register.html");
             }
         }
     }
