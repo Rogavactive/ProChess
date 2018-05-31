@@ -1,4 +1,6 @@
-package accounting;
+package Accounting.Controller;
+
+import Accounting.Model.AccountManager;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

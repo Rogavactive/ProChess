@@ -1,4 +1,4 @@
-package Game;
+package Game.Model;
 
 import java.util.Vector;
 

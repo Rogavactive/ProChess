@@ -1,4 +1,4 @@
-<%@ page import="accounting.Account" %>
+<%@ page import="Accounting.Model.Account" %>
 <%--
   Created by IntelliJ IDEA.
   User: rogavactive

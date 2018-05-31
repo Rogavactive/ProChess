@@ -1,17 +1,16 @@
-package Game.Pieces;
+package Game.Model.Pieces;
 
-import Game.Board;
-import Game.Cell;
-import Game.Piece;
+import Game.Model.Board;
+import Game.Model.Cell;
+import Game.Model.Piece;
 import javafx.util.Pair;
 
 import java.util.Vector;
 
-public class Rook implements Piece {
-    private boolean hasMoved;
+public class Bishop implements Piece {
     private boolean color;
 
-    public Rook(Board board, boolean color){
+    public Bishop(Board board, boolean color){
 
     }
 
@@ -20,7 +19,7 @@ public class Rook implements Piece {
         return null;
     }
 
-        @Override
+    @Override
     public boolean getColor() {
         return false;
     }

@@ -1,16 +1,16 @@
-package Game.Pieces;
+package Game.Model.Pieces;
 
-import Game.Board;
-import Game.Cell;
-import Game.Piece;
+import Game.Model.Board;
+import Game.Model.Cell;
+import Game.Model.Piece;
 import javafx.util.Pair;
 
 import java.util.Vector;
 
-public class Pawn implements Piece {
+public class Queen implements Piece {
     private boolean color;
 
-    public Pawn(Board board, boolean color){
+    public Queen(Board board, boolean color){
 
     }
 

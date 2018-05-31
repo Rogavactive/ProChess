@@ -1,4 +1,4 @@
-package accounting;
+package Accounting.Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,11 +11,11 @@ import com.mysql.jdbc.PreparedStatement;
 public class AccountManager {
     private Connection conn;
 
-    AccountManager() {
+    public AccountManager() {
         connectDB(null);
     }
 
-    AccountManager(String dbName) {
+    public AccountManager(String dbName) {
         connectDB(dbName);
     }
 

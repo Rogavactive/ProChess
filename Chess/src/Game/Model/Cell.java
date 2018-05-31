@@ -1,5 +1,6 @@
-package Game;
+package Game.Model;
 
+import Game.Model.Game;
 import javafx.util.Pair;
 
 import java.util.Vector;

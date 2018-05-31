@@ -1,4 +1,4 @@
-package accounting;
+package Accounting.Model;
 
 public class MyDBInfo {
 

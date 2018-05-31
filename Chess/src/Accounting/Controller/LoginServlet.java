@@ -1,4 +1,7 @@
-package accounting;
+package Accounting.Controller;
+
+import Accounting.Model.Account;
+import Accounting.Model.AccountManager;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
