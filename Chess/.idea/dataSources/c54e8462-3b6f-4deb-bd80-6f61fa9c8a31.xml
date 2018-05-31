@@ -913,51 +913,106 @@
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
     <table id="229" parent="2" name="accounts"/>
-    <column id="230" parent="229" name="ID">
+    <table id="230" parent="2" name="validations"/>
+    <column id="231" parent="229" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="231" parent="229" name="username">
+    <column id="232" parent="229" name="username">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="232" parent="229" name="pass_hash">
+    <column id="233" parent="229" name="pass_hash">
       <Position>3</Position>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="233" parent="229" name="email">
+    <column id="234" parent="229" name="email">
       <Position>4</Position>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <index id="234" parent="229" name="username">
+    <index id="235" parent="229" name="username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="235" parent="229" name="email">
+    <index id="236" parent="229" name="email">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="236" parent="229" name="PRIMARY">
+    <key id="237" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="237" parent="229" name="username">
+    <key id="238" parent="229" name="username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
-    <key id="238" parent="229" name="email">
+    <key id="239" parent="229" name="email">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>email</UnderlyingIndexName>
+    </key>
+    <column id="240" parent="230" name="ID">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="241" parent="230" name="username">
+      <Position>2</Position>
+      <DataType>varchar(64)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <column id="242" parent="230" name="pass_hash">
+      <Position>3</Position>
+      <DataType>varchar(128)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <column id="243" parent="230" name="email">
+      <Position>4</Position>
+      <DataType>varchar(64)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <column id="244" parent="230" name="code">
+      <Position>5</Position>
+      <DataType>varchar(64)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <index id="245" parent="230" name="username">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="246" parent="230" name="email">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="247" parent="230" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="248" parent="230" name="username">
+      <ColNames>username</ColNames>
+      <UnderlyingIndexName>username</UnderlyingIndexName>
+    </key>
+    <key id="249" parent="230" name="email">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>email</UnderlyingIndexName>
     </key>
