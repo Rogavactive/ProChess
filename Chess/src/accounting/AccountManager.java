@@ -49,7 +49,7 @@ public class AccountManager {
         try {
             PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
             stmt.executeUpdate();
-            return new Account(username, email, this);
+            return new Account(username, email, this,true);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -71,7 +71,7 @@ public class AccountManager {
                 ResultSet email_rslt = emailStmt.executeQuery();
                 email_rslt.next();
                 String email = email_rslt.getString(1);
-                return new Account(username, email, this);
+                return new Account(username, email, this,true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,10 +79,15 @@ public class AccountManager {
         return null;
     }
 
-    public boolean existsEmail(String email) {
+    public Account existsEmail(String email) {
         String sqlQuerryStatement = "select count(ID) as count_matches from accounts\n" + "	where email = \'" + email
                 + "\';";
-        return executeExists(sqlQuerryStatement);
+        if(executeExists(sqlQuerryStatement)){
+            String username="";
+            //TODO: get username from SQL base
+            return new Account(username,email,this,false);
+        }
+        return null;
     }
 
     private boolean executeExists(String querryStatement) {
@@ -104,15 +109,22 @@ public class AccountManager {
         return executeExists(sqlQuerryStatement);
     }
 
+    public Account registerGoogle(String email, String username){
+        String sqlQuerryStatement = "insert into accounts(username,email) values\n" + "	(\'" + username
+                + "\',\'" + email + "\');";
+        try {
+            PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
+            stmt.executeUpdate();
+            return new Account(username, email, this,false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean removeAccount(String username) {
         //TODO remove acc with that username from database
         return false;
-    }
-
-    public Account googleAccountExists(String email, String password) {
-        String pass_hash = hash(password);
-        //TODO look for this combination and if acc exists return it, otherwise null.
-        return null;
     }
 
     public boolean change(String old_username, String old_email, String username, String email) {
@@ -130,6 +142,20 @@ public class AccountManager {
     private String hash(String password) {
         // TODO hashes given password
         return password;
+    }
+
+    //implement after we start google authentification.
+    public boolean sendValidate(String username, String email, String password){
+        //TODO: check if account exists, if not send mesasge to email and redirect to validate.jsp
+        //TODO: generate code , send it to email and store info with code in Base. (hash password)
+        return false;
+    }
+
+    //implement after we start google authentification.
+    public Account checkValidate(String email, String code){
+        //TODO: check if code is valid. if it is, register and send account.
+        //if(codeValid) register(getInfoFromBase);
+        return null;
     }
 
 }

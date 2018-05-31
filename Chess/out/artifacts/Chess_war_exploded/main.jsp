@@ -33,11 +33,9 @@
     <%
         //before the code loads, checks if user is authorised.
         if(request.getSession().getAttribute("Account") ==null){
-            System.out.println("comes here");
             response.sendRedirect("index.html");
-            return;//this is to redirect immediately
+            return;//this is to redirect immediately and not execute code bellow (which causes an error)
         }else{
-            System.out.println(request.getSession().getAttribute("Account").toString());
         }
     %>
 </head>
