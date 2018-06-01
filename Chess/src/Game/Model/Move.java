@@ -1,7 +1,6 @@
 package Game.Model;
 
 import Game.Model.Game;
-import javafx.util.Pair;
 
 public class Move {
     private Pair<Integer, Integer> from;
