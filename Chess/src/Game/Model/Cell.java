@@ -14,6 +14,10 @@ public class Cell implements Cloneable{
 
     }
 
+    public boolean hasPiece(){
+        return piece != null;
+    }
+
     public Vector<Pair<Integer, Integer>> getMoves(Vector< Vector<Cell> > state){
         return new Vector< Pair<Integer, Integer> >();
     }

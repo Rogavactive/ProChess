@@ -10,8 +10,8 @@ import java.util.Vector;
 public class Queen implements Piece {
     private boolean color;
 
-    public Queen(Board board, boolean color){
-
+    public Queen(boolean color){
+        this.color = color;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class Queen implements Piece {
 
     @Override
     public boolean getColor() {
-        return false;
+        return color;
     }
 }

@@ -6,8 +6,6 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Board {
-    private static final int NUMBER_OF_ROWS = 8;
-    private static final int NUMBER_OF_COLUMNS = 8;
     private Vector< Vector<Cell> > board;
     private Pair<Integer, Integer> whiteKing;
     private Pair<Integer, Integer> blackKing;
@@ -17,10 +15,10 @@ public class Board {
 
     // Constructor
     public Board(){
-        board = new Vector<>(NUMBER_OF_ROWS);
+        board = new Vector<>(Constants.NUMBER_OF_ROWS);
 
-        for(int row = 0; row < NUMBER_OF_ROWS; row++){
-            board.add(new Vector<Cell>(NUMBER_OF_COLUMNS));
+        for(int row = 0; row < Constants.NUMBER_OF_ROWS; row++){
+            board.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
         }
 
     }
