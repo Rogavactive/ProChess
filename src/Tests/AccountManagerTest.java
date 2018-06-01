@@ -1,4 +1,4 @@
-package Accounting.Tests;
+package Tests;
 
 import Accounting.Model.AccountManager;
 

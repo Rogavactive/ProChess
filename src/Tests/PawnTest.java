@@ -1,4 +1,4 @@
-package Game.Tests;
+package Tests;
 
 import Accounting.Model.AccountManager;
 import Game.Model.Pieces.Pawn;
