@@ -1,10 +1,6 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
-import Game.Model.Cell;
-import Game.Model.Constants;
-import Game.Model.Piece;
-import javafx.util.Pair;
+import Game.Model.*;
 
 import java.util.Vector;
 
@@ -95,5 +91,10 @@ public class Pawn implements Piece {
     // This method returns color of pawn
     public boolean getColor() {
         return color;
+    }
+
+    @Override
+    public Types getType() {
+        return Types.PAWN;
     }
 }

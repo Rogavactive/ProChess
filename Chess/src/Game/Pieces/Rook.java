@@ -1,9 +1,6 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
-import Game.Model.Cell;
-import Game.Model.Piece;
-import javafx.util.Pair;
+import Game.Model.*;
 
 import java.util.Vector;
 
@@ -23,5 +20,10 @@ public class Rook implements Piece {
         @Override
     public boolean getColor() {
         return false;
+    }
+
+    @Override
+    public Types getType() {
+        return Types.ROOK;
     }
 }
