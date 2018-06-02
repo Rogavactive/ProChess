@@ -9,6 +9,8 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -129,5 +131,7 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/java,linux,windows,intellij
 
+
+#My ignores.
 
 MyDBInfo.java
