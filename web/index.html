@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/animate.css"/>
     <script type="text/javascript" src="js/index.js"></script>
-    <!--google font and icons-->
+    <!--google-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadGoogleCallback" async defer></script>
+    <meta name="google-signin-client_id" content="690644503931-dtn1qj0me45ovni28qbsa12g8d6c2ccf.apps.googleusercontent.com">
 </head>
 <body>
 <div class="main-container container align-middle">
@@ -42,7 +44,7 @@
                 <input name="loginType" type="hidden" value="direct">
                 <button type="submit" id="login-btn">Login</button>
             </form>
-            <a class="google-img-anchor" href="">
+            <a class="google-img-anchor" id="googleSignIn" href="#">
                 <img class="google-img" src="src/google_plus.jpg">
             </a>
             <hr class="my-2">

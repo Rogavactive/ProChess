@@ -34,8 +34,9 @@ public class Account {
             this.email = email;
             this.username = username;
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
     public boolean remove() {

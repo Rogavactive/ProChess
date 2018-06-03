@@ -27,7 +27,7 @@ CREATE TABLE validations(
 );
 
 insert into accounts (username, pass_hash, email) values
-    ("rogavactive", "rogavactive", "droga16@freeuni.edu.ge");
+    ("bejanadato", "c0f95fe8d96cb131b7d4d7b4a0cda0de", "dbezh16@freeuni.edu.ge");
     
 
 

@@ -13,24 +13,40 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String reqType = request.getParameter("loginType");
-        if (reqType.equals("ajax")) {
-            processAjaxMessage(request, response);
-        } else if (reqType.equals("direct")) {
-            processDirectMessage(request, response);
-        }else if(reqType.equals("google")){
-            processGoogleMessage(request,response);
+        switch (reqType) {
+            case "ajax":
+                processAjaxMessage(request, response);
+                break;
+            case "direct":
+                processDirectMessage(request, response);
+                break;
+            case "google":
+                processGoogleMessage(request, response);
+                break;
         }
     }
 
-    private void processGoogleMessage(HttpServletRequest request, HttpServletResponse response) {
+    private void processGoogleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        System.out.println(email);
+        //TODO: write check in back, not front;
+        AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
+        Account acc = manager.googleAccountExists(email);
+        if(acc==null) {
+            acc = manager.register(generateUsername(email), email, null);
+        }
+        request.getSession().setAttribute("Account", acc);
         //TODO: write google authentification.
+    }
+
+    private String generateUsername(String email){
+        //TODO: create unique username.
+        return email;
     }
 
     private void processDirectMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if(password==null)
-            password="";//security change
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
         Account acc = manager.accountExists(username, password);
         //security check again
@@ -42,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void processAjaxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void processAjaxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");

@@ -1,18 +1,18 @@
 package Accounting.Model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.*;
+import java.security.*;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 public class AccountManager {
-    private Connection conn;
+    private static MysqlDataSource dataSource = new MysqlDataSource();
+    private static ReentrantLock lock = new ReentrantLock();
 
     public AccountManager() {
-        connectDB(null);
+        this("");
     }
 
     public AccountManager(String dbName) {
@@ -20,128 +20,245 @@ public class AccountManager {
     }
 
     private void connectDB(String dbName) {
-        if (dbName == null)
-            dbName = MyDBInfo.MYSQL_DATABASE_NAME;
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); // Called to just initialize JDBC driver
-            conn = DriverManager.getConnection(MyDBInfo.MYSQL_DATABASE_SERVER, // Connect to database
-                    MyDBInfo.MYSQL_USERNAME, MyDBInfo.MYSQL_PASSWORD);
-
-            Statement stmt = conn.createStatement();
-            stmt.execute("USE " + dbName);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+        dataSource.setUser(MyDBInfo.MYSQL_USERNAME);
+        dataSource.setPassword(MyDBInfo.MYSQL_PASSWORD);
+        if(!dbName.equals(""))
+            dataSource.setUrl(dbName);
+        else
+            dataSource.setUrl(MyDBInfo.MYSQL_DATABASE_SERVER);
     }
 
     public void dispose() {
+        //we dont need anything yet.
+    }
+
+    private ResultSet executeQuerry(String statement,Connection conn){
         try {
-            conn.close();
+            PreparedStatement stmt = conn.prepareStatement(statement);
+            return stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    private boolean executeUpdate(String statement,Connection conn){
+        try {
+            PreparedStatement stmt = conn.prepareStatement(statement);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
     public Account register(String username, String email, String password) {
         String pass_hash = hash(password);
-        String sqlQuerryStatement = "insert into accounts(username,pass_hash,email) values\n" + "	(\'" + username
-                + "\',\'" + pass_hash + "\',\'" + email + "\');";
+        if(pass_hash!=null&&pass_hash.equals(""))
+            return null;
+        String sqlQueryStatement;
+        if(pass_hash==null) {
+            sqlQueryStatement = "insert into accounts(username,email) values\n" + "	(\'" + username
+                    + "\',\'" + email + "\');";
+        }
+        else {
+            sqlQueryStatement = "insert into accounts(username,pass_hash,email) values\n" + "	(\'" + username
+                    + "\',\'" + pass_hash + "\',\'" + email + "\');";
+        }
+        Connection conn = null;
         try {
-            PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
-            stmt.executeUpdate();
-            return new Account(username, email, this,true);
+            conn = dataSource.getConnection();
+            if (executeUpdate(sqlQueryStatement,conn)) {
+                if(password==null)
+                    return new Account(username,email,this,false);
+                else
+                    return new Account(username, email, this, true);
+            }
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try{
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Account accountExists(String username, String password) {
+        if(password==null)
+            return null;
+        String pass_hash = hash(password);
+        String sqlQueryStatement = "select email from accounts\n" + "	where username = \'"
+                + username + "\' and pass_hash = \'" + pass_hash + "\';";
+
+        Connection conn = null;
+        ResultSet rslt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            rslt = executeQuerry(sqlQueryStatement,conn);
+            if (rslt != null && rslt.next()) {
+                String email = rslt.getString("email");
+                return new Account(username, email, this, true);
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            closeConnections(conn,rslt);
         }
 
     }
 
-    public Account accountExists(String username, String password) {
-        String pass_hash = hash(password);
-        String sqlQuerryStatement = "select count(ID) as count_matches from accounts\n" + "	where username = \'"
-                + username + "\' and pass_hash = \'" + pass_hash + "\';";
+    public boolean existsEmail(String email) {
+        String sqlQueryStatement = "select count(ID) as email_count from accounts\n" + "	where email = \'" + email
+                + "\';";
+
+        Connection conn = null;
+        ResultSet rslt = null;
+
         try {
-            PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
-            ResultSet rslt = stmt.executeQuery();
-            rslt.next();
-            if (0 != Integer.parseInt(rslt.getString(1))) {
-                String emailStatement = "select email from accounts where username=\'" + username + "\';";
-                PreparedStatement emailStmt = (PreparedStatement) conn.prepareStatement(emailStatement);
-                ResultSet email_rslt = emailStmt.executeQuery();
-                email_rslt.next();
-                String email = email_rslt.getString(1);
-                return new Account(username, email, this,true);
+            conn = dataSource.getConnection();
+            rslt = executeQuerry(sqlQueryStatement,conn);
+            if (rslt != null && rslt.next()) {
+                int res = rslt.getInt("email_count");
+                return res > 0;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            closeConnections(conn,rslt);
+        }
+    }
+
+    private void closeConnections(Connection conn, ResultSet rslt){
+        try {
+            if (rslt != null) {
+                rslt.close();
+            }
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public Account existsEmail(String email) {
-        String sqlQuerryStatement = "select count(ID) as count_matches from accounts\n" + "	where email = \'" + email
-                + "\';";
-        if(executeExists(sqlQuerryStatement)){
-            String username="";
-            //TODO: get username from SQL base
-            return new Account(username,email,this,false);
-        }
-        return null;
-    }
-
-    private boolean executeExists(String querryStatement) {
-        try {
-            PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(querryStatement);
-            ResultSet rslt = stmt.executeQuery();
-            rslt.next();
-            return 0 != Integer.parseInt(rslt.getString(1));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
     }
 
     public boolean existsUsername(String username) {
-        String sqlQuerryStatement = "select count(ID) as count_matches from accounts\n" +
+        String sqlQueryStatement = "select count(ID) as count_matches from accounts\n" +
                 "	where username = \'" + username + "\';";
-        return executeExists(sqlQuerryStatement);
-    }
 
-    public Account registerGoogle(String email, String username){
-        String sqlQuerryStatement = "insert into accounts(username,email) values\n" + "	(\'" + username
-                + "\',\'" + email + "\');";
+        Connection conn = null;
+        ResultSet rslt = null;
+
         try {
-            PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sqlQuerryStatement);
-            stmt.executeUpdate();
-            return new Account(username, email, this,false);
+            conn = dataSource.getConnection();
+            rslt = executeQuerry(sqlQueryStatement,conn);
+            if (rslt != null && rslt.next()) {
+                int res = rslt.getInt("count_matches");
+                return res > 0;
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return false;
+        }finally {
+            closeConnections(conn,rslt);
         }
+
     }
 
     public boolean removeAccount(String username) {
-        //TODO remove acc with that username from database
-        return false;
+        String sqlQueryStatement = "delete from accounts where username=\""+username+"\";";
+        return simpleExecuteUpdate(sqlQueryStatement);
+    }
+
+    private boolean simpleExecuteUpdate(String statement) {
+        try (Connection conn = dataSource.getConnection()) {
+            return executeUpdate(statement, conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean change(String old_username, String old_email, String username, String email) {
-        //TODO if email and username exists and old!=new replace it in database
-        return false;
+        String sqlQueryStatement = "update accounts set username=\""+username+"\", email=\""+email+"\" " +
+                "where username=\""+old_username+"\" and email=\""+old_email+"\";";
+        return simpleExecuteUpdate(sqlQueryStatement);
+    }
+
+    public Account googleAccountExists(String email){
+        String sqlQueryStatement = "select username,pass_hash from accounts\n" +
+                "  where email=\""+email+"\";";
+
+        Connection conn = null;
+        ResultSet rslt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            rslt = executeQuerry(sqlQueryStatement,conn);
+            if (rslt != null && rslt.next()) {
+                String username = rslt.getString("username");
+                boolean isNative = rslt.getString("pass_hash")!=null;
+                return new Account(username,email,this,isNative);
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            closeConnections(conn,rslt);
+        }
+
     }
 
     public boolean setPassword(String oldpass, String newpass, String username) {
         String old_hash = hash(oldpass);
         String new_hash = hash(newpass);
-        //TODO checks if old is valid and sets the new one in database
-        return false;
+        if(old_hash.equals("")||new_hash.equals(""))
+            return false;
+        String sqlQueryStatement = "update accounts set pass_hash=\""+new_hash+"\" " +
+                "where username=\""+username+"\" and pass_hash=\""+old_hash+"\";";
+        return simpleExecuteUpdate(sqlQueryStatement);
     }
 
     private String hash(String password) {
-        // TODO hashes given password
-        return password;
+        if(password==null)
+            return null;
+        try {
+            lock.lock();
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            return hexToString(md.digest());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            return "";
+        }finally {
+            lock.unlock();
+        }
+    }
+
+    private static String hexToString(byte[] bytes) {
+        StringBuilder buff = new StringBuilder();
+        for (byte aByte : bytes) {
+            int val = aByte;
+            val = val & 0xff;  // remove higher bits, sign
+            if (val < 16) buff.append('0'); // leading 0
+            buff.append(Integer.toString(val, 16));
+        }
+        return buff.toString();
     }
 
     //implement after we start google authentification.

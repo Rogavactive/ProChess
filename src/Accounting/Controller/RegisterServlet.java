@@ -13,21 +13,14 @@ import java.io.IOException;
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String reqType = request.getParameter("registerType");
-        if (reqType.equals("ajax")) {
-            processAjaxMessage(request, response);
-        } else if (reqType.equals("direct")) {
-            processDirectMessage(request, response);
-        }else if(reqType.equals("google")){
-            processGoogle(request,response);
-        }else if(reqType.equals("validate_ajax")){
-            //TODO: validate for ajax. just return false or true.
-        }else if(reqType.equals("validate_direct")){
-            //TODO: validate code direct from the form. security check here.
+        switch (reqType) {
+            case "ajax":
+                processAjaxMessage(request, response);
+                break;
+            case "direct":
+                processDirectMessage(request, response);
+                break;
         }
-    }
-
-    private void processGoogle(HttpServletRequest request, HttpServletResponse response) {
-        //TODO: google registration.
     }
 
     private void processAjaxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
         } else {
             response_string += "true ";
         }
-        if (manager.existsEmail(email)!=null) {
+        if (manager.existsEmail(email)) {
             response_string += "false";
         } else {
             response_string += "true";
@@ -54,7 +47,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if(password==null)
-            password="";//security change
+            password="";
         // security check
         if (validate(password, username, email, manager)) {
             //TODO: when we start implementing google, change manager.register with sendValidate
@@ -71,7 +64,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     private boolean validate(String password, String username, String email, AccountManager manager) {
-        if (manager.existsUsername(username) || manager.existsEmail(email)!=null)
+        if (manager.existsUsername(username) || manager.existsEmail(email))
             return false;
         if (password.equals(username) || username.length() < 8 || username.length() > 20)
             return false;
