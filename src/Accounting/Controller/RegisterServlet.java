@@ -57,7 +57,7 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
             request.getSession().setAttribute("Account", acc);
-            response.sendRedirect("main.jsp");
+            response.sendRedirect("validate_warning.html");
         } else {
             response.sendRedirect("register.html");
         }
