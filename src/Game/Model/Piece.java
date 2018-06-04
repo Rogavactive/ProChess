@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public interface Piece {
-    public enum pieceType{
+    enum pieceType{
         Bishop,
         King,
         Knight,
@@ -14,9 +14,9 @@ public interface Piece {
         Rook
     }
 
-    public Vector< Pair<Integer, Integer> > possibleMoves(int ind1, int ind2,
-                                                          Vector<Vector<Cell>> state);
-    public boolean getColor();
-    public boolean getHasMove();
-    public pieceType getType();
+    Vector< Pair<Integer, Integer> > possibleMoves(int row, int col,
+                                                          Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos);
+    boolean getColor();
+    boolean getHasMove();
+    pieceType getType();
 }

@@ -11,10 +11,11 @@ import java.util.Vector;
 public class Queen implements Piece {
     // Private variable
     private boolean color;
-
+    private boolean hasMove;
     // Constructor
     public Queen(boolean color){
         this.color = color;
+        this.hasMove = false;
     }
 
     // This method finds all possible moves
@@ -50,7 +51,8 @@ public class Queen implements Piece {
     @Override
     // This method returns all possible cells, where queen can make move
     public Vector< Pair<Integer, Integer> > possibleMoves(int row, int col,
-                                                          Vector<Vector<Cell>> state) {
+                                                          Vector<Vector<Cell>> state,
+                                                          Pair<Integer,Integer> allieKingPos) {
         Vector< Pair<Integer, Integer> > result = new Vector<>();
 
         // trying all directions, to find moves
@@ -73,9 +75,9 @@ public class Queen implements Piece {
     }
 
     @Override
-    // This method returns whether Pawn has already made a move
+    // This method returns whether Queen has already made a move
     public boolean getHasMove() {
-        return true;
+        return hasMove;
     }
 
     @Override

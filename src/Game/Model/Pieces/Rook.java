@@ -14,7 +14,7 @@ public class Rook implements Piece {
     private boolean color;
 
     // Constructor
-    public Rook(Board board, boolean color){
+    public Rook(boolean color){
         this.color = color;
         hasMoved = false;
     }
@@ -56,7 +56,8 @@ public class Rook implements Piece {
     @Override
     // This method returns every possible move for rook on given coordinate
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col,
-                                                        Vector<Vector<Cell>> state) {
+                                                        Vector<Vector<Cell>> state,
+                                                        Pair<Integer,Integer> allieKingPos) {
         Vector< Pair<Integer, Integer> > result = new Vector<>();
 
         // finding all moves on all directions

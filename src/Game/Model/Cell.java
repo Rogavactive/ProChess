@@ -10,7 +10,7 @@ public class Cell implements Cloneable{
     private int col;
     private Piece piece;
 
-    public Cell(){
+    public Cell(int row, int col){
 
     }
 
@@ -23,7 +23,19 @@ public class Cell implements Cloneable{
     }
 
     public boolean getPieceColor(){
-        return false;
+        assert(this.piece != null);
+        return this.piece.getColor();
+    }
+
+    public Piece getPiece() {
+        return this.piece;
+    }
+
+    public void putPiece(Piece piece){
+        this.piece = piece;
+    }
+    public void removePiece(){
+        this.piece = null;
     }
 
     public Piece.pieceType getPieceType(){

@@ -9,24 +9,27 @@ import java.util.Vector;
 
 public class Bishop implements Piece {
     private boolean color;
+    private boolean hasMove;
 
-    public Bishop(Board board, boolean color){
-
+    public Bishop(boolean color){
+        this.color = color;
+        this.hasMove = false;
     }
 
     @Override
-    public Vector<Pair<Integer, Integer>> possibleMoves(int ind1, int ind2, Vector<Vector<Cell>> state) {
+    public Vector<Pair<Integer, Integer>> possibleMoves(int ind1, int ind2, Vector<Vector<Cell>> state,
+                                                        Pair<Integer,Integer> allieKingPos) {
         return null;
     }
 
     @Override
     public boolean getColor() {
-        return false;
+        return color;
     }
 
     @Override
     public boolean getHasMove() {
-        return true;
+        return hasMove;
     }
 
     @Override

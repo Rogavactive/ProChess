@@ -70,7 +70,8 @@ public class Pawn implements Piece {
     @Override
     // This method returns every possible move for pawn
     public Vector<Pair<Integer, Integer>> possibleMoves(int curRow, int curCol,
-                                                        Vector<Vector<Cell>> state) {
+                                                        Vector<Vector<Cell>> state,
+                                                        Pair<Integer,Integer> allieKingPos) {
         Vector< Pair<Integer, Integer> > result = new Vector<>();
 
         if(hasMoved){
