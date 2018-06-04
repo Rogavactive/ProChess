@@ -8,15 +8,11 @@ import javafx.util.Pair;
 
 import java.util.Vector;
 
-public class Pawn implements Piece {
-    // Private variables
-    private boolean color;
-    private boolean hasMoved;
+public class Pawn extends Piece {
 
     // Constructor
     public Pawn(boolean color){
-        this.color = color;
-        hasMoved = false;
+        super(color);
     }
 
     // This method checks if pawns move is valid
@@ -94,18 +90,6 @@ public class Pawn implements Piece {
     // This method is called when pawn has made move
     public void moveMade(){
         hasMoved = true;
-    }
-
-    @Override
-    // This method returns color of pawn
-    public boolean getColor() {
-        return color;
-    }
-
-    @Override
-    // This method returns whether Pawn has already made a move
-    public boolean getHasMove() {
-        return hasMoved;
     }
 
     @Override

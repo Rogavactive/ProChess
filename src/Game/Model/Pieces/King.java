@@ -7,13 +7,9 @@ import javafx.util.Pair;
 
 import java.util.Vector;
 
-public class King implements Piece {
-    private boolean hasMoved;
-    private boolean color;
-
+public class King extends Piece {
     public King(boolean color){
-        this.color = color;
-        hasMoved = false;
+        super(color);
     }
 
     @Override
@@ -25,15 +21,6 @@ public class King implements Piece {
     public boolean checkForCheck( Vector<Vector<Cell>> state,
                                   Pair<Integer,Integer> pos){
         return false;
-    }
-    @Override
-    public boolean getColor() {
-        return color;
-    }
-
-    @Override
-    public boolean getHasMove() {
-        return hasMoved;
     }
 
     @Override
