@@ -19,15 +19,17 @@ public class Pawn implements Piece {
         hasMoved = false;
     }
 
-    // This method checks if pawns move is valid and if it is adds move into possible moves vector
-    private void Step(int curRow, int curCol, Vector<Vector<Cell>> state, Vector< Pair<Integer, Integer> > result, int step){
+    // This method checks if pawns move is valid
+    // and if it is adds move into possible moves vector
+    private void Step(int curRow, int curCol, Vector<Vector<Cell>> state,
+                      Vector< Pair<Integer, Integer> > result, int step){
         // Checks if board has enough rows to make move
         if(curRow + step >= Constants.NUMBER_OF_ROWS)
             return;
 
         // Checks if cell is empty, to make move
         if(state.get(curRow + step).get(curCol) == null){
-            result.add(new Pair<Integer, Integer>(curRow + step, curCol));
+            result.add(new Pair<>(curRow + step, curCol));
         }
     }
 
@@ -40,7 +42,8 @@ public class Pawn implements Piece {
     }
 
     // This method checks if pawn can kill opponent's piece
-    private void pawnCanKill(int curRow, int curCol, Vector<Vector<Cell>> state, Vector< Pair<Integer, Integer> > result){
+    private void pawnCanKill(int curRow, int curCol, Vector<Vector<Cell>> state,
+                             Vector< Pair<Integer, Integer> > result){
         // Checks if there is space in front of pawn
         if(curRow + 1 >= Constants.NUMBER_OF_ROWS)
             return;
@@ -51,7 +54,7 @@ public class Pawn implements Piece {
 
             // if cellToKill contains opponent's piece, pawn can kill it
             if(hasPieceToKill(cellToKill))
-                result.add(new Pair<Integer, Integer>(curRow + 1, curCol + 1));
+                result.add(new Pair<>(curRow + 1, curCol + 1));
         }
 
         // Checks if pawn can move left
@@ -60,14 +63,15 @@ public class Pawn implements Piece {
 
             // if opponent's piece is there, pawn can kill it
             if(hasPieceToKill(cellToKill))
-                result.add(new Pair<Integer, Integer>(curRow + 1, curCol - 1));
+                result.add(new Pair<>(curRow + 1, curCol - 1));
         }
     }
 
     @Override
     // This method returns every possible move for pawn
-    public Vector<Pair<Integer, Integer>> possibleMoves(int curRow, int curCol, Vector<Vector<Cell>> state) {
-        Vector< Pair<Integer, Integer> > result = new Vector< Pair<Integer, Integer> >();
+    public Vector<Pair<Integer, Integer>> possibleMoves(int curRow, int curCol,
+                                                        Vector<Vector<Cell>> state) {
+        Vector< Pair<Integer, Integer> > result = new Vector<>();
 
         if(hasMoved){
             // if pawn has moved, it can only make one step forward
