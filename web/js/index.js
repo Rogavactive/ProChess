@@ -50,7 +50,8 @@ function onLoadGoogleCallback(){
                         url: "LoginServlet",
                         type: 'POST',
                         data: {
-                            email: googleUser.getBasicProfile().getEmail(),
+                            // token : googleUser.getAuthResponse().id_token,
+                            token: googleUser.getBasicProfile().getEmail(),
                             loginType: "google"
                         },
                         success: function () {
