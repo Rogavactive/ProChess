@@ -71,4 +71,16 @@ public class Queen implements Piece {
     public boolean getColor() {
         return color;
     }
+
+    @Override
+    // This method returns whether Pawn has already made a move
+    public boolean getHasMove() {
+        return true;
+    }
+
+    @Override
+    // This method returns type of piece
+    public pieceType getType() {
+        return pieceType.Queen;
+    }
 }

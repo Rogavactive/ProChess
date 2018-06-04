@@ -23,4 +23,14 @@ public class Knight implements Piece {
     public boolean getColor() {
         return false;
     }
+
+    @Override
+    public boolean getHasMove() {
+        return true;
+    }
+
+    @Override
+    public pieceType getType() {
+        return pieceType.Knight;
+    }
 }
