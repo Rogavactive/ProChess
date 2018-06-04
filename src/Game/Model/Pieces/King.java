@@ -24,4 +24,14 @@ public class King implements Piece {
     public boolean getColor() {
         return false;
     }
+
+    @Override
+    public boolean getHasMove() {
+        return hasMoved;
+    }
+
+    @Override
+    public pieceType getType() {
+        return pieceType.King;
+    }
 }

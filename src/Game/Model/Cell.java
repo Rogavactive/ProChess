@@ -25,4 +25,12 @@ public class Cell implements Cloneable{
     public boolean getPieceColor(){
         return false;
     }
+
+    public Piece.pieceType getPieceType(){
+        return piece.getType();
+    }
+
+    public boolean pieceHasMoved(){
+        return piece.getHasMove();
+    }
 }
