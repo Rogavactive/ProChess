@@ -18,7 +18,7 @@ CREATE TABLE accounts (
 CREATE TABLE validations(
 	ID	INT auto_increment,
     username	nvarchar(64),
-    pass_hash	nvarchar(128),
+    password	nvarchar(128),
     email		nvarchar(64),
     code		nvarchar(64),
     primary key	(ID),

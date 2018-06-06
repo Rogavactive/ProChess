@@ -124,14 +124,10 @@ public class AccountManager {
     public boolean existsEmail(String email) {
         String sqlQueryStatement = "select count(email) as email_count from (\n" +
                 "  select\n" +
-                "    username,\n" +
-                "    pass_hash,\n" +
                 "    email\n" +
                 "  from validations\n" +
                 "  union\n" +
                 "  select\n" +
-                "    username,\n" +
-                "    pass_hash,\n" +
                 "    email\n" +
                 "  from accounts\n" +
                 ") as v\n" +
@@ -147,10 +143,10 @@ public class AccountManager {
                 int res = rslt.getInt("email_count");
                 return res > 0;
             }
-            return false;
+            return true;//returning true, code will think account exists and stops further searching.
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return true;
         }finally {
             closeConnections(conn,rslt);
         }
@@ -172,15 +168,11 @@ public class AccountManager {
     public boolean existsUsername(String username) {
         String sqlQueryStatement = "select count(username) as count_matches from (\n" +
                 "  select\n" +
-                "    username,\n" +
-                "    pass_hash,\n" +
-                "    email\n" +
+                "    username\n" +
                 "  from validations\n" +
                 "  union\n" +
                 "  select\n" +
-                "    username,\n" +
-                "    pass_hash,\n" +
-                "    email\n" +
+                "    username\n" +
                 "  from accounts\n" +
                 ") as v\n" +
                 "  where username = \""+username+"\";";
@@ -195,10 +187,10 @@ public class AccountManager {
                 int res = rslt.getInt("count_matches");
                 return res > 0;
             }
-            return false;
+            return true;//returning true, code will think account exists and stops further searching.
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return true;
         }finally {
             closeConnections(conn,rslt);
         }
@@ -290,12 +282,11 @@ public class AccountManager {
     }
 
     public boolean sendValidate(String username, String email, String password){
-        String pass_hash = hash(password);
-        if(pass_hash==null||pass_hash.equals(""))
+        if(password==null||password.equals(""))
             return false;
         String code = randomCode();
-        String sqlQueryStatement = "insert into validations(username, pass_hash, email, code)\n" +
-                "  VALUE (\""+username+"\",\""+pass_hash+"\",\""+email+"\",\""+code+"\");";
+        String sqlQueryStatement = "insert into validations(username, password, email, code)\n" +
+                "  VALUE (\""+username+"\",\""+password+"\",\""+email+"\",\""+code+"\");";
         if(simpleExecuteUpdate(sqlQueryStatement)){
             String messageTOMail = "Hello dear " + username + ",\n\n Please follow the " +
                     "<a href=\"http://localhost:8080/validate.jsp?code="+code+"email="+email+">link</a>" +
@@ -322,9 +313,32 @@ public class AccountManager {
     public Account checkValidate(String email, String code){
         if(email==null||code==null)
             return null;
-        //TODO: check if code is valid. if it is, register and send account.
-        //if(codeValid) register(getInfoFromBase);
-        return new Account(code,email,null,false);
+        String sqlQueryStatement = "select * from validations\n" +
+                "  where email=\""+email+"\" and code=\""+code+"\";";
+
+        Connection conn=null;
+        ResultSet rslt = null;
+        try{
+            conn = dataSource.getConnection();
+            rslt = executeQuerry(sqlQueryStatement,conn);
+            if(rslt!=null&&rslt.next()){
+                String username = rslt.getString("username");
+                String password = rslt.getString("password");
+                Account acc = register(username,email,password);
+                if(acc!=null){
+                    sqlQueryStatement = "delete from validations\n" +
+                            "  where email=\""+email+"\";";
+                    if(simpleExecuteUpdate(sqlQueryStatement))
+                        return acc;
+                }
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally{
+            closeConnections(conn,rslt);
+        }
     }
 
 }
