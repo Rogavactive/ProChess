@@ -16,6 +16,19 @@ public class Queen extends Piece {
         super(color);
     }
 
+    // This method checks if after given move piece stays in board,
+    // if cell is empty and if move doesn't cause check
+    private boolean validMove(int curRow, int curCol, int row, int col, Vector<Vector<Cell>> state, Pair<Integer, Integer> allieKingPos){
+        if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
+                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
+                && state.get(curRow).get(curCol).hasPiece()
+                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
+                && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)){
+            return true;
+        }
+        return false;
+    }
+
     // This method finds all possible moves
     // for given coordinates and given direction
     private void findPossibleMoves(int row, int col, Vector<Vector<Cell>> state,
@@ -26,12 +39,8 @@ public class Queen extends Piece {
 
         // checking if after this step queen will stay in board
         // and if that cell will be empty
-        while(curRow >= 0 && curRow <= Constants.NUMBER_OF_ROWS
-                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                && !(state.get(curRow).get(curCol).hasPiece()) ){
-
-            if(noCheckCaused(row,col,curRow,curCol,state,allieKingPos))
-                result.add(new Pair<>(curRow, curCol));
+        while( validMove(curRow, curCol, row, col, state, allieKingPos) ){
+            result.add(new Pair<>(curRow, curCol));
 
             // make another step
             curRow += dir1;
@@ -40,11 +49,7 @@ public class Queen extends Piece {
 
         // Checking if after last step, queen is in board
         // and given cell has oponent's cell, so queen can kill it
-        if(curRow >= 0 && curRow <= Constants.NUMBER_OF_ROWS
-                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                && state.get(curRow).get(curCol).hasPiece()
-                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
-                && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)){
+        if( validMove(curRow, curCol, row, col, state, allieKingPos) ){
             result.add(new Pair<>(curCol, curRow));
         }
     }

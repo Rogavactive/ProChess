@@ -14,6 +14,19 @@ public class Rook extends Piece {
         super(color);
     }
 
+    // This method checks if after given move piece stays in board,
+    // if cell is empty and if move doesn't cause check
+    private boolean validMove(int curRow, int curCol, int row, int col, Vector<Vector<Cell>> state, Pair<Integer, Integer> allieKingPos){
+        if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
+                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
+                && state.get(curRow).get(curCol).hasPiece()
+                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
+                && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)){
+            return true;
+        }
+        return false;
+    }
+
     private void findPossibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                    Vector<Pair<Integer, Integer>> result, Pair<Integer, Integer> allieKingPos, int dir1, int dir2){
         // making first step
@@ -22,12 +35,8 @@ public class Rook extends Piece {
 
         // checking if after this step rook will stay in board
         // and if that cell will be empty
-        while(curRow >= 0 && curRow <= Constants.NUMBER_OF_ROWS
-                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                && !(state.get(curRow).get(curCol).hasPiece()) ){
-
-            if (noCheckCaused(row,col,curRow,curCol,state,allieKingPos))
-                result.add(new Pair<>(curRow, curCol));
+        while( validMove(curRow, curCol, row, col, state, allieKingPos) ){
+            result.add(new Pair<>(curRow, curCol));
 
             // make another step
             curRow += dir1;
@@ -39,13 +48,7 @@ public class Rook extends Piece {
         if(!hasMoved){
             // Checking whether piece which first
             // meets rook is king of same color
-            while(curRow >= 0 && curRow <= Constants.NUMBER_OF_ROWS
-                    && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                    && state.get(curRow).get(curCol).hasPiece()
-                    && state.get(curRow).get(curCol).getPieceColor() == this.getColor()
-                    && state.get(curRow).get(curCol).getPieceType() == pieceType.King
-                    && !(state.get(curRow).get(curCol).pieceHasMoved())
-                    && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)){
+            while( validMove(curRow, curCol, row, col, state, allieKingPos) ){
                 result.add(new Pair<>(curRow, curCol));
             }
         }
@@ -66,7 +69,6 @@ public class Rook extends Piece {
 
         return result;
     }
-
 
     @Override
     // This method returns type of piece
