@@ -14,35 +14,27 @@ public abstract class Piece {
         Queen,
         Rook
     }
-    protected boolean color;
-    protected boolean hasMoved;
 
-    public Piece(boolean color){
-        this.color = color;
-        this.hasMoved = false;
-    }
-
-    protected boolean noCheckCaused(int row, int col, int newRow, int newCol,
+    protected static boolean noCheckCaused(int row, int col, int newRow, int newCol,
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         boolean check = false;
         Piece killedPiece = state.get(newRow).get(newCol).getPiece();
         Piece curPiece = state.get(row).get(col).getPiece();
         state.get(row).get(col).removePiece();
         state.get(newRow).get(newCol).putPiece(curPiece);
-        if(((King)state.get(allieKingPos.getKey()).get(allieKingPos.getValue()).getPiece()).checkForCheck(state, allieKingPos))
+        if(checkForCheck(state, allieKingPos))
             check = true;
         state.get(row).get(col).putPiece(curPiece);
         state.get(newRow).get(newCol).putPiece(killedPiece);
         return check;
     }
 
+    private static boolean checkForCheck( Vector<Vector<Cell>> state, Pair<Integer, Integer> allieKingPos){
+        return false;
+    }
     public abstract Vector< Pair<Integer, Integer> > possibleMoves(int row, int col,
                                                           Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos);
-    public boolean getColor(){
-        return this.color;
-    }
-    public boolean getHasMove(){
-        return this.hasMoved;
-    }
+    public abstract boolean getColor();
+    public abstract boolean getHasMove();
     public abstract pieceType getType();
 }

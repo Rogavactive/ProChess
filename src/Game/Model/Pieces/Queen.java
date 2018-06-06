@@ -10,10 +10,11 @@ import java.util.Vector;
 public class Queen extends Piece {
     // Private variable
     private boolean color;
-    private boolean hasMove;
+    private boolean hasMoved;
     // Constructor
     public Queen(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved = false;
     }
 
     // This method checks if after given move piece stays in board,
@@ -72,6 +73,16 @@ public class Queen extends Piece {
         findPossibleMoves(row, col, state, result, allieKingPos, -1, -1);
 
         return result;
+    }
+
+    @Override
+    public boolean getColor() {
+        return this.color;
+    }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
     }
 
     @Override

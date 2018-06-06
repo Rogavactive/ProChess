@@ -9,8 +9,11 @@ import java.util.Vector;
 
 public class Bishop extends Piece {
 
+    private boolean color;
+    private boolean hasMoved;
     public Bishop(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved = false;
     }
 
     @Override
@@ -24,6 +27,16 @@ public class Bishop extends Piece {
         findPossibleMoves(row, col, state, result, allieKingPos, -1, -1);
 
         return result;
+    }
+
+    @Override
+    public boolean getColor() {
+        return this.color;
+    }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
     }
 
     private void findPossibleMoves(int row, int col, Vector<Vector<Cell>> state,

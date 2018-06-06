@@ -2,25 +2,64 @@ package Game.Model.Pieces;
 
 import Game.Model.Board;
 import Game.Model.Cell;
+import Game.Model.Constants;
 import Game.Model.Piece;
 import javafx.util.Pair;
  
 import java.util.Vector;
 
 public class King extends Piece {
+    private boolean color;
+    private boolean hasMoved;
     public King(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved = false;
     }
 
     @Override
-    public Vector<Pair<Integer, Integer>> possibleMoves(int ind1, int ind2, Vector<Vector<Cell>> state,
+    public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                                         Pair<Integer,Integer> allieKingPos) {
-        return null;
+        Vector< Pair<Integer, Integer> > result = new Vector<>();
+        for(int dr = -1; dr <= 1; dr++)
+            for(int dc = -1; dc <= 1; dc++)
+                if(!(dr==0 && dc==0)){
+                    if(inBounds(row + dr, col + dc) && noAllies(row + dr, col+dc, state) &&
+                            noCheckCaused(row,col, row+dr, col+dc, state, new Pair<>(row+dr,col+dc)))
+                        result.add(new Pair<>(row+dr,col+dc));
+        }
+        castling(result, row, col, state);
+        return result;
     }
 
-    public boolean checkForCheck( Vector<Vector<Cell>> state,
-                                  Pair<Integer,Integer> pos){
-        return false;
+    private void castling(Vector<Pair<Integer, Integer>> result, int row, int col, Vector<Vector<Cell>> state){
+            if(this.hasMoved) return;
+            if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
+                    (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
+                result.add(new Pair<>(row, col + 3));
+            if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
+                (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMove()))
+            result.add(new Pair<>(row, col - 4));
+
+    }
+
+    //returns if there is an allie piece standing on the given location
+    private boolean noAllies(int r, int c, Vector<Vector<Cell> > state){
+        if(state.get(r).get(c).hasPiece() && state.get(r).get(c).getPieceColor() == this.color) return false;
+        return true;
+    }
+
+    //returns if the given location is on the board
+    private boolean inBounds(int r, int c){
+        if(r<0 || r> Constants.NUMBER_OF_ROWS) return false;
+        if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
+        return true;
+    }
+    @Override
+    public boolean getColor() { return this.color; }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
     }
 
     @Override

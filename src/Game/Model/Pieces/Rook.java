@@ -8,10 +8,12 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Rook extends Piece {
-
+    private boolean color;
+    private boolean hasMoved;
     // Constructor
     public Rook(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved = false;
     }
 
     // This method checks if after given move piece stays in board,
@@ -68,6 +70,16 @@ public class Rook extends Piece {
         findPossibleMoves(row, col, state, result, allieKingPos, 0, -1);
 
         return result;
+    }
+
+    @Override
+    public boolean getColor() {
+        return this.color;
+    }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
     }
 
     @Override

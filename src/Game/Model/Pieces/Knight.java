@@ -10,10 +10,13 @@ import java.util.Vector;
 
 public class Knight extends Piece {
 
+    private boolean color;
+    private boolean hasMoved;
     private int[] dr,dc;
     private final int MAX_MOVES_COUNT = 8;
     public Knight(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved = false;
 
         //initialise possible move arrays ( knight can move from (r,c) to (r+dr[i],c+dc[i]))
         this.dr = new int[] {2, 2, 1, 1, -1, -1, -2, -2};
@@ -33,10 +36,20 @@ public class Knight extends Piece {
         return result;
     }
 
+    @Override
+    public boolean getColor() {
+        return this.color;
+    }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
+    }
+
     //returns if there is an allie piece standing on the given location
     private boolean noAllies(int r, int c, Vector<Vector<Cell> > state){
-        if(state.get(r).get(c).hasPiece() && state.get(r).get(c).getPieceColor() != this.color) return true;
-        return false;
+        if(state.get(r).get(c).hasPiece() && state.get(r).get(c).getPieceColor() == this.color) return false;
+        return true;
     }
 
     //returns if the given location is on the board

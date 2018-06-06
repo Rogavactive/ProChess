@@ -9,10 +9,12 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Pawn extends Piece {
-
+    private boolean color;
+    private boolean hasMoved;
     // Constructor
     public Pawn(boolean color){
-        super(color);
+        this.color = color;
+        this.hasMoved =false;
     }
 
     // This method checks if pawns move is valid
@@ -85,6 +87,16 @@ public class Pawn extends Piece {
         pawnCanKill(curRow, curCol, state, result);
 
         return result;
+    }
+
+    @Override
+    public boolean getColor() {
+        return this.color;
+    }
+
+    @Override
+    public boolean getHasMove() {
+        return this.hasMoved;
     }
 
     // This method is called when pawn has made move
