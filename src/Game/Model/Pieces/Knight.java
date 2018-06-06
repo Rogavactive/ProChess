@@ -5,7 +5,6 @@ import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
 import javafx.util.Pair;
-import org.apache.tomcat.util.bcel.classfile.Constant;
 
 import java.util.Vector;
 
