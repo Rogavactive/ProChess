@@ -39,6 +39,7 @@ public class Cell implements Cloneable{
     }
 
     public Piece.pieceType getPieceType(){
+        assert (this.piece != null);
         return piece.getType();
     }
 

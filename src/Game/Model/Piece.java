@@ -19,7 +19,7 @@ public abstract class Piece {
 
     public Piece(boolean color){
         this.color = color;
-        hasMoved = false;
+        this.hasMoved = false;
     }
 
     protected boolean noCheckCaused(int row, int col, int newRow, int newCol,
@@ -42,7 +42,7 @@ public abstract class Piece {
         return this.color;
     }
     public boolean getHasMove(){
-        return hasMoved;
+        return this.hasMoved;
     }
     public abstract pieceType getType();
 }

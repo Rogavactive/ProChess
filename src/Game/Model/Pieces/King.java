@@ -4,7 +4,7 @@ import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Piece;
 import javafx.util.Pair;
-
+ 
 import java.util.Vector;
 
 public class King extends Piece {
