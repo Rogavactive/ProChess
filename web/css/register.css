@@ -1,9 +1,3 @@
-html, body {
-    background-color: rgb(8, 8, 8);
-    height: 100%;
-    margin: 0;
-}
-
 .hint-icons {
     font-size: 200% !important;
     margin: auto;

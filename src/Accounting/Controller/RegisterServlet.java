@@ -12,54 +12,45 @@ import java.io.IOException;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String reqType = request.getParameter("registerType");
-        switch (reqType) {
-            case "ajax":
-                processAjaxMessage(request, response);
-                break;
-            case "direct":
-                processDirectMessage(request, response);
-                break;
-        }
+        processMessage(request, response);
     }
 
-    private void processAjaxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void processMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
+
+        boolean registerIsValid = true;
         String response_string = "";
         if (manager.existsUsername(username)) {
+            registerIsValid = false;
             response_string += "false ";
         } else {
             response_string += "true ";
         }
         if (manager.existsEmail(email)) {
-            response_string += "false";
+            registerIsValid = false;
+            response_string += "false ";
         } else {
-            response_string += "true";
+            response_string += "true ";
         }
-        response.getWriter().write(response_string);
-    }
 
-    private void processDirectMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
+        if(!registerIsValid){
+            response.getWriter().write(response_string+"false");
+            return;
+        }
+
         String password = request.getParameter("password");
         if(password==null)
             password="";
         // security check
         if (validate(password, username, email, manager)) {
-            //TODO: when we start implementing google, change manager.register with sendValidate
-            Account acc = manager.register(username, email, password);
-            if (acc == null) {
-                response.sendRedirect("register.html");
-                return;
-            }
-            request.getSession().setAttribute("Account", acc);
-            response.sendRedirect("validate_warning.html");
+            if (!manager.sendValidate(username,email,password))
+                response.getWriter().write(response_string+"false");
+            else
+                response.getWriter().write(response_string+"true");
         } else {
-            response.sendRedirect("register.html");
+            response.getWriter().write(response_string+"false");
         }
     }
 

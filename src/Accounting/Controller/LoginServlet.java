@@ -19,11 +19,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String reqType = request.getParameter("loginType");
         switch (reqType) {
-            case "ajax":
-                processAjaxMessage(request, response);
-                break;
-            case "direct":
-                processDirectMessage(request, response);
+            case "native":
+                processNativeMessage(request, response);
                 break;
             case "google":
                 processGoogleMessage(request, response);
@@ -71,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         return email_prefix+prefix_addition;
     }
 
-    private void processDirectMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void processNativeMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
@@ -79,18 +76,6 @@ public class LoginServlet extends HttpServlet {
         //security check again
         if (acc != null) {
             request.getSession().setAttribute("Account", acc);
-            response.sendRedirect("main.jsp");
-        } else {
-            response.sendRedirect("login.html");
-        }
-    }
-
-    private void processAjaxMessage(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-        Account acc = manager.accountExists(username, password);
-        if (acc != null) {
             response.getWriter().write("true");
         } else {
             response.getWriter().write("false");

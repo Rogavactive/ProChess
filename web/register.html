@@ -28,7 +28,7 @@
 <div class="main-container container">
     <div>
         <div class="auth-box animated-form container" id="register-box-id">
-            <form action="RegisterServlet" method="POST" onsubmit="return checkAvailable()" id="RegisterForm">
+            <form method="POST" onsubmit="return checkAvailable()" id="RegisterForm">
                 <i class="material-icons material-icons-custom">account_circle</i>
                 <input id="username-input" placeholder="Username(min:8)" name="username" type="text" maxlength="20"
                        data-placement="bottom" data-toggle="popover" data-trigger="manual"
@@ -38,7 +38,6 @@
                        data-toggle="popover" data-trigger="manual" data-content="Email already exists or is not valid.">
                 <i class="material-icons material-icons-custom register-icons">lock</i>
                 <input id="password-input" placeholder="Password" name="password" type="password" maxlength="20">
-                <input name="registerType" type="hidden" value="direct">
                 <div class="password-hint container" id="pass-hint-container" style="height:0">
                     <p class="pass-hint-p" id="pass-hint-length"></p>
                     <p class="pass-hint-p" id="pass-hint-ascii"></p>

@@ -10,6 +10,10 @@ import java.util.concurrent.locks.ReentrantLock;
 public class AccountManager {
     private static MysqlDataSource dataSource = new MysqlDataSource();
     private static ReentrantLock lock = new ReentrantLock();
+    private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int CHARS_LEN = CHARS.length();
+    private static final int CODE_MIN_LEN=40;
+    private static final int CODE_MAX_LEN=60;
 
     public AccountManager() {
         this("");
@@ -118,8 +122,20 @@ public class AccountManager {
     }
 
     public boolean existsEmail(String email) {
-        String sqlQueryStatement = "select count(ID) as email_count from accounts\n" + "	where email = \'" + email
-                + "\';";
+        String sqlQueryStatement = "select count(email) as email_count from (\n" +
+                "  select\n" +
+                "    username,\n" +
+                "    pass_hash,\n" +
+                "    email\n" +
+                "  from validations\n" +
+                "  union\n" +
+                "  select\n" +
+                "    username,\n" +
+                "    pass_hash,\n" +
+                "    email\n" +
+                "  from accounts\n" +
+                ") as v\n" +
+                "  where email = \""+email+"\";";
 
         Connection conn = null;
         ResultSet rslt = null;
@@ -154,8 +170,20 @@ public class AccountManager {
     }
 
     public boolean existsUsername(String username) {
-        String sqlQueryStatement = "select count(ID) as count_matches from accounts\n" +
-                "	where username = \'" + username + "\';";
+        String sqlQueryStatement = "select count(username) as count_matches from (\n" +
+                "  select\n" +
+                "    username,\n" +
+                "    pass_hash,\n" +
+                "    email\n" +
+                "  from validations\n" +
+                "  union\n" +
+                "  select\n" +
+                "    username,\n" +
+                "    pass_hash,\n" +
+                "    email\n" +
+                "  from accounts\n" +
+                ") as v\n" +
+                "  where username = \""+username+"\";";
 
         Connection conn = null;
         ResultSet rslt = null;
@@ -261,18 +289,42 @@ public class AccountManager {
         return buff.toString();
     }
 
-    //implement after we start google authentification.
     public boolean sendValidate(String username, String email, String password){
-        //TODO: check if account exists, if not send mesasge to email and redirect to validate.jsp
-        //TODO: generate code , send it to email and store info with code in Base. (hash password)
-        return false;
+        String pass_hash = hash(password);
+        if(pass_hash==null||pass_hash.equals(""))
+            return false;
+        String code = randomCode();
+        String sqlQueryStatement = "insert into validations(username, pass_hash, email, code)\n" +
+                "  VALUE (\""+username+"\",\""+pass_hash+"\",\""+email+"\",\""+code+"\");";
+        if(simpleExecuteUpdate(sqlQueryStatement)){
+            String messageTOMail = "Hello dear " + username + ",\n\n Please follow the " +
+                    "<a href=\"http://localhost:8080/validate.jsp?code="+code+"email="+email+">link</a>" +
+                    "to end registration.\n" +
+                    "Thank you.";
+            //TODO: send this message to mail as html.
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private String randomCode() {
+        StringBuilder bldr = new StringBuilder();
+        int codeLen = (int) (Math.random() * (CODE_MAX_LEN-CODE_MIN_LEN)) + CODE_MIN_LEN;
+        while(--codeLen!=0){
+            char charToAppend = CHARS.charAt((int) (Math.random()*CHARS_LEN));
+            bldr.append(charToAppend);
+        }
+        return bldr.toString();
     }
 
     //implement after we start google authentification.
     public Account checkValidate(String email, String code){
+        if(email==null||code==null)
+            return null;
         //TODO: check if code is valid. if it is, register and send account.
         //if(codeValid) register(getInfoFromBase);
-        return null;
+        return new Account(code,email,null,false);
     }
 
 }

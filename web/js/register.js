@@ -264,11 +264,6 @@ function checkAvailable() {
         return false
     }
 
-    var processForm = true;
-
-    var usernameAvaliable = false;
-    var emailAvaliable = false;
-
 
     try {
         $.ajax({
@@ -277,15 +272,27 @@ function checkAvailable() {
             data: {
                 username: $("#username-input").val(),
                 email: $("#email-input").val(),
-                registerType: "ajax"
+                password: $("#password-input").val()
             },
             success: function (data) {
                 var res = data.split(" ");
-                if (res[0] === "true") {
-                    usernameAvaliable = true
+                console.log(data)
+                if (res[0]!=="true") {
+                    clearTimeout(usernameTimeout);
+                    $('#username-input').popover('show');
+                    usernameTimeout = setTimeout(function () {
+                        $('#username-input').popover('hide')
+                    }, 2000)
                 }
-                if (res[1] === "true") {
-                    emailAvaliable = true
+                if (res[1]!=="true") {
+                    clearTimeout(emailTimeout);
+                    $('#email-input').popover('show');
+                    emailTimeout = setTimeout(function () {
+                        $('#email-input').popover('hide')
+                    }, 2000)
+                }
+                if(res[2]==="true"){
+                    window.location.href = '/validate_warning.html';
                 }
             },
             async: false
@@ -294,25 +301,8 @@ function checkAvailable() {
         console.log(err.message)
     }
 
-    if (!usernameAvaliable) {
-        processForm = false;
-        clearTimeout(usernameTimeout);
-        $('#username-input').popover('show');
-        usernameTimeout = setTimeout(function () {
-            $('#username-input').popover('hide')
-        }, 2000)
-    }
 
-    if (!emailAvaliable) {
-        processForm = false;
-        clearTimeout(emailTimeout);
-        $('#email-input').popover('show');
-        emailTimeout = setTimeout(function () {
-            $('#email-input').popover('hide')
-        }, 2000)
-    }
-
-    return processForm
+    return false
 }
 
 
