@@ -1,6 +1,5 @@
 package Game.Model;
 
-import Game.Model.Game;
 import javafx.util.Pair;
 
 import java.util.Vector;
@@ -11,15 +10,17 @@ public class Cell implements Cloneable{
     private Piece piece;
 
     public Cell(int row, int col){
-
+        this.row = row;
+        this.col = col;
     }
 
     public boolean hasPiece(){
         return piece != null;
     }
 
-    public Vector<Pair<Integer, Integer>> getMoves(Vector< Vector<Cell> > state){
-        return new Vector< Pair<Integer, Integer> >();
+    public Vector<Pair<Integer, Integer>> getMoves(Vector< Vector<Cell> > state, Pair<Integer, Integer> allieKingPos){
+        if(this.piece == null) return  new Vector< Pair<Integer, Integer> >();
+        return piece.possibleMoves(this.row, this.col, state, allieKingPos);
     }
 
     public boolean getPieceColor(){
@@ -28,7 +29,7 @@ public class Cell implements Cloneable{
     }
 
     public Piece getPiece() {
-        return this.piece;
+        return piece;
     }
 
     public void putPiece(Piece piece){
