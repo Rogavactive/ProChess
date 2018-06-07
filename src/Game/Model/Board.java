@@ -6,10 +6,13 @@ import javafx.util.Pair;
 
 import java.util.Vector;
 
-public class Board implements Cloneable {
+public class Board {
     private Vector< Vector<Cell> > board;
     private int countOfWhiteFigures;
     private int countOfBlackFigures;
+    private Pair<Integer, Integer> whiteKingPos;
+    private Pair<Integer, Integer> blackKingPos;
+
 
     // Constructor
     public Board(boolean start){
@@ -90,19 +93,30 @@ public class Board implements Cloneable {
         return countOfBlackFigures;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Board newBoard = new Board(false);
+    public Cell getCell(int row, int col){
+        return new Cell(board.get(row).get(col));
+    }
 
+    public Vector<Pair<Integer, Integer>> getMoves(int row, int col, boolean color){
+        if(color) {
+            return board.get(row).get(col).getMoves(getStateClone(),blackKingPos);
+        }
+        return board.get(row).get(col).getMoves(getStateClone(),whiteKingPos);
+    }
+
+    private Vector<Vector<Cell>> getStateClone(){
+        Vector<Vector<Cell>> clone = new Vector<>();
         for(int row = 0; row < Constants.NUMBER_OF_ROWS; row++){
+            clone.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
             for(int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++){
-                if(board.get(row).get(col).hasPiece())
-                    board.get(row).get(col).putPiece((Piece) board.get(row).get(col).getPiece().clone());
-                else
-                    board.get(row).get(col).putPiece(null);
+                clone.get(row).add( new Cell( board.get(row).get(col) ) );
             }
         }
+        return clone;
+    }
 
-        return newBoard;
+    public void move(int srcRow, int srcCol, int dstRow, int dstCol) {
+        board.get(dstRow).get(dstCol).putPiece(board.get(srcRow).get(srcCol).getPiece());
+        board.get(srcRow).get(srcCol).removePiece();
     }
 }
