@@ -68,6 +68,7 @@ public class Cell implements Cloneable{
     protected Object clone() throws CloneNotSupportedException {
         Cell newCell = new Cell(row, col);
         newCell.putPiece(this.getPiece());
+
         return newCell;
     }
 }

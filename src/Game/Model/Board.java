@@ -96,7 +96,10 @@ public class Board implements Cloneable {
 
         for(int row = 0; row < Constants.NUMBER_OF_ROWS; row++){
             for(int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++){
-                board.get(row).get(col).putPiece(board.get(row).get(col).getPiece());
+                if(board.get(row).get(col).hasPiece())
+                    board.get(row).get(col).putPiece((Piece) board.get(row).get(col).getPiece().clone());
+                else
+                    board.get(row).get(col).putPiece(null);
             }
         }
 
