@@ -7,11 +7,9 @@ import java.util.Vector;
 
 public class Board {
     private Vector< Vector<Cell> > board;
-    private Pair<Integer, Integer> whiteKing;
-    private Pair<Integer, Integer> blackKing;
     private Cell selectedCell;
-    private int CountOfWhiteFigures;
-    private int CountOfBlackFigures;
+    private int countOfWhiteFigures;
+    private int countOfBlackFigures;
 
     // Constructor
     public Board(){
@@ -21,23 +19,24 @@ public class Board {
             board.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
         }
 
+        selectedCell = null;
+        countOfWhiteFigures = Constants.NUMBER_OF_PIECES;
+        countOfBlackFigures = Constants.NUMBER_OF_PIECES;
     }
 
     // Checks if given cell of board is empty or not
-    public boolean isFilled(int ind1, int ind2){
+    public boolean isFilled(int row, int col){
+        if(row < 0 || row >= Constants.NUMBER_OF_ROWS || col < 0 || col >= Constants.NUMBER_OF_COLUMNS)
+            return false;
 
-        return true;
+        return board.get(row).get(col).hasPiece();
     }
 
     public int getCountOfWhiteFigures(){
-        return 0;
+        return countOfWhiteFigures;
     }
 
     public int getCountOfBlackFigures(){
-        return 0;
-    }
-
-    public void select(int x, int y){
-
+        return countOfBlackFigures;
     }
 }
