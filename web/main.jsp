@@ -30,6 +30,7 @@
     <!--google font and icons-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+    <meta http-equiv="Refresh" content="3;url=game.jsp">
     <%
         //before the code loads, checks if user is authorised.
         if(request.getSession().getAttribute("Account") ==null){

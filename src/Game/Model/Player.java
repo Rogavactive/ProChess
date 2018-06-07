@@ -1,11 +1,21 @@
 package Game.Model;
 
-import Game.Model.Game;
+import Accounting.Model.Account;
 
 public class Player {
-    private String username;
+    private Account account;
+    private boolean color;
 
-    public Player(){
+    public Player(Account account,boolean color){
+        this.color = color;
+        this.account = account;
+    }
 
+    public Account getAccount(){
+        return account;
+    }
+
+    public boolean getColor() {
+        return color;
     }
 }
