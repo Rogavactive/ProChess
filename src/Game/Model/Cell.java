@@ -2,10 +2,9 @@ package Game.Model;
 
 import javafx.util.Pair;
 
-import java.io.PipedReader;
 import java.util.Vector;
 
-public class Cell{
+public class Cell implements Cloneable{
     private int row;
     private int col;
     private Piece piece;
@@ -15,17 +14,6 @@ public class Cell{
         this.row = row;
         this.col = col;
         piece = null;
-    }
-
-    public Cell(Cell cell) {
-        this.row = cell.row;
-        this.col = cell.col;
-        try {
-            this.piece = (Piece) cell.piece.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            System.out.println("Clone not supported");
-        }
     }
 
     // This method returns whether Cell has peace
@@ -70,4 +58,17 @@ public class Cell{
         return piece.getType();
     }
 
+    // This method returns whether piece,
+    // placed on this cell, has already done a move
+    public boolean pieceHasMoved(){
+        return piece.getHasMove();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Cell newCell = new Cell(row, col);
+        newCell.putPiece(this.getPiece());
+
+        return newCell;
+    }
 }
