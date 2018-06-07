@@ -26,7 +26,7 @@
     <!--icon-->
     <link rel="shortcut icon" href="src/favicon.ico">
     <!--my styles-->
-    <link rel="stylesheet" href="css/index.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/game.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/animate.css"/>
     <script type="text/javascript" src="js/game.js"></script>
@@ -37,15 +37,12 @@
     <meta name="google-signin-client_id" content="690644503931-dtn1qj0me45ovni28qbsa12g8d6c2ccf.apps.googleusercontent.com">
 </head>
 <body>
-<div class="main-container container align-middle">
-    <div class="page-container row">
-        <div class="auth-box container col">
-            <form onsubmit="return sendMessage()" id="LoginForm">
-                <i class="material-icons material-icons-custom">account_circle</i>
-                <input id="input" placeholder="Username" name="username">
-                <button type="submit" id="login-btn">Login</button>
-            </form>
-        </div>
+<div class="div-main-container">
+    <div class="chat-div">
+        <p>chat here</p>
+    </div>
+    <div class="chess-board-div">
+        <img class="board-img" src="src/Boards/board.svg">
     </div>
 </div>
 </body>
