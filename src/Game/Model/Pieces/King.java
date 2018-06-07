@@ -5,7 +5,7 @@ import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
 import javafx.util.Pair;
- 
+
 import java.util.Vector;
 
 public class King extends Piece {
@@ -32,17 +32,17 @@ public class King extends Piece {
                     if(inBounds(row + dr, col + dc) && noAllies(row + dr, col+dc, state) &&
                             noCheckCaused(row,col, row+dr, col+dc, state, new Pair<>(row+dr,col+dc)))
                         result.add(new Pair<>(row+dr,col+dc));
-        }
+                }
         castling(result, row, col, state);
         return result;
     }
 
     private void castling(Vector<Pair<Integer, Integer>> result, int row, int col, Vector<Vector<Cell>> state){
-            if(this.hasMoved) return;
-            if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
-                    (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
-                result.add(new Pair<>(row, col + 2));
-            if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
+        if(this.hasMoved) return;
+        if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
+                (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
+            result.add(new Pair<>(row, col + 2));
+        if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
                 (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMove()))
             result.add(new Pair<>(row, col - 3));
 
