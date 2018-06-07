@@ -55,16 +55,6 @@ public class Rook extends Piece {
         // Cheking if rook can kill opponent's piece
         if( canKill(row, col, curRow, curCol, state, allieKingPos) )
             result.add(new Pair<>(curRow, curCol));
-
-        // if rook has not done a move yet
-        // castling is possible
-        if(!hasMoved){
-            // Checking whether piece which first
-            // meets rook is king of same color
-            while( validMove(curRow, curCol, state) ){
-                result.add(new Pair<>(curRow, curCol));
-            }
-        }
     }
 
     // This method checks if rook can kill
