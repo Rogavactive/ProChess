@@ -11,9 +11,15 @@ import java.util.Vector;
 public class King extends Piece {
     private boolean color;
     private boolean hasMoved;
+
     public King(boolean color){
         this.color = color;
         this.hasMoved = false;
+    }
+
+    public King(boolean color, boolean hasMoved){
+        this.color = color;
+        this.hasMoved = hasMoved;
     }
 
     @Override
@@ -65,5 +71,12 @@ public class King extends Piece {
     @Override
     public pieceType getType() {
         return pieceType.King;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        King newKing = new King(this.getColor(), this.getHasMove());
+
+        return newKing;
     }
 }
