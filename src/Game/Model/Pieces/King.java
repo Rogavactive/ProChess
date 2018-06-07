@@ -41,10 +41,10 @@ public class King extends Piece {
             if(this.hasMoved) return;
             if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
                     (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
-                result.add(new Pair<>(row, col + 3));
+                result.add(new Pair<>(row, col + 2));
             if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
                 (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMove()))
-            result.add(new Pair<>(row, col - 4));
+            result.add(new Pair<>(row, col - 3));
 
     }
 
