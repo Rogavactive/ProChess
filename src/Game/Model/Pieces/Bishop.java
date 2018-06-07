@@ -8,12 +8,17 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Bishop extends Piece {
-
     private boolean color;
     private boolean hasMoved;
+
     public Bishop(boolean color){
         this.color = color;
         this.hasMoved = false;
+    }
+
+    public Bishop(boolean color, boolean hasMoved){
+        this.color = color;
+        this.hasMoved = hasMoved;
     }
 
     @Override
@@ -73,5 +78,12 @@ public class Bishop extends Piece {
     @Override
     public pieceType getType() {
         return pieceType.Bishop;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Bishop newBishop = new Bishop(this.getColor(), this.getHasMove());
+
+        return newBishop;
     }
 }

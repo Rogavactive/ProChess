@@ -129,4 +129,7 @@ public abstract class Piece implements Cloneable{
     public abstract boolean getColor();
     public abstract boolean getHasMove();
     public abstract pieceType getType();
+
+    @Override
+    protected abstract Object clone() throws CloneNotSupportedException;
 }

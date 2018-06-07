@@ -9,14 +9,23 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Knight extends Piece {
-
     private boolean color;
     private boolean hasMoved;
     private int[] dr,dc;
     private final int MAX_MOVES_COUNT = 8;
+
     public Knight(boolean color){
         this.color = color;
         this.hasMoved = false;
+
+        //initialise possible move arrays ( knight can move from (r,c) to (r+dr[i],c+dc[i]))
+        this.dr = new int[] {2, 2, 1, 1, -1, -1, -2, -2};
+        this.dc = new int[] {-1, 1, -2, 2, -2, 2, -1, 1};
+    }
+
+    public Knight(boolean color, boolean hasMoved){
+        this.color = color;
+        this.hasMoved = hasMoved;
 
         //initialise possible move arrays ( knight can move from (r,c) to (r+dr[i],c+dc[i]))
         this.dr = new int[] {2, 2, 1, 1, -1, -1, -2, -2};
@@ -62,5 +71,12 @@ public class Knight extends Piece {
     @Override
     public pieceType getType() {
         return pieceType.Knight;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Knight newKnight = new Knight(this.getColor(), this.getHasMove());
+
+        return newKnight;
     }
 }

@@ -18,6 +18,11 @@ public class Pawn extends Piece {
         this.hasMoved =false;
     }
 
+    public Pawn(boolean color, boolean hasMoved){
+        this.color = color;
+        this.hasMoved = hasMoved;
+    }
+
     // This method checks if pawns move is valid
     // and if it is adds move into possible moves vector
     private void Step(int curRow, int curCol, Vector<Vector<Cell>> state,
@@ -143,5 +148,12 @@ public class Pawn extends Piece {
     // This method returns type of piece
     public pieceType getType() {
         return pieceType.Pawn;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Pawn newPawn = new Pawn(this.getColor(), this.getHasMove());
+
+        return newPawn;
     }
 }

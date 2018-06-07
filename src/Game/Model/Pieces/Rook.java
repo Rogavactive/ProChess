@@ -17,6 +17,11 @@ public class Rook extends Piece {
         this.hasMoved = false;
     }
 
+    public Rook(boolean color, boolean hasMoved){
+        this.color = color;
+        this.hasMoved = hasMoved;
+    }
+
     // This method checks if after given move piece stays in board,
     // if cell is empty and if move doesn't cause check
     private boolean validMove(int curRow, int curCol, Vector<Vector<Cell>> state){
@@ -108,5 +113,12 @@ public class Rook extends Piece {
     // This method returns type of piece
     public pieceType getType() {
         return pieceType.Rook;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Rook newRook = new Rook(this.getColor(), this.getHasMove());
+
+        return newRook;
     }
 }
