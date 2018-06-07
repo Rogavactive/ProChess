@@ -12,6 +12,7 @@ public class Cell implements Cloneable{
     public Cell(int row, int col){
         this.row = row;
         this.col = col;
+        piece = null;
     }
 
     public boolean hasPiece(){
