@@ -15,25 +15,19 @@
     height:90%;
 }
 
-.chess-board-container-div{
+.chess-board-div{
     display: block;
     float:right;
     width:50%;
     margin:auto;
     height:100%;
-    vertical-align: center;
 }
 
 .board-img{
     display:block;
     margin:auto;
+    max-width:85%;
+    max-height:85%;
     height: auto;
     width:auto;
-}
-
-.chess-board-div{
-    display:block;
-    margin:auto;
-    height: auto;
-    width:800px;
 }
