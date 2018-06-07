@@ -1,0 +1,33 @@
+.div-main-container{
+    float: left;
+    clear: none;
+    width:100%;
+    height:100%;
+}
+
+.chat-div{
+    float:left;
+    width:25%;
+
+    background-color: white;
+    border-radius: 15px;
+    margin:2%;
+    height:90%;
+}
+
+.chess-board-div{
+    display: block;
+    float:right;
+    width:50%;
+    margin:auto;
+    height:100%;
+}
+
+.board-img{
+    display:block;
+    margin:auto;
+    max-width:85%;
+    max-height:85%;
+    height: auto;
+    width:auto;
+}
