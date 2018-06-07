@@ -35,6 +35,7 @@ public class Cell implements Cloneable{
     public void putPiece(Piece piece){
         this.piece = piece;
     }
+
     public void removePiece(){
         this.piece = null;
     }

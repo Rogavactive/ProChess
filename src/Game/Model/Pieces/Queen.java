@@ -19,12 +19,10 @@ public class Queen extends Piece {
 
     // This method checks if after given move piece stays in board,
     // if cell is empty and if move doesn't cause check
-    private boolean validMove(int curRow, int curCol, int row, int col, Vector<Vector<Cell>> state, Pair<Integer, Integer> allieKingPos){
+    private boolean validMove(int curRow, int curCol, Vector<Vector<Cell>> state){
         if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
                 && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                && state.get(curRow).get(curCol).hasPiece()
-                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
-                && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)){
+                && !( state.get(curRow).get(curCol).hasPiece() ) ){
             return true;
         }
         return false;
@@ -40,8 +38,10 @@ public class Queen extends Piece {
 
         // checking if after this step queen will stay in board
         // and if that cell will be empty
-        while( validMove(curRow, curCol, row, col, state, allieKingPos) ){
-            result.add(new Pair<>(curRow, curCol));
+        while( validMove(curRow, curCol, state) ){
+            // Checking if this move causes check
+            if(noCheckCaused(row, col, curRow, curCol, state, allieKingPos))
+                result.add(new Pair<>(curRow, curCol));
 
             // make another step
             curRow += dir1;
@@ -50,9 +50,23 @@ public class Queen extends Piece {
 
         // Checking if after last step, queen is in board
         // and given cell has oponent's cell, so queen can kill it
-        if( validMove(curRow, curCol, row, col, state, allieKingPos) ){
-            result.add(new Pair<>(curCol, curRow));
+        if( canKillOponent(row, col, curRow, curCol, state, allieKingPos) ){
+            result.add(new Pair<>(curRow, curCol));
         }
+    }
+
+    // Ths method returns if queen can kill opponents piece on curRow and curCol
+    private boolean canKillOponent(int row, int col, int curRow, int curCol,
+                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
+        if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
+                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
+                && state.get(curRow).get(curCol).hasPiece()
+                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
+                && noCheckCaused(row, col, curRow, curCol, state, allieKingPos)){
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -76,11 +90,13 @@ public class Queen extends Piece {
     }
 
     @Override
+    // This method returns colorr of queen
     public boolean getColor() {
         return this.color;
     }
 
     @Override
+    // This method returns whether queen has made a move
     public boolean getHasMove() {
         return this.hasMoved;
     }
