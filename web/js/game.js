@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    connect()
+});
+
 var webSocket = null;
 
 function getServerUrl() {
@@ -51,10 +55,6 @@ function disconnect() {
         console.error('webSocket is not open. readyState=' + this.webSocket.readyState);
     }
 }
-
-$(document).ready(function(){
-    connect()
-});
 
 function sendMessage(){
     send($('#input').val())
