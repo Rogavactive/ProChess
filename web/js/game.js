@@ -1,7 +1,3 @@
-$(document).ready(function(){
-    connect()
-});
-
 var webSocket = null;
 
 function getServerUrl() {
@@ -58,6 +54,10 @@ function disconnect() {
     }
 }
 
+$(document).ready(function(){
+    connect()
+});
+
 function sendMessage(){
     send($('#input').val())
     return false;
@@ -65,5 +65,5 @@ function sendMessage(){
 
 function makeMove(string) {
     var boardElem = document.getElementById('boardImage');
-    
+
 }
