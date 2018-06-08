@@ -75,6 +75,11 @@ public class Queen extends Piece {
     }
 
     @Override
+    public void hasMoved() {
+        this.hasMoved = true;
+    }
+
+    @Override
     // This method returns all possible cells, where queen can make move
     public Vector< Pair<Integer, Integer> > possibleMoves(int row, int col,
                                                           Vector<Vector<Cell>> state,

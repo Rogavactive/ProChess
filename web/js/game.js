@@ -38,6 +38,7 @@ function connect() {
 function getStatus() {
     return this.webSocket.readyState;
 }
+
 function send(message){
 
     if (this.webSocket.readyState == WebSocket.OPEN) {
@@ -47,6 +48,7 @@ function send(message){
         console.error('webSocket is not open. readyState=' + this.webSocket.readyState);
     }
 }
+
 function disconnect() {
     if (this.webSocket.readyState == WebSocket.OPEN) {
         this.webSocket.close();
@@ -59,4 +61,9 @@ function disconnect() {
 function sendMessage(){
     send($('#input').val())
     return false;
+}
+
+function makeMove(string) {
+    var boardElem = document.getElementById('boardImage');
+    
 }

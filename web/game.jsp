@@ -41,8 +41,10 @@
     <div class="chat-div">
         <p>chat here</p>
     </div>
-    <div class="chess-board-div">
-        <img class="board-img" id="board" src="src/Boards/board.svg">
+    <div class="chess-board-container-div">
+        <div class="chess-board-div">
+            <img class="board-img" src="src/Boards/board.svg">
+        </div>
     </div>
 </div>
 </body>
