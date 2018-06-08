@@ -104,6 +104,11 @@ public class Pawn extends Piece {
     }
 
     @Override
+    public void hasMoved() {
+        this.hasMoved = true;
+    }
+
+    @Override
     // This method returns every possible move for pawn
     public Vector<Pair<Integer, Integer>> possibleMoves(int curRow, int curCol,
                                                         Vector<Vector<Cell>> state,

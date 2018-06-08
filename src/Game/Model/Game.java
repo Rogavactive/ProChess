@@ -3,6 +3,7 @@ package Game.Model;
 import javafx.util.Pair;
 
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
     private Board board;
@@ -32,7 +33,7 @@ public class Game {
         return player2;
     }
 
-    public void click(int row, int col, Player player){
+ /*   public void click(int row, int col, Player player){
         if(curPlayer!=player)
             return;
         if(clickNum == 0){
@@ -56,6 +57,14 @@ public class Game {
         markedCell = new Pair<>(-1,-1);
         possibleMoves = null;
     }
+*/
+    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol){
+        board.move(srcRow, srcCol, dstRow, dstCol);
+        switchPlayer();
+
+        return board.getAllPossibleMoves( curPlayer.getColor() );
+    }
+
 
     private void switchPlayer() {
         if(curPlayer==player1) {

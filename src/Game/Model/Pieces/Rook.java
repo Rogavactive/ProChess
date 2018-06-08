@@ -72,6 +72,11 @@ public class Rook extends Piece {
     }
 
     @Override
+    public void hasMoved() {
+        this.hasMoved = true;
+    }
+
+    @Override
     // This method returns every possible move for rook on given coordinate
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col,
                                                         Vector<Vector<Cell>> state,

@@ -22,6 +22,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public void hasMoved() {
+        this.hasMoved = true;
+    }
+
+    @Override
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                                         Pair<Integer,Integer> allieKingPos) {
         Vector<Pair<Integer, Integer> > result = new Vector<Pair<Integer, Integer>>();

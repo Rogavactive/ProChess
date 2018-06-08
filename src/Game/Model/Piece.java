@@ -15,7 +15,7 @@ public abstract class Piece implements Cloneable{
         Rook
     }
 
-
+    public abstract void hasMoved();
     protected static boolean noCheckCaused(int row, int col, int newRow, int newCol,
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         boolean check = false;
