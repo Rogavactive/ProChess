@@ -50,30 +50,48 @@ public class Bishop extends Piece {
         int curRow = row + dir1;
         int curCol = col + dir2;
 
-        // checking if after this step bishop will stay in board
+        // checking if after this step rook will stay in board
         // and if that cell will be empty
-        while(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
-                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
-                && !(state.get(curRow).get(curCol).hasPiece()) ){
-
-            if(noCheckCaused(row,col,curRow,curCol,state,allieKingPos))
+        while( validMove(curRow, curCol, state) ){
+            // Checking if check is caused
+            if(noCheckCaused(row, col, curRow, curCol, state, allieKingPos))
                 result.add(new Pair<>(curRow, curCol));
+
             // make another step
             curRow += dir1;
             curCol += dir2;
         }
 
-        // Checking if after last step, bishop is in board
-        // and given cell has oponent's cell, so queen can kill it
+        // Cheking if rook can kill opponent's piece
+        if( canKill(row, col, curRow, curCol, state, allieKingPos) )
+            result.add(new Pair<>(curRow, curCol));
+    }
+
+    // This method checks if after given move piece stays in board,
+    // if cell is empty and if move doesn't cause check
+    private boolean validMove(int curRow, int curCol, Vector<Vector<Cell>> state){
+        if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
+                && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
+                && !(state.get(curRow).get(curCol).hasPiece()) ){
+            return true;
+        }
+        return false;
+    }
+
+
+    // This method checks if bishop can kill
+    // opponent's piece on given curRow and curCol
+    private boolean canKill(int row, int col, int curRow, int curCol,
+                            Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
                 && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
                 && state.get(curRow).get(curCol).hasPiece()
-                && state.get(curRow).get(curCol).getPieceColor() != this.color
-                && noCheckCaused(row,col,curRow,curCol,state,allieKingPos)) {
-            result.add(new Pair<>(curCol, curRow));
+                && state.get(curRow).get(curCol).getPieceColor() != this.getColor()
+                && noCheckCaused(row, col, curRow, curCol, state, allieKingPos)){
+            return true;
         }
+        return false;
     }
-
 
     @Override
     public pieceType getType() {
