@@ -11,6 +11,7 @@ public class Queen extends Piece {
     // Private variable
     private boolean color;
     private boolean hasMoved;
+
     // Constructor
     public Queen(boolean color){
         this.color = color;
@@ -36,7 +37,8 @@ public class Queen extends Piece {
     // This method finds all possible moves
     // for given coordinates and given direction
     private void findPossibleMoves(int row, int col, Vector<Vector<Cell>> state,
-                                   Vector<Pair<Integer, Integer>> result, Pair<Integer, Integer> allieKingPos, int dir1, int dir2){
+                                   Vector<Pair<Integer, Integer>> result, Pair<Integer, Integer> allieKingPos,
+                                   int dir1, int dir2){
         // making first step
         int curRow = row + dir1;
         int curCol = col + dir2;
@@ -55,13 +57,13 @@ public class Queen extends Piece {
 
         // Checking if after last step, queen is in board
         // and given cell has oponent's cell, so queen can kill it
-        if( canKillOponent(row, col, curRow, curCol, state, allieKingPos) ){
+        if( canKillOpponent(row, col, curRow, curCol, state, allieKingPos) ){
             result.add(new Pair<>(curRow, curCol));
         }
     }
 
     // Ths method returns if queen can kill opponents piece on curRow and curCol
-    private boolean canKillOponent(int row, int col, int curRow, int curCol,
+    private boolean canKillOpponent(int row, int col, int curRow, int curCol,
                                    Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         if(curRow >= 0 && curRow < Constants.NUMBER_OF_ROWS
                 && curCol >= 0 && curCol < Constants.NUMBER_OF_COLUMNS
@@ -75,6 +77,7 @@ public class Queen extends Piece {
     }
 
     @Override
+    // Called when queen has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }

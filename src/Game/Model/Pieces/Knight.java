@@ -14,6 +14,7 @@ public class Knight extends Piece {
     private int[] dr,dc;
     private final int MAX_MOVES_COUNT = 8;
 
+    // Constructor
     public Knight(boolean color){
         this.color = color;
         this.hasMoved = false;
@@ -33,20 +34,24 @@ public class Knight extends Piece {
     }
 
     @Override
+    // Called when knight has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }
 
     @Override
+    // Returns every possible move for knight
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                                         Pair<Integer,Integer> allieKingPos) {
-        Vector<Pair<Integer, Integer> > result = new Vector<Pair<Integer, Integer> >();
-        for(int i=0; i<MAX_MOVES_COUNT; i++){
+        Vector<Pair<Integer, Integer> > result = new Vector<>();
+
+        for(int i=0; i < MAX_MOVES_COUNT; i++){
             if(inBounds(row + dr[i], col + dc[i]) && noAllies(row + dr[i], col+dc[i], state) &&
                     noCheckCaused(row,col,row+dr[i], col + dc[i], state,allieKingPos)){
                 result.add(new Pair<Integer, Integer>(row+dr[i], col+dc[i]));
             }
         }
+
         return result;
     }
 

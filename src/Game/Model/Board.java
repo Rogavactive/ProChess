@@ -14,9 +14,8 @@ public class Board {
     private Pair<Integer, Integer> whiteKingPos;
     private Pair<Integer, Integer> blackKingPos;
 
-
     // Constructor
-    public Board(boolean start) {
+    public Board() {
         // Board is vector's vector of size NUMBER_OF_ROWS x NUMBER_OF_ROWS
         board = new Vector<>(Constants.NUMBER_OF_ROWS);
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
@@ -26,16 +25,15 @@ public class Board {
             }
         }
 
-        // If it's start of game, board is created in start state
-        // else pieces aren't places
-        if (start) {
-            // Each player has NUMBER_OF_PIECES piece
-            countOfWhiteFigures = Constants.NUMBER_OF_PIECES;
-            countOfBlackFigures = Constants.NUMBER_OF_PIECES;
+        // Each player has NUMBER_OF_PIECES piece
+        countOfWhiteFigures = Constants.NUMBER_OF_PIECES;
+        countOfBlackFigures = Constants.NUMBER_OF_PIECES;
 
-            // Placing pieces
-            placePieces();
-        }
+        // Placing pieces
+        placePieces();
+
+        whiteKingPos = new Pair<>(0, 3);
+        blackKingPos = new Pair<>(7, 3);
     }
 
     // This method sets board to it's starting state
@@ -67,8 +65,10 @@ public class Board {
         board.get(Constants.NUMBER_OF_ROWS - 1).get(7).putPiece(new Rook(true));
     }
 
-    public ConcurrentHashMap<Pair<Integer, Integer>, Vector<Pair<Integer, Integer>>> getAllPossibleMoves(boolean color) {
-        ConcurrentHashMap<Pair<Integer, Integer>, Vector<Pair<Integer, Integer>>> result = new ConcurrentHashMap<>();
+    // This method finds all possible moves
+    // for all pieces of given color
+    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > getAllPossibleMoves(boolean color) {
+        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = new ConcurrentHashMap<>();
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
@@ -106,19 +106,10 @@ public class Board {
         }
     }
 
-    public Cell getCell(int row, int col) {
-        return new Cell(board.get(row).get(col));
-    }
-
-    public Vector<Pair<Integer, Integer>> getMoves(int row, int col, boolean color) {
-        if (color) {
-            return board.get(row).get(col).getMoves(getStateClone(), blackKingPos);
-        }
-        return board.get(row).get(col).getMoves(getStateClone(), whiteKingPos);
-    }
-
+    // This method returns clone of board
     private Vector<Vector<Cell>> getStateClone() {
         Vector<Vector<Cell>> clone = new Vector<>();
+
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
             clone.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
@@ -128,10 +119,13 @@ public class Board {
         return clone;
     }
 
+    // This method makes move on board
     public void move(int srcRow, int srcCol, int dstRow, int dstCol) {
         board.get(srcRow).get(srcCol).getPiece().hasMoved();
+
         if (board.get(dstRow).get(dstCol).hasPiece())
             pieceDied(board.get(dstRow).get(dstCol).getPieceColor());
+
         board.get(dstRow).get(dstCol).putPiece(board.get(srcRow).get(srcCol).getPiece());
         board.get(srcRow).get(srcCol).removePiece();
     }

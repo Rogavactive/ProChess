@@ -10,27 +10,44 @@ public class Game {
     private Player player1;
     private Player player2;
     private Vector<Move> history;
-    private Vector<Pair<Integer, Integer>> possibleMoves;
     private Player curPlayer;
-    private int clickNum;
-    private Pair<Integer, Integer> markedCell;
 
-
+    // Constructor
     public Game(Player player1, Player player2){
-        this.clickNum = 0;
-        this.player1=player1;
-        this.player2=player2;
+        this.player1 = player1;
+        this.player2 = player2;
         this.curPlayer = player1;
-        board = new Board(true);
-        history = new Vector<Move>();
+        board = new Board();
+        history = new Vector<>();
     }
 
-    Player getPlayer1(){
+    public Player getPlayer1(){
         return player1;
     }
 
-    Player getPlayer2(){
+    public Player getPlayer2(){
         return player2;
+    }
+
+    // This method returns all possible moves
+    // for all pieces of current player
+    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > pieceMoved(int srcRow, int srcCol,
+                                                                                                    int dstRow, int dstCol){
+        // make move
+        board.move(srcRow, srcCol, dstRow, dstCol);
+        switchPlayer();
+
+        // Calculate all possible moves
+        return board.getAllPossibleMoves( curPlayer.getColor() );
+    }
+
+    private void switchPlayer() {
+        if(curPlayer == player1) {
+            curPlayer = player2;
+            return;
+        }
+
+        curPlayer = player1;
     }
 
  /*   public void click(int row, int col, Player player){
@@ -58,19 +75,4 @@ public class Game {
         possibleMoves = null;
     }
 */
-    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol){
-        board.move(srcRow, srcCol, dstRow, dstCol);
-        switchPlayer();
-
-        return board.getAllPossibleMoves( curPlayer.getColor() );
-    }
-
-
-    private void switchPlayer() {
-        if(curPlayer==player1) {
-            curPlayer = player2;
-            return;
-        }
-        curPlayer = player1;
-    }
 }

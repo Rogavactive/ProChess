@@ -104,6 +104,7 @@ public class Pawn extends Piece {
     }
 
     @Override
+    // Called when pawn has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }

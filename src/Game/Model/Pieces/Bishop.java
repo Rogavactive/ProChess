@@ -11,6 +11,7 @@ public class Bishop extends Piece {
     private boolean color;
     private boolean hasMoved;
 
+    // Constructor
     public Bishop(boolean color){
         this.color = color;
         this.hasMoved = false;
@@ -22,11 +23,13 @@ public class Bishop extends Piece {
     }
 
     @Override
+    // Called when bishop has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }
 
     @Override
+    // Returns every possible move for bishop
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                                         Pair<Integer,Integer> allieKingPos) {
         Vector<Pair<Integer, Integer> > result = new Vector<Pair<Integer, Integer>>();
@@ -49,6 +52,7 @@ public class Bishop extends Piece {
         return this.hasMoved;
     }
 
+    // This method finds all possible moves for bishop
     private void findPossibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                    Vector<Pair<Integer, Integer>> result, Pair<Integer, Integer> allieKingPos, int dir1, int dir2){
         // making first step
@@ -82,7 +86,6 @@ public class Bishop extends Piece {
         }
         return false;
     }
-
 
     // This method checks if bishop can kill
     // opponent's piece on given curRow and curCol

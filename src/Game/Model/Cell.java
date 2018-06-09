@@ -20,6 +20,7 @@ public class Cell{
     public Cell(Cell cell) {
         this.row = cell.row;
         this.col = cell.col;
+
         try {
             this.piece = (Piece) cell.piece.clone();
         } catch (CloneNotSupportedException e) {
@@ -38,7 +39,7 @@ public class Cell{
     public Vector<Pair<Integer, Integer>> getMoves(Vector< Vector<Cell> > state,
                                                    Pair<Integer, Integer> allieKingPos){
         // if cell is empty, there is no possible moves
-        if( !this.hasPiece() ) return  new Vector< Pair<Integer, Integer> >();
+        if( !this.hasPiece() ) return  new Vector<>();
         // otherwise piece has it's own possible moves
         return piece.possibleMoves(this.row, this.col, state, allieKingPos);
     }
@@ -59,7 +60,7 @@ public class Cell{
         this.piece = piece;
     }
 
-    // This method remoce piece from cell
+    // This method removes piece from cell
     public void removePiece(){
         this.piece = null;
     }
@@ -69,5 +70,4 @@ public class Cell{
         assert (this.piece != null);
         return piece.getType();
     }
-
 }

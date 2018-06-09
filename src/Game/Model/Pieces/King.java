@@ -12,6 +12,7 @@ public class King extends Piece {
     private boolean color;
     private boolean hasMoved;
 
+    // Constructor
     public King(boolean color){
         this.color = color;
         this.hasMoved = false;
@@ -23,14 +24,17 @@ public class King extends Piece {
     }
 
     @Override
+    // called when king has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }
 
     @Override
+    // Returns every possible move for king
     public Vector<Pair<Integer, Integer>> possibleMoves(int row, int col, Vector<Vector<Cell>> state,
                                                         Pair<Integer,Integer> allieKingPos) {
         Vector< Pair<Integer, Integer> > result = new Vector<>();
+
         for(int dr = -1; dr <= 1; dr++)
             for(int dc = -1; dc <= 1; dc++)
                 if(!(dr==0 && dc==0)){
@@ -38,12 +42,15 @@ public class King extends Piece {
                             noCheckCaused(row,col, row+dr, col+dc, state, new Pair<>(row+dr,col+dc)))
                         result.add(new Pair<>(row+dr,col+dc));
                 }
+
         castling(result, row, col, state);
         return result;
     }
 
+    // This method chekes if castling is possible
     private void castling(Vector<Pair<Integer, Integer>> result, int row, int col, Vector<Vector<Cell>> state){
         if(this.hasMoved) return;
+
         if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
                 (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
             result.add(new Pair<>(row, col + 2));
@@ -65,6 +72,7 @@ public class King extends Piece {
         if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
         return true;
     }
+
     @Override
     public boolean getColor() { return this.color; }
 

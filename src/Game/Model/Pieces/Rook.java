@@ -52,7 +52,7 @@ public class Rook extends Piece {
             curCol += dir2;
         }
 
-        // Cheking if rook can kill opponent's piece
+        // Checking if rook can kill opponent's piece
         if( canKill(row, col, curRow, curCol, state, allieKingPos) )
             result.add(new Pair<>(curRow, curCol));
     }
@@ -72,6 +72,7 @@ public class Rook extends Piece {
     }
 
     @Override
+    // Called when rook has done a move
     public void hasMoved() {
         this.hasMoved = true;
     }
