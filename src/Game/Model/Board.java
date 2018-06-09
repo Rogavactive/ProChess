@@ -89,12 +89,12 @@ public class Board {
         return result;
     }
 
-    // Checks if given cell of board is empty or not
-    public boolean isFilled(int row, int col) {
+    // Retuns cell on given coordinates
+    public Cell getCell(int row, int col) {
         if (row < 0 || row >= Constants.NUMBER_OF_ROWS || col < 0 || col >= Constants.NUMBER_OF_COLUMNS)
-            return false;
+            return null;
 
-        return board.get(row).get(col).hasPiece();
+        return board.get(row).get(col);
     }
 
     // This method is called when pieces is dead

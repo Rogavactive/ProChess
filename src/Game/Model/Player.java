@@ -6,7 +6,7 @@ public class Player {
     private Account account;
     private boolean color;
 
-    public Player(Account account,boolean color){
+    public Player(Account account, boolean color){
         this.color = color;
         this.account = account;
     }
