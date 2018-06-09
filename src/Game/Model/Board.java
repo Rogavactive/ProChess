@@ -9,8 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Board {
     private Vector<Vector<Cell>> board;
-    private int countOfWhiteFigures;
-    private int countOfBlackFigures;
     private Pair<Integer, Integer> whiteKingPos;
     private Pair<Integer, Integer> blackKingPos;
 
@@ -24,10 +22,6 @@ public class Board {
                 board.get(row).add(new Cell(row, col));
             }
         }
-
-        // Each player has NUMBER_OF_PIECES piece
-        countOfWhiteFigures = Constants.NUMBER_OF_PIECES;
-        countOfBlackFigures = Constants.NUMBER_OF_PIECES;
 
         // Placing pieces
         placePieces();
@@ -97,14 +91,6 @@ public class Board {
         return board.get(row).get(col);
     }
 
-    // This method is called when pieces is dead
-    public void pieceDied(boolean color) {
-        if (color) {
-            countOfBlackFigures--;
-        } else {
-            countOfWhiteFigures--;
-        }
-    }
 
     // This method returns clone of board
     private Vector<Vector<Cell>> getStateClone() {
@@ -122,10 +108,6 @@ public class Board {
     // This method makes move on board
     public void move(int srcRow, int srcCol, int dstRow, int dstCol) {
         board.get(srcRow).get(srcCol).getPiece().hasMoved();
-
-        if (board.get(dstRow).get(dstCol).hasPiece())
-            pieceDied(board.get(dstRow).get(dstCol).getPieceColor());
-
         board.get(dstRow).get(dstCol).putPiece(board.get(srcRow).get(srcCol).getPiece());
         board.get(srcRow).get(srcCol).removePiece();
     }
