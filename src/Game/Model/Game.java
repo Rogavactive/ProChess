@@ -34,11 +34,13 @@ public class Game {
     // for all pieces of current player
     public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol) throws CloneNotSupportedException {
         // make move and add it in history
-        history.add(new Move(srcRow, srcCol, dstRow, dstCol, (Piece)(board.getCell(srcRow, srcCol).getPiece()).clone()));
+        history.add(new Move(srcRow, srcCol, dstRow, dstCol,
+                board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
 
         // if piece is killed
         if(board.getCell(dstRow, dstCol).hasPiece()){
-            history.add(new Move(dstRow, dstCol, Move.deadRow, Move.deadCol, (Piece)(board.getCell(dstRow, dstCol).getPiece()).clone()));
+            history.add(new Move(dstRow, dstCol, Move.deadRow, Move.deadCol,
+                    board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
         }
 
         board.move(srcRow, srcCol, dstRow, dstCol);
