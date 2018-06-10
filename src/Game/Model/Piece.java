@@ -1,5 +1,6 @@
 package Game.Model;
 
+import Game.Model.Pieces.*;
 import javafx.util.Pair;
 //import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,17 @@ public abstract class Piece implements Cloneable{
     // This method is called when piece has done a move
     public abstract void hasMoved();
 
+    public static Piece createPiece(pieceType t, boolean col){
+        switch (t){
+            case King: return new King(col);
+            case Pawn: return new Pawn(col);
+            case Rook: return new Rook(col);
+            case Queen: return new Queen(col);
+            case Bishop: return new Bishop(col);
+            case Knight: return new Knight(col);
+            default: return null;
+        }
+    }
     // This mehod checks if king is safe
     protected static boolean noCheckCaused(int row, int col, int newRow, int newCol,
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
@@ -160,6 +172,8 @@ public abstract class Piece implements Cloneable{
     public abstract boolean getHasMove();
 
     public abstract pieceType getType();
+
+    public abstract String toString();
 
     @Override
     protected abstract Object clone() throws CloneNotSupportedException;

@@ -157,6 +157,14 @@ public class Pawn extends Piece {
     }
 
     @Override
+    public String toString() {
+        String col = "White";
+        if(this.color)
+            col = "Black";
+        return col + " Pawn";
+    }
+
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         Pawn newPawn = new Pawn(this.getColor(), this.getHasMove());
 

@@ -121,6 +121,14 @@ public class Queen extends Piece {
     }
 
     @Override
+    public String toString() {
+        String col = "White";
+        if(this.color)
+            col = "Black";
+        return col + " Queen";
+    }
+
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         Queen newQueen = new Queen(this.getColor(), this.getHasMove());
 

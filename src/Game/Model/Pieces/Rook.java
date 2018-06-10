@@ -112,6 +112,14 @@ public class Rook extends Piece {
     }
 
     @Override
+    public String toString() {
+        String col = "White";
+        if(this.color)
+            col = "Black";
+        return col + " Rook";
+    }
+
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         Rook newRook = new Rook(this.getColor(), this.getHasMove());
 

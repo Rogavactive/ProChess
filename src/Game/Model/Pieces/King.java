@@ -87,6 +87,14 @@ public class King extends Piece {
     }
 
     @Override
+    public String toString() {
+        String col = "White";
+        if(this.color)
+            col = "Black";
+        return col + " King";
+    }
+
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         King newKing = new King(this.getColor(), this.getHasMove());
 

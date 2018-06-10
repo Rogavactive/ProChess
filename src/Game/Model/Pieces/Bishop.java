@@ -107,6 +107,14 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public String toString() {
+        String col = "White";
+        if(this.color)
+            col = "Black";
+        return col + " Bishop";
+    }
+
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         Bishop newBishop = new Bishop(this.getColor(), this.getHasMove());
 

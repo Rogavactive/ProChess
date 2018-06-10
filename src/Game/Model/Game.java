@@ -1,5 +1,6 @@
 package Game.Model;
 
+import com.google.gson.Gson;
 import javafx.util.Pair;
 
 import java.util.Vector;
@@ -31,8 +32,7 @@ public class Game {
 
     // This method returns all possible moves
     // for all pieces of current player
-    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > pieceMoved(int srcRow, int srcCol,
-                                                                                                    int dstRow, int dstCol) throws CloneNotSupportedException {
+    public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol) throws CloneNotSupportedException {
         // make move and add it in history
         history.add(new Move(srcRow, srcCol, dstRow, dstCol, (Piece)(board.getCell(srcRow, srcCol).getPiece()).clone()));
 
@@ -40,13 +40,12 @@ public class Game {
         if(board.getCell(dstRow, dstCol).hasPiece()){
             history.add(new Move(dstRow, dstCol, Move.deadRow, Move.deadCol, (Piece)(board.getCell(dstRow, dstCol).getPiece()).clone()));
         }
-        board.pieceDied(!(curPlayer.getColor()));
 
         board.move(srcRow, srcCol, dstRow, dstCol);
         switchPlayer();
 
         // Calculate all possible moves
-        return board.getAllPossibleMoves( curPlayer.getColor() );
+        return new Gson().toJson(board.getAllPossibleMoves(curPlayer.getColor()));
     }
 
     private void switchPlayer() {
