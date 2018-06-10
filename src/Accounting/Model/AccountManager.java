@@ -2,15 +2,15 @@ package Accounting.Model;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-//import javax.mail.*;
-//import javax.mail.internet.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.Properties;
+import java.util.Properties;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -295,12 +295,12 @@ public class AccountManager {
         String code = randomCode();
         String sqlQueryStatement = "insert into validations(username, password, email, code)\n" +
                 "  VALUE (\""+username+"\",\""+password+"\",\""+email+"\",\""+code+"\");";
-        if(simpleExecuteUpdate(sqlQueryStatement)){
-            String messageTOMail = "Hello dear " + username + ",\n\n Please follow the " +
-                    "<a href=\"http://localhost:8080/validate.jsp?code="+code+"email="+email+">link</a>" +
-                    "to end registration.\n" +
-                    "Thank you.";
-            if(g_services.sendMail(messageTOMail,email,"ProChess Email Verification"))
+        String messageTOMail = "Hello dear " + username + ",\n\n Please follow the " +
+                "<a href=\"http://localhost:8080/validate.jsp?code="+code+"&email="+email+">link</a>" +
+                "to end registration.\n" +
+                "Thank you.";
+        if(g_services.sendMail(messageTOMail,email,"ProChess Email Verification")){
+            if(simpleExecuteUpdate(sqlQueryStatement))
                 return true;
         }
         return false;
@@ -351,8 +351,8 @@ public class AccountManager {
     private class GoogleServices{
 
         private final String CLIENT_ID = "690644503931-dtn1qj0me45ovni28qbsa12g8d6c2ccf.apps.googleusercontent.com";
-        private final String USERNAME = "prochess.noreply";
-        private final String PASSWORD = "ProChess";
+        private final String USERNAME = "prochess.noreply@gmail.com";
+        private final String PASSWORD = "ProChess123";
 
 
         public GoogleServices(){
@@ -360,36 +360,35 @@ public class AccountManager {
         }
 
         public boolean sendMail(String text, String toMail, String subject){
-//            Properties properties = System.getProperties();
-//            String host = "smtp.gmail.com";
-//            properties.put("mail.smtp.starttls.enable", "true");
-//            properties.put("mail.smtp.host", host);
-//            properties.put("mail.smtp.user", USERNAME);
-//            properties.put("mail.smtp.password", PASSWORD);
-//            properties.put("mail.smtp.port", "587");
-//            properties.put("mail.smtp.auth", "true");
-//
-//            Session session = Session.getDefaultInstance(properties);
-//            MimeMessage message = new MimeMessage(session);
-//
-//            try {
-//                message.setFrom(new InternetAddress(USERNAME));
-//                InternetAddress toAddress = new InternetAddress(toMail);
-//
-//                message.addRecipient(Message.RecipientType.TO, toAddress);
-//
-//                message.setSubject(subject);
-//                message.setText(text,"utf-8","html");
-//                Transport transport = session.getTransport("smtp");
-//                transport.connect(host, USERNAME, PASSWORD);
-//                transport.sendMessage(message, message.getAllRecipients());
-//                transport.close();
-//                return true;
-//            } catch (MessagingException me) {
-//                me.printStackTrace();
-//                return false;
-//            }
-            return true;
+            Properties properties = System.getProperties();
+            String host = "smtp.gmail.com";
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.user", USERNAME);
+            properties.put("mail.smtp.password", PASSWORD);
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+
+            Session session = Session.getDefaultInstance(properties);
+            MimeMessage message = new MimeMessage(session);
+
+            try {
+                message.setFrom(new InternetAddress(USERNAME));
+                InternetAddress toAddress = new InternetAddress(toMail);
+
+                message.addRecipient(Message.RecipientType.TO, toAddress);
+
+                message.setSubject(subject);
+                message.setText(text,"utf-8","html");
+                Transport transport = session.getTransport("smtp");
+                transport.connect(host, USERNAME, PASSWORD);
+                transport.sendMessage(message, message.getAllRecipients());
+                transport.close();
+                return true;
+            } catch (MessagingException me) {
+                me.printStackTrace();
+                return false;
+            }
         }
 
     }
