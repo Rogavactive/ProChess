@@ -1,69 +1,108 @@
-var webSocket = null;
+var gameWebSocket = null;
+var chatWebSocket = null;
 
-function getServerUrl() {
-    return "ws://localhost:8080/game";
-}
+$(document).ready(function(){
+    connectGame()
+    connectChat()
+});
 
-function connect() {
+//GAME SOCKET
+
+function connectGame() {
     try {
-        this.webSocket = new WebSocket(this.getServerUrl());
-
-        //
-        // Implement WebSocket event handlers!
-        //
-        this.webSocket.onopen = function(event) {
+        this.gameWebSocket = new WebSocket("ws://localhost:8080/game");
+        this.gameWebSocket.onopen = function(event) {
             console.log('onopen::' + JSON.stringify(event, null, 4));
         }
-
-        this.webSocket.onmessage = function(event) {
+        this.gameWebSocket.onmessage = function(event) {
             var msg = event.data;
             console.log('onmessage::' + JSON.stringify(msg, null, 4));
         }
-        this.webSocket.onclose = function(event) {
+        this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
         }
-        this.webSocket.onerror = function(event) {
+        this.gameWebSocket.onerror = function(event) {
             console.log('onerror::' + JSON.stringify(event, null, 4));
         }
-
     } catch (exception) {
         console.error(exception);
     }
 }
 
-function getStatus() {
-    return this.webSocket.readyState;
+function getGameStatus() {
+    return this.gameWebSocket.readyState;
 }
 
-function send(message){
+function sendToGame(message){
 
-    if (this.webSocket.readyState == WebSocket.OPEN) {
-        this.webSocket.send(message);
-
+    if (getGameStatus() == gameWebSocket.OPEN) {
+        this.gameWebSocket.send(message);
     } else {
-        console.error('webSocket is not open. readyState=' + this.webSocket.readyState);
+        console.error('webSocket is not open. readyState=' + getGameStatus());
+    }
+
+}
+
+function disconnectFromGame() {
+
+    if (getGameStatus() == gameWebSocket.OPEN) {
+        this.gameWebSocket.close();
+    } else {
+        console.error('webSocket is not open. readyState=' + getGameStatus());
+    }
+
+}
+
+//CHAT SOCKET
+
+function connectChat(){
+    try {
+        this.chatWebSocket = new WebSocket("ws://localhost:8080/gamechat");
+        this.chatWebSocket.onmessage = function(event) {
+            var chatserverdata = JSON.parse(event.data);
+            $('#chatBox').append("<p class='chat-username-p'>"+chatserverdata.username+"</p><p class='chat-message-p'>"+":"+ chatserverdata.message+"</p><br/>")
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+            console.log('onmessage::' + JSON.stringify(chatserverdata.message, null, 4));
+        }
+        this.chatWebSocket.onopen = function(event) {
+            console.log('onopen::' + JSON.stringify(event, null, 4));
+            sendToChat(username);
+        }
+        this.chatWebSocket.onclose = function(event) {
+            console.log('onclose::' + JSON.stringify(event, null, 4));
+        }
+        this.chatWebSocket.onerror = function(event) {
+            console.log('onerror::' + JSON.stringify(event, null, 4));
+        }
+    } catch (exception) {
+        console.error(exception);
     }
 }
 
-function disconnect() {
-    if (this.webSocket.readyState == WebSocket.OPEN) {
-        this.webSocket.close();
+function getChatStatus() {
+    return this.chatWebSocket.readyState;
+}
 
+function sendToChat(message){
+
+    if (getChatStatus() == gameWebSocket.OPEN) {
+        this.chatWebSocket.send(message);
     } else {
-        console.error('webSocket is not open. readyState=' + this.webSocket.readyState);
+        console.error('webSocket is not open. readyState=' + getChatStatus());
     }
+
 }
 
-$(document).ready(function(){
-    connect()
-});
+function disconnectFromGame() {
 
-function sendMessage(){
-    send($('#input').val())
-    return false;
+    if (getChatStatus() == gameWebSocket.OPEN) {
+        this.chatWebSocket.close();
+    } else {
+        console.error('webSocket is not open. readyState=' + getChatStatus());
+    }
+
 }
 
-function makeMove(string) {
-    var boardElem = document.getElementById('boardImage');
-
+function chatBtnClick() {
+    sendToChat($('#chatMessage').val())
 }

@@ -15,8 +15,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class AccountManager {
-    private static MysqlDataSource dataSource = new MysqlDataSource();
-    private static ReentrantLock lock = new ReentrantLock();
+    private MysqlDataSource dataSource = new MysqlDataSource();
+    private ReentrantLock lock = new ReentrantLock();
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int CHARS_LEN = CHARS.length();
     private static final int CODE_MIN_LEN=40;
@@ -278,7 +278,7 @@ public class AccountManager {
         }
     }
 
-    private static String hexToString(byte[] bytes) {
+    private String hexToString(byte[] bytes) {
         StringBuilder buff = new StringBuilder();
         for (byte aByte : bytes) {
             int val = aByte;

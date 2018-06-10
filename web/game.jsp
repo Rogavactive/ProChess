@@ -1,4 +1,4 @@
-<%--
+<%@ page import="Accounting.Model.Account" %><%--
   Created by IntelliJ IDEA.
   User: rogavactive
   Date: 6/7/18
@@ -33,13 +33,18 @@
     <!--google-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
-    <script src="https://apis.google.com/js/platform.js?onload=onLoadGoogleCallback" async defer></script>
-    <meta name="google-signin-client_id" content="690644503931-dtn1qj0me45ovni28qbsa12g8d6c2ccf.apps.googleusercontent.com">
+    <script>
+        var username = "racxaSaxeli"
+    </script>
 </head>
 <body>
 <div class="div-main-container">
     <div class="chat-div">
-        <p>chat here</p>
+        <div id = "chatBox" class="chat-box" ></div>
+        <form onsubmit="chatBtnClick(); return false;" autocomplete="off">
+            <input class="chat-message-input" type="text" id="chatMessage" size="50">
+            <input class="chat-message-btn" type="submit" value="Send">
+        </form>
     </div>
     <div class="chess-board-container-div">
         <div class="chess-board-div">

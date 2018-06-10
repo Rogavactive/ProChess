@@ -1,9 +1,9 @@
 package Game.Controller;
 
 public class ServletsHere {
-    private static ServletsHere ourInstance = new ServletsHere();
+    private ServletsHere ourInstance = new ServletsHere();
 
-    public static ServletsHere getInstance() {
+    public ServletsHere getInstance() {
         return ourInstance;
     }
 
