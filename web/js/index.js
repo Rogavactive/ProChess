@@ -47,8 +47,8 @@ function onLoadGoogleCallback(){
                         url: "LoginServlet",
                         type: 'POST',
                         data: {
-                            // token : googleUser.getAuthResponse().id_token,
-                            token: googleUser.getBasicProfile().getEmail(),
+                            token : googleUser.getAuthResponse().id_token,
+                            // token: googleUser.getBasicProfile().getEmail(),
                             loginType: "google"
                         },
                         success: function () {

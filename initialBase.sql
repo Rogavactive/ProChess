@@ -23,9 +23,7 @@ CREATE TABLE validations(
     password	nvarchar(128),
     email		nvarchar(64),
     code		nvarchar(64),
-    primary key	(ID),
-    unique key(username),
-    unique key(email)
+    primary key	(ID)
 );
 
 -- GAME HISTORY DDL INITIALIZATION

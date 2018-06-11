@@ -130,15 +130,7 @@ public class AccountManager {
     }
 
     public boolean existsEmail(String email) {
-        String sqlQueryStatement = "select count(email) as email_count from (\n" +
-                "  select\n" +
-                "    email\n" +
-                "  from validations\n" +
-                "  union\n" +
-                "  select\n" +
-                "    email\n" +
-                "  from accounts\n" +
-                ") as v\n" +
+        String sqlQueryStatement = "select count(email) as email_count from accoutns" +
                 "  where email = \""+email+"\";";
 
         Connection conn = null;
@@ -174,16 +166,8 @@ public class AccountManager {
     }
 
     public boolean existsUsername(String username) {
-        String sqlQueryStatement = "select count(username) as count_matches from (\n" +
-                "  select\n" +
-                "    username\n" +
-                "  from validations\n" +
-                "  union\n" +
-                "  select\n" +
-                "    username\n" +
-                "  from accounts\n" +
-                ") as v\n" +
-                "  where username = \""+username+"\";";
+        String sqlQueryStatement = "select count(username) as count_matches from accounts" +
+                " where username = \""+username+"\";";
 
         Connection conn = null;
         ResultSet rslt = null;
@@ -295,10 +279,9 @@ public class AccountManager {
         String code = randomCode();
         String sqlQueryStatement = "insert into validations(username, password, email, code)\n" +
                 "  VALUE (\""+username+"\",\""+password+"\",\""+email+"\",\""+code+"\");";
-        String messageTOMail = "Hello dear " + username + ",\n\n Please follow the " +
-                "<a href=\"http://localhost:8080/validate.jsp?code="+code+"&email="+email+">link</a>" +
-                "to end registration.\n" +
-                "Thank you.";
+        String messageTOMail = "Hello dear " + username + ",\n\n Please follow this " +
+                "http://localhost:8080/validate.jsp?code="+code+"&email="+email+
+                " to end registration.\nThank you.";
         if(g_services.sendMail(messageTOMail,email,"ProChess Email Verification")){
             if(simpleExecuteUpdate(sqlQueryStatement))
                 return true;
@@ -379,7 +362,7 @@ public class AccountManager {
                 message.addRecipient(Message.RecipientType.TO, toAddress);
 
                 message.setSubject(subject);
-                message.setText(text,"utf-8","html");
+                message.setText(text);
                 Transport transport = session.getTransport("smtp");
                 transport.connect(host, USERNAME, PASSWORD);
                 transport.sendMessage(message, message.getAllRecipients());

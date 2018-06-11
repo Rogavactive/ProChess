@@ -44,7 +44,7 @@ public class RegisterServlet extends HttpServlet {
         if(password==null)
             password="";
         // security check
-        if (validate(password, username, email, manager)) {
+        if (validate(password, username)) {
             if (!manager.sendValidate(username,email,password))
                 response.getWriter().write(response_string+"false");
             else
@@ -54,9 +54,7 @@ public class RegisterServlet extends HttpServlet {
         }
     }
 
-    private boolean validate(String password, String username, String email, AccountManager manager) {
-        if (manager.existsUsername(username) || manager.existsEmail(email))
-            return false;
+    private boolean validate(String password, String username) {
         if (password.equals(username) || username.length() < 8 || username.length() > 20)
             return false;
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");

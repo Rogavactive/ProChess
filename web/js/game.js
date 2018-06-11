@@ -62,10 +62,10 @@ function connectChat(){
             var chatserverdata = JSON.parse(event.data);
             $('#chatBox').append("<p class='chat-username-p'>"+chatserverdata.username+"</p><p class='chat-message-p'>"+":"+ chatserverdata.message+"</p><br/>")
             $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-            console.log('onmessage::' + JSON.stringify(chatserverdata.message, null, 4));
+            // console.log('onmessage::' + JSON.stringify(chatserverdata.message, null, 4));
         }
         this.chatWebSocket.onopen = function(event) {
-            console.log('onopen::' + JSON.stringify(event, null, 4));
+            // console.log('onopen::' + JSON.stringify(event, null, 4));
             sendToChat(username);
         }
         this.chatWebSocket.onclose = function(event) {
@@ -105,4 +105,5 @@ function disconnectFromGame() {
 
 function chatBtnClick() {
     sendToChat($('#chatMessage').val())
+    $('#chatMessage').val("")
 }
