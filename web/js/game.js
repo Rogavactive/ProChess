@@ -66,7 +66,6 @@ function connectChat(){
         }
         this.chatWebSocket.onopen = function(event) {
             // console.log('onopen::' + JSON.stringify(event, null, 4));
-            sendToChat(username);
         }
         this.chatWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -104,6 +103,6 @@ function disconnectFromGame() {
 }
 
 function chatBtnClick() {
-    sendToChat($('#chatMessage').val())
+    sendToChat($('#chatMessage').val());
     $('#chatMessage').val("")
 }

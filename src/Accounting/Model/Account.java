@@ -13,23 +13,23 @@ public class Account {
         this.type = type;
     }
 
-    public String getUsername() {
+    public synchronized String getUsername() {
         return username;
     }
 
-    public String getEmail() {
+    public synchronized String getEmail() {
         return email;
     }
 
-    public boolean type(){
+    public synchronized boolean type(){
         return type;
     }
 
-    public boolean changePassword(String oldpass, String newpass) {
+    public synchronized boolean changePassword(String oldpass, String newpass) {
         return manager.setPassword(oldpass, newpass, username);
     }
 
-    public boolean change(String username, String email) {
+    public synchronized boolean change(String username, String email) {
         if (manager.change(this.username, this.email, username, email)) {
             this.email = email;
             this.username = username;
@@ -39,7 +39,7 @@ public class Account {
         }
     }
 
-    public boolean remove() {
+    public synchronized boolean remove() {
         return manager.removeAccount(username);
     }
 }

@@ -33,9 +33,6 @@
     <!--google-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
-    <script>
-        var username = "racxaSaxeli"
-    </script>
 </head>
 <body>
 <div class="div-main-container">

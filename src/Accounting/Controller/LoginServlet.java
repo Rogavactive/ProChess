@@ -67,7 +67,6 @@ public class LoginServlet extends HttpServlet {
         if (idToken != null) {
             GoogleIdToken.Payload payload = idToken.getPayload();
             String email = payload.getEmail();
-            System.out.println(email);
             return email;
         }
         return null;
