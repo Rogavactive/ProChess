@@ -57,6 +57,16 @@ CREATE TABLE moves(
   foreign key (gameID) references games(ID)
 );
 
+-- temporary ids for opened game rooms
+
+drop table if exists ongoing_games_ids;
+
+CREATE TABLE ongoing_games_ids(
+  ID	INT auto_increment,
+  temp_id	nvarchar(128),
+  primary key	(ID)
+);
+
 
 -- VARIABLES FOR TESTING (DELETE BEFORE FINAL RELEASE)
 

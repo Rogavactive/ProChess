@@ -30,7 +30,7 @@
     <!--google font and icons-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
-    <meta http-equiv="Refresh" content="3;url=game.jsp">
+    <%--<meta http-equiv="Refresh" content="3;url=game.jsp">--%>
     <%
         //before the code loads, checks if user is authorised.
         if(request.getSession().getAttribute("Account") ==null){
@@ -41,18 +41,50 @@
     %>
 </head>
 <body>
-    <table>
-        <tr>
-            <td><p>username:</p></td>
-            <td><p><%=((Account)request.getSession().getAttribute("Account")).getUsername() %></p></td>
-        </tr>
-        <tr>
-            <td><p>email:</p></td>
-            <td><p><%=((Account)request.getSession().getAttribute("Account")).getEmail() %></p></td>
-        </tr>
-    </table>
-    <div class="container" style="align-content: center">
-        <p style="text-align: center">Waiting for opponent...</p>
+    <nav class="top-navbar-container">
+        <table width="99%" align="center" class = "top-navbar-table">
+            <tbody>
+                <tr>
+                    <td>
+                        <a class="top-navbar-anchors" href="index.html"><span class="top-navbar-left">ProChess</span></a>
+                    </td>
+                    <td colspan="2">
+                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Game</span></a>
+                    </td>
+                    <td colspan="2">
+                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
+                    </td>
+                    <td colspan="2">
+                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Profile</span></a>
+                    </td>
+                    <td>
+                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-right">Logout</span></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nav>
+
+    <%--<table>--%>
+        <%--<tr>--%>
+            <%--<td><p>username:</p></td>--%>
+            <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getUsername() %></p></td>--%>
+        <%--</tr>--%>
+        <%--<tr>--%>
+            <%--<td><p>email:</p></td>--%>
+            <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getEmail() %></p></td>--%>
+        <%--</tr>--%>
+    <%--</table>--%>
+    <%--<div class="container" style="align-content: center">--%>
+        <%--<p style="text-align: center">Waiting for opponent...</p>--%>
+    <%--</div>--%>
+
+    <div class="game-search-outer">
+        <div class="game-search-middle">
+            <div class="game-search-inner">
+                <p>find game here</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>

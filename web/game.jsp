@@ -35,6 +35,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
 </head>
 <body>
+
+<nav class="top-navbar-container">
+    <table width="99%" align="center" class = "top-navbar-table">
+        <tbody>
+        <tr>
+            <td>
+                <a class="top-navbar-anchors" href="index.html"><span class="top-navbar-left">ProChess</span></a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Game</span></a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Profile</span></a>
+            </td>
+            <td>
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-right">Logout</span></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</nav>
+
 <div class="div-main-container">
     <div class="chat-div">
         <div id = "chatBox" class="chat-box" ></div>
