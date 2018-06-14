@@ -93,7 +93,7 @@ public class AccountManager {
     }
 
     public boolean existsEmail(String email) {
-        String sqlQueryStatement = "select count(email) as email_count from accoutns" +
+        String sqlQueryStatement = "select count(email) as email_count from accounts" +
                 "  where email = \""+email+"\";";
 
         Connection conn = null;
