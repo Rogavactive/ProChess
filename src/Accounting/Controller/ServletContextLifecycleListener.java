@@ -1,6 +1,7 @@
 package Accounting.Controller;
 
 import Accounting.Model.AccountManager;
+import dbConnection.DataBaseManager;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -22,7 +23,8 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     // ServletContextListener implementation
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
-        sce.getServletContext().setAttribute("AccManager", new AccountManager());
+        DataBaseManager manager = new DataBaseManager();
+        sce.getServletContext().setAttribute("AccManager", new AccountManager(manager));
       /* This method is called when the servlet context is
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.

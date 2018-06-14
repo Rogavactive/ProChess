@@ -6,9 +6,11 @@
 }
 
 .game-search-middle{
+    height: 100%;
     display: table-cell;
     vertical-align: middle;
 }
+
 .game-search-inner{
     margin-left: auto;
     margin-right: auto;

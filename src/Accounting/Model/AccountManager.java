@@ -1,13 +1,13 @@
 package Accounting.Model;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import dbConnection.DataBaseManager;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 public class AccountManager {
-    private MysqlDataSource dataSource = new MysqlDataSource();
+    private DataBaseManager manager;
     private ReentrantLock lock = new ReentrantLock();
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int CHARS_LEN = CHARS.length();
@@ -23,47 +23,16 @@ public class AccountManager {
     private static final int CODE_MAX_LEN=60;
     private GoogleServices g_services = new GoogleServices();
 
-    public AccountManager() {
-        this("");
-    }
-
-    public AccountManager(String dbName) {
-        connectDB(dbName);
-    }
-
-    private void connectDB(String dbName) {
-        dataSource.setUser(MyDBInfo.MYSQL_USERNAME);
-        dataSource.setPassword(MyDBInfo.MYSQL_PASSWORD);
-        if(!dbName.equals(""))
-            dataSource.setUrl(dbName);
-        else
-            dataSource.setUrl(MyDBInfo.MYSQL_DATABASE_SERVER);
+    public AccountManager(DataBaseManager manager) {
+        this.manager = manager;
     }
 
     public void dispose() {
         //we dont need anything yet.
     }
 
-    private ResultSet executeQuerry(String statement,Connection conn){
-        try {
-            PreparedStatement stmt = conn.prepareStatement(statement);
-            return stmt.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    private boolean executeUpdate(String statement,Connection conn){
-        try {
-            PreparedStatement stmt = conn.prepareStatement(statement);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+
 
     public Account register(String username, String email, String password) {
         String pass_hash = hash(password);
@@ -80,8 +49,8 @@ public class AccountManager {
         }
         Connection conn = null;
         try {
-            conn = dataSource.getConnection();
-            if (executeUpdate(sqlQueryStatement,conn)) {
+            conn = manager.getConnection();
+            if (manager.executeUpdate(sqlQueryStatement,conn)) {
                 if(password==null)
                     return new Account(username,email,this,false);
                 else
@@ -92,13 +61,7 @@ public class AccountManager {
             e.printStackTrace();
             return null;
         }finally {
-            try{
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            manager.closeConnection(conn);
         }
     }
 
@@ -113,8 +76,8 @@ public class AccountManager {
         ResultSet rslt = null;
 
         try {
-            conn = dataSource.getConnection();
-            rslt = executeQuerry(sqlQueryStatement,conn);
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt != null && rslt.next()) {
                 String email = rslt.getString("email");
                 return new Account(username, email, this, true);
@@ -124,7 +87,7 @@ public class AccountManager {
             e.printStackTrace();
             return null;
         }finally {
-            closeConnections(conn,rslt);
+            manager.closeConnections(conn,rslt);
         }
 
     }
@@ -137,8 +100,8 @@ public class AccountManager {
         ResultSet rslt = null;
 
         try {
-            conn = dataSource.getConnection();
-            rslt = executeQuerry(sqlQueryStatement,conn);
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt != null && rslt.next()) {
                 int res = rslt.getInt("email_count");
                 return res > 0;
@@ -148,22 +111,10 @@ public class AccountManager {
             e.printStackTrace();
             return true;
         }finally {
-            closeConnections(conn,rslt);
+            manager.closeConnections(conn,rslt);
         }
     }
 
-    private void closeConnections(Connection conn, ResultSet rslt){
-        try {
-            if (rslt != null) {
-                rslt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public boolean existsUsername(String username) {
         String sqlQueryStatement = "select count(username) as count_matches from accounts" +
@@ -173,8 +124,8 @@ public class AccountManager {
         ResultSet rslt = null;
 
         try {
-            conn = dataSource.getConnection();
-            rslt = executeQuerry(sqlQueryStatement,conn);
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt != null && rslt.next()) {
                 int res = rslt.getInt("count_matches");
                 return res > 0;
@@ -184,7 +135,7 @@ public class AccountManager {
             e.printStackTrace();
             return true;
         }finally {
-            closeConnections(conn,rslt);
+            manager.closeConnections(conn,rslt);
         }
 
     }
@@ -195,8 +146,8 @@ public class AccountManager {
     }
 
     private boolean simpleExecuteUpdate(String statement) {
-        try (Connection conn = dataSource.getConnection()) {
-            return executeUpdate(statement, conn);
+        try (Connection conn = manager.getConnection()) {
+            return manager.executeUpdate(statement, conn);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -217,8 +168,8 @@ public class AccountManager {
         ResultSet rslt = null;
 
         try {
-            conn = dataSource.getConnection();
-            rslt = executeQuerry(sqlQueryStatement,conn);
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt != null && rslt.next()) {
                 String username = rslt.getString("username");
                 boolean isNative = rslt.getString("pass_hash")!=null;
@@ -229,7 +180,7 @@ public class AccountManager {
             e.printStackTrace();
             return null;
         }finally {
-            closeConnections(conn,rslt);
+            manager.closeConnections(conn,rslt);
         }
 
     }
@@ -309,8 +260,8 @@ public class AccountManager {
         Connection conn=null;
         ResultSet rslt = null;
         try{
-            conn = dataSource.getConnection();
-            rslt = executeQuerry(sqlQueryStatement,conn);
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if(rslt!=null&&rslt.next()){
                 String username = rslt.getString("username");
                 String password = rslt.getString("password");
@@ -327,7 +278,7 @@ public class AccountManager {
             e.printStackTrace();
             return null;
         } finally{
-            closeConnections(conn,rslt);
+            manager.closeConnections(conn,rslt);
         }
     }
 
