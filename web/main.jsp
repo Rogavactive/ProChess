@@ -82,7 +82,31 @@
     <div class="game-search-outer">
         <div class="game-search-middle">
             <div class="game-search-inner">
-                <p>find game here</p>
+                <p>Choose game type:</p>
+                <select id="choose-type"> <!--Supplement an id here instead of using 'text'-->
+                    <option value="" selected disabled hidden >Choose type</option>
+                    <option value="competitive">Random Opponent</option>
+                    <option value="friend">Friend</option>
+                    <option value="bot">Single Play</option>
+                </select>
+                <p>Choose time:</p>
+                <select id="main-time">
+                    <option value="" selected disabled hidden >Choose time</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+                <select id="bonus-time">
+                    <option value="" selected disabled hidden >Bonus time</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                </select>
+                <input id="link-holder" placeholder="Link" type="text" readonly>
+                <button onclick="SearchRequest()">Search</button>
             </div>
         </div>
     </div>

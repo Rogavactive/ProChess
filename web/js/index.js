@@ -53,8 +53,7 @@ function onLoadGoogleCallback(){
                         },
                         success: function () {
                             window.location.href = '/main.jsp';
-                        },
-                        async: true
+                        }
                     });
                 } catch (err) {
                     console.log(err.message)
