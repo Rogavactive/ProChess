@@ -9,14 +9,65 @@
     height: 100%;
     display: table-cell;
     vertical-align: middle;
+
 }
 
 .game-search-inner{
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    height:50%;
+    width: 35%; /* can be changed later */
+    height:45%;
     background-color:white;
     border-radius: 5px;
     align-items: center;
+}
+
+p{
+    margin:0;
+    text-align: center;
+}
+
+select{
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    font-size:16px;
+    border-color:#1e1e1e;
+    border-radius:5px;
+}
+
+.choose-type{
+    width:59%;
+    margin:0 20%;
+}
+
+.main-time, .bonus-time{
+    margin:1% 3%;
+    width:40%;
+    display:inline-block;
+}
+
+
+.link-holder{
+    width:79%;
+    margin:1%;
+    margin-left:5%;
+    display:inline-block;
+    font-size:100%;
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+
+.copy-icon-custom{
+    /*     font-size:10px !important; */
+}
+
+.copy-icon-btn{
+    width:10%;
+    margin:1%;
+    border-width:1px;
+    padding:1% 0;
+    display:inline-block;
+    vertical-align:middle;
+}
+
+.find-game{
+    visibility: hidden;
 }

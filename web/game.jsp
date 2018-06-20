@@ -53,7 +53,7 @@
                 <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Profile</span></a>
             </td>
             <td>
-                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-right">Logout</span></a>
+                <a class="top-navbar-anchors" href="logout.jsp"><span class="top-navbar-right">Logout</span></a>
             </td>
         </tr>
         </tbody>

@@ -58,39 +58,30 @@
                         <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Profile</span></a>
                     </td>
                     <td>
-                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-right">Logout</span></a>
+                        <a class="top-navbar-anchors" href="logout.jsp"><span class="top-navbar-right">Logout</span></a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </nav>
 
-    <%--<table>--%>
-        <%--<tr>--%>
-            <%--<td><p>username:</p></td>--%>
             <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getUsername() %></p></td>--%>
-        <%--</tr>--%>
-        <%--<tr>--%>
-            <%--<td><p>email:</p></td>--%>
             <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getEmail() %></p></td>--%>
-        <%--</tr>--%>
-    <%--</table>--%>
-    <%--<div class="container" style="align-content: center">--%>
-        <%--<p style="text-align: center">Waiting for opponent...</p>--%>
-    <%--</div>--%>
 
     <div class="game-search-outer">
         <div class="game-search-middle">
             <div class="game-search-inner">
                 <p>Choose game type:</p>
-                <select id="choose-type"> <!--Supplement an id here instead of using 'text'-->
-                    <option value="" selected disabled hidden >Choose type</option>
-                    <option value="competitive">Random Opponent</option>
-                    <option value="friend">Friend</option>
-                    <option value="bot">Single Play</option>
-                </select>
+                <div style="align-items: center">
+                    <select class="choose-type" id="choose-type"> <!--Supplement an id here instead of using 'text'-->
+                        <option value="" selected disabled hidden >Choose type</option>
+                        <option value="random">Random Opponent</option>
+                        <option value="friendly">Friend</option>
+                        <option value="bot">Single Play</option>
+                    </select>
+                </div>
                 <p>Choose time:</p>
-                <select id="main-time">
+                <select class="main-time" id="main-time">
                     <option value="" selected disabled hidden >Choose time</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -98,15 +89,21 @@
                     <option value="10">10</option>
                     <option value="15">15</option>
                 </select>
-                <select id="bonus-time">
+                <p style="display:inline-block; width:3%">+</p>
+                <select class="bonus-time" id="bonus-time">
                     <option value="" selected disabled hidden >Bonus time</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
                 </select>
-                <input id="link-holder" placeholder="Link" type="text" readonly>
-                <button onclick="SearchRequest()">Search</button>
+                <input class="link-holder" id="link-holder" placeholder="Link" type="text" readonly>
+                <button onclick="CopyLink()" class="copy-icon-btn" id="copy-btn" disabled>
+                    <i class="material-icons copy-icon-custom">file_copy</i>
+                </button>
+                <button id="search-btn" onclick="SearchRequest()">Search</button>
+                <p class="find-game">Finding opponent...</p>
+                <p class="find-game" id = "find-game-timer">00:00</p>
             </div>
         </div>
     </div>

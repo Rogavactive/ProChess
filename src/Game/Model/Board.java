@@ -74,7 +74,7 @@ public class Board {
                         result.put(new Pair<>(row, col), curCell.getMoves(this.getStateClone(), blackKingPos));
                     }
                 } else {
-                    result.put(new Pair<>(row, col), new Vector<>());
+                    result.put(new Pair<>(row, col), new Vector< Pair<Integer, Integer> >());
                 }
 
             }
