@@ -1,8 +1,7 @@
-package Game.Chat;
+package Game.Controller;
 
 
 import Accounting.Model.Account;
-import Game.Controller.ServletConfig;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/gamechat", configurator = ServletConfig.class)
+@ServerEndpoint(value = "/gamechat", configurator = ChatServletConfig.class)
 public class IngameChatEndpoint {
 
     static Set<Session> chatusers = Collections.synchronizedSet(new HashSet<Session>());
@@ -42,11 +41,11 @@ public class IngameChatEndpoint {
         chatusers.add(session);
         session.getUserProperties().put("Account",acc);
         onopen_lock.unlock();
-        try {
-            sendMessageToAll("ProChessBot", acc.getUsername() + " joined chat!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            sendMessageToAll("ProChessBot", acc.getUsername() + " joined chat!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @OnClose

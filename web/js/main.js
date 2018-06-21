@@ -1,11 +1,33 @@
 var findGameInterval = null;
+var searchWebSocket = null;
 
 $(document).ready(function(){
     $("#link-holder").click(function () {
         $(this).select();
     });
+    initWebsocket();
     //write here ajax async call to server, it will look for player n2 and callback function should handle response
 });
+
+function initWebsocket() {
+    try {
+        this.searchWebSocket = new WebSocket("ws://localhost:8080/gamesearch");
+        this.searchWebSocket.onopen = function(event) {
+            //nothing
+        }
+        this.searchWebSocket.onmessage = function(event) {
+            callback(JSON.parse(event.data))
+        }
+        this.searchWebSocket.onclose = function(event) {
+            //nothing
+        }
+        this.searchWebSocket.onerror = function(event) {
+            console.log('error: ' + JSON.stringify(event, null, 4));
+        }
+    } catch (exception) {
+        console.error(exception);
+    }
+}
 
 function SearchRequest(){
     var gameType = $( "#choose-type option:selected" ).val();
@@ -13,23 +35,19 @@ function SearchRequest(){
     var bonusTime = $( "#bonus-time option:selected" ).val();
     if(gameType===""||primaryTime===""||bonusTime==="")
         return;
-    try {
-        $.ajax({
-            url: "GameSearchServlet",
-            type: 'POST',
-            data: {
-                game_type : gameType,
-                time_primary : primaryTime,
-                time_bonus: bonusTime
-            },
-            success: function(data){
-                ajaxCallback(data);
-            }
-        });
-    } catch (err) {
-        console.log(err.message)
+
+    var message = '{"game_type" : "' + gameType+ '",' +
+        '"time_primary" : "' + primaryTime +'",' +
+        '"time_bonus" : "'+bonusTime+'"}';
+
+    console.log(message);
+    if (this.searchWebSocket.readyState == searchWebSocket.OPEN) {
+        this.searchWebSocket.send(message);
+    } else {
+        console.error('webSocket is not open. readyState=' + this.searchWebSocket.readyState);
     }
-    if(gameType=="random")
+
+    if(gameType==='0')
         createFindGameTimer();
     $('#search-btn').prop("disabled",true);
 }
@@ -39,10 +57,10 @@ function createFindGameTimer() {
     var time = 0;
     $( ".find-game" ).css( "visibility", "visible" );
     findGameInterval = setInterval(function () {
-            time++;
-            var time_str = getTimeString(time);
-            $('#find-game-timer').html(time_str)
-        }, 1000)
+        time++;
+        var time_str = getTimeString(time);
+        $('#find-game-timer').html(time_str)
+    }, 1000)
 }
 
 function getTimeString(time){
@@ -55,10 +73,10 @@ function getTimeString(time){
     return minutes + ":" + seconds;
 }
 
-function ajaxCallback(data) {
-    var parsed_data = JSON.parse(data);
-    var url = "http://localhost:8080/game.jsp?id=" + parsed_data.id;
-    if(parsed_data.type===1){//0-random, 1-friendly, 2-bot
+function callback(data) {
+    console.log(data);
+    var url = "http://localhost:8080/game.jsp?id=" + data.id;
+    if(data.type===1){//0-random, 1-friendly, 2-bot
         setLink(url)
     }else{
         window.location.href = url;

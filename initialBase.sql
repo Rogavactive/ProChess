@@ -57,16 +57,26 @@ CREATE TABLE moves(
   foreign key (gameID) references games(ID)
 );
 
--- temporary ids for opened game rooms
+-- GAME SEARCH MANAGMENT DDL
 
-drop table if exists ongoing_games_ids;
+# drop table if exists ongoing_games_ids;
+#
+# CREATE TABLE ongoing_games_ids(
+#   ID	INT auto_increment,
+#   temp_id	nvarchar(128),
+#   primary key	(ID),
+#   unique key (temp_id)
+# );
 
-CREATE TABLE ongoing_games_ids(
-  ID	INT auto_increment,
-  temp_id	nvarchar(128),
-  primary key	(ID)
+drop table if exists search_queue;
+
+CREATE TABLE search_queue(
+  username      nvarchar(64),
+  timePrimary   nvarchar(64),
+  timeBonus     nvarchar(64),
+  primary key	(username),
+  unique key (username)
 );
-
 
 -- VARIABLES FOR TESTING (DELETE BEFORE FINAL RELEASE)
 

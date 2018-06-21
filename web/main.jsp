@@ -33,7 +33,7 @@
     <%--<meta http-equiv="Refresh" content="3;url=game.jsp">--%>
     <%
         //before the code loads, checks if user is authorised.
-        if(request.getSession().getAttribute("Account") ==null){
+        if(request.getSession().getAttribute("Account") == null){
             response.sendRedirect("index.html");
             return;//this is to redirect immediately and not execute code bellow (which causes an error)
         }else{
@@ -46,10 +46,16 @@
             <tbody>
                 <tr>
                     <td>
-                        <a class="top-navbar-anchors" href="index.html"><span class="top-navbar-left">ProChess</span></a>
+                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-left">ProChess</span></a>
                     </td>
                     <td colspan="2">
-                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Game</span></a>
+                        <a class="top-navbar-anchors" href="game.jsp<%
+                            String id = (String) request.getSession().getAttribute("gameID");
+                            if(id!=null)
+                                out.print("?id="+id);
+                            %>">
+                            <span class="top-navbar-elem">Game</span>
+                        </a>
                     </td>
                     <td colspan="2">
                         <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
@@ -75,9 +81,9 @@
                 <div style="align-items: center">
                     <select class="choose-type" id="choose-type"> <!--Supplement an id here instead of using 'text'-->
                         <option value="" selected disabled hidden >Choose type</option>
-                        <option value="random">Random Opponent</option>
-                        <option value="friendly">Friend</option>
-                        <option value="bot">Single Play</option>
+                        <option value="0">Random Opponent</option>
+                        <option value="1">Friend</option>
+                        <option value="2">Single Play</option>
                     </select>
                 </div>
                 <p>Choose time:</p>

@@ -76,6 +76,16 @@ public class DataBaseManager {
         }
     }
 
+    public void closeResultset(ResultSet rslt){
+        try {
+            if (rslt != null) {
+                rslt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }

@@ -41,10 +41,16 @@
         <tbody>
         <tr>
             <td>
-                <a class="top-navbar-anchors" href="index.html"><span class="top-navbar-left">ProChess</span></a>
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-left">ProChess</span></a>
             </td>
             <td colspan="2">
-                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Game</span></a>
+                <a class="top-navbar-anchors" href="game.jsp<%
+                String id = (String) request.getSession().getAttribute("gameID");
+                if(id!=null)
+                    out.print("?id="+id);
+                %>">
+                    <span class="top-navbar-elem">Game</span>
+                </a>
             </td>
             <td colspan="2">
                 <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>

@@ -1,6 +1,8 @@
-package Accounting.Controller;
+package Listeners;
 
 import Accounting.Model.AccountManager;
+import Game.Model.GameManager;
+import GameConnection.Model.GameSearchManager;
 import dbConnection.DataBaseManager;
 
 import javax.servlet.ServletContextEvent;
@@ -25,6 +27,8 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     public void contextInitialized(ServletContextEvent sce) {
         DataBaseManager manager = new DataBaseManager();
         sce.getServletContext().setAttribute("AccManager", new AccountManager(manager));
+        sce.getServletContext().setAttribute("GameManager", new GameManager(manager));
+        sce.getServletContext().setAttribute("GameSearchManager", new GameSearchManager(manager));
       /* This method is called when the servlet context is
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
