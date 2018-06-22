@@ -48,20 +48,26 @@ public class AccountManager {
                     + "\',\'" + pass_hash + "\',\'" + email + "\');";
         }
         Connection conn = null;
+        ResultSet rslt = null;
         try {
             conn = manager.getConnection();
-            if (manager.executeUpdate(sqlQueryStatement,conn)) {
+            if(!manager.executeUpdate(sqlQueryStatement,conn))
+                return null;
+            sqlQueryStatement = "select ID from accounts where username=\""+username+"\";";
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
+            if (rslt!=null&&rslt.next()) {
+                int id = rslt.getInt("ID");
                 if(password==null)
-                    return new Account(username,email,this,false);
+                    return new Account(username,email,this,id,false);
                 else
-                    return new Account(username, email, this, true);
+                    return new Account(username, email, this,id, true);
             }
             return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }finally {
-            manager.closeConnection(conn);
+            manager.closeConnections(conn,rslt);
         }
     }
 
@@ -69,7 +75,7 @@ public class AccountManager {
         if(password==null)
             return null;
         String pass_hash = hash(password);
-        String sqlQueryStatement = "select email from accounts\n" + "	where username = \'"
+        String sqlQueryStatement = "select email,id from accounts\n" + "	where username = \'"
                 + username + "\' and pass_hash = \'" + pass_hash + "\';";
 
         Connection conn = null;
@@ -80,7 +86,8 @@ public class AccountManager {
             rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt != null && rslt.next()) {
                 String email = rslt.getString("email");
-                return new Account(username, email, this, true);
+                int id = rslt.getInt("ID");
+                return new Account(username, email, this,id, true);
             }
             return null;
         } catch (SQLException e) {
@@ -161,7 +168,7 @@ public class AccountManager {
     }
 
     public Account googleAccountExists(String email){
-        String sqlQueryStatement = "select username,pass_hash from accounts\n" +
+        String sqlQueryStatement = "select username,pass_hash,id from accounts\n" +
                 "  where email=\""+email+"\";";
 
         Connection conn = null;
@@ -173,7 +180,8 @@ public class AccountManager {
             if (rslt != null && rslt.next()) {
                 String username = rslt.getString("username");
                 boolean isNative = rslt.getString("pass_hash")!=null;
-                return new Account(username,email,this,isNative);
+                int id = rslt.getInt("ID");
+                return new Account(username,email,this,id,isNative);
             }
             return null;
         } catch (SQLException e) {

@@ -25,6 +25,7 @@ public class IngameChatEndpoint {
     @OnOpen
     public void onOpen(Session session,EndpointConfig config) {
 //        System.out.println("chat onOpen::" + session.getId());
+        String username = "";
         onopen_lock.lock();
         HttpSession httpSession = ((HttpSession)config.getUserProperties().get("HttpSession"));
         if(httpSession==null){
@@ -32,14 +33,16 @@ public class IngameChatEndpoint {
             onopen_lock.unlock();
             return;
         }
-        Account acc = (Account) httpSession.getAttribute("Account");
-        if(acc==null){
+        try{
+            username = ((Account) httpSession.getAttribute("Account")).getUsername();
+        }catch(NullPointerException e){
+            e.printStackTrace();
             System.out.println("Account is null. This occured at WebSocketSession: " + session.getId());
             onopen_lock.unlock();
             return;
         }
         chatusers.add(session);
-        session.getUserProperties().put("Account",acc);
+        session.getUserProperties().put("Username",username);
         onopen_lock.unlock();
 //        try {
 //            sendMessageToAll("ProChessBot", acc.getUsername() + " joined chat!");
@@ -58,7 +61,7 @@ public class IngameChatEndpoint {
 //        System.out.println("chat onMessage::From=" + session.getId() + " Message=" + message);
         if(message.equals(""))
             return;
-        String username = ((Account) session.getUserProperties().get("Account")).getUsername();
+        String username = (String) session.getUserProperties().get("Username");
         sendMessageToAll(username,message);
 //        System.out.println("chat after onMessage::From=" + session.getId() + " Message=" + message);
     }

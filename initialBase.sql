@@ -71,11 +71,12 @@ CREATE TABLE moves(
 drop table if exists search_queue;
 
 CREATE TABLE search_queue(
-  username      nvarchar(64),
+  username_ID   INT,
   timePrimary   nvarchar(64),
   timeBonus     nvarchar(64),
-  primary key	(username),
-  unique key (username)
+  foreign key	(username_ID) references accounts(ID),
+  primary key	(username_ID),
+  unique key (username_ID)
 );
 
 -- VARIABLES FOR TESTING (DELETE BEFORE FINAL RELEASE)

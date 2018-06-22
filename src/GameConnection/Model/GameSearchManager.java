@@ -17,22 +17,28 @@ public class GameSearchManager {
         this.manager = manager;
     }
 
-    public String findOpponent(Account player,String timePrimary, String timeBonus){
+    public int findOpponent(Account player,String timePrimary, String timeBonus){
         //ranks roca daamateb accountshi iqneba eg rank da martivad amoigeb.
         //gameType:random-0, friendly-1, bot-2   ,   time_primary:1,2,5,10,15     ,    time_bonus:1,2,5,10
-        String username = player.getUsername();
+        int usernameID = player.getID();
         Connection conn = null;
         lock.lock();
         try {
             conn = manager.getConnection();
-            if(usernameInQueue(username,conn)){
-                if(!updateUserQueue(username,timePrimary,timeBonus,conn))
-                    return null;
+            if(usernameInQueue(usernameID,conn)){
+                if(!updateUserQueue(usernameID,timePrimary,timeBonus,conn))
+                    return -1;
+                else{
+                    return lookForOpponnent(timePrimary,timeBonus,conn,usernameID);
+                }
             }
-            return lookForOpponnent(timePrimary,timeBonus,conn,username);
+            int opponentID = lookForOpponnent(timePrimary,timeBonus,conn,usernameID);
+            if(opponentID==0&&!addToQueue(usernameID,timePrimary,timeBonus,conn))
+                return -1;
+            return opponentID;
         }catch (SQLException e) {
             e.printStackTrace();
-            return null;//null means something went wrong
+            return -1;//-1 means something went wrong
         }finally {
             lock.unlock();
             manager.closeConnection(conn);
@@ -40,43 +46,40 @@ public class GameSearchManager {
         //if exists match, return opponent username as string, else return "" and add to queue.
     }
 
-    private String lookForOpponnent(String timePrimary, String timeBonus, Connection conn,String username) {
-        String sqlQueryStatement = "select username from search_queue\n" +
-                "where timePrimary=" + timePrimary+ " and timeBonus="+timeBonus+" and username!=\""+username+"\";";
+    private int lookForOpponnent(String timePrimary, String timeBonus, Connection conn,int username_ID) {
+        String sqlQueryStatement = "select username_ID from search_queue\n" +
+                "where timePrimary=" + timePrimary+ " and timeBonus="+timeBonus+" and username_ID!="+username_ID+";";
         ResultSet rslt = manager.executeQuerry(sqlQueryStatement,conn);
-        String opponent = "";
+        int opponentID = 0;
         try {
             if(rslt!=null&&rslt.next()){
-                opponent = rslt.getString("username");
-                removeFromQueue(opponent,conn);
-            }else{
-                if(!addToQueue(username,timePrimary,timeBonus,conn))
-                    return null;
+                opponentID = rslt.getInt("username_ID");
+                removeFromQueue(opponentID,conn);
             }
-            return opponent;
+            return opponentID;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return -1;
         }finally {
             manager.closeResultset(rslt);
         }
     }
 
-    private boolean addToQueue(String username, String timePrimary, String timeBonus, Connection conn) {
+    private boolean addToQueue(int username_ID, String timePrimary, String timeBonus, Connection conn) {
         String sqlQueryStatement = "insert INTO search_queue VALUE\n" +
-                "  (\""+username+"\","+timePrimary+","+timeBonus+");";
+                "  ("+username_ID+","+timePrimary+","+timeBonus+");";
         return manager.executeUpdate(sqlQueryStatement,conn);
     }
 
-    private boolean updateUserQueue(String username, String timePrimary, String timeBonus, Connection conn) {
+    private boolean updateUserQueue(int username_ID, String timePrimary, String timeBonus, Connection conn) {
         String sqlQueryStatement = "UPDATE search_queue set timePrimary="+timePrimary+", timeBonus="+timeBonus+"\n" +
-                "  where username=\""+username+"\";";
+                "  where username_ID="+username_ID+";";
         return manager.executeUpdate(sqlQueryStatement,conn);
     }
 
-    private boolean usernameInQueue(String username,Connection conn){
-        String sqlQueryStatement = "select count(username) as users_count from search_queue\n" +
-                "  where username=\""+username+"\";";
+    private boolean usernameInQueue(int username_ID,Connection conn){
+        String sqlQueryStatement = "select count(username_ID) as users_count from search_queue\n" +
+                "  where username_ID="+username_ID+";";
         ResultSet rslt = manager.executeQuerry(sqlQueryStatement,conn);
         try {
             if(rslt!=null&&rslt.next()){
@@ -90,16 +93,16 @@ public class GameSearchManager {
         return true;
     }
 
-    public boolean removeFromQueue(String username, Connection conn){
-        String sqlQueryStatement = "DELETE FROM search_queue WHERE username=\""+ username +"\";";
+    public boolean removeFromQueue(int username_ID, Connection conn){
+        String sqlQueryStatement = "DELETE FROM search_queue WHERE username_ID="+ username_ID +";";
         return manager.executeUpdate(sqlQueryStatement,conn);
     }
 
-    public boolean removeFromQueue(String username) {
+    public boolean removeFromQueue(int username_ID) {
         Connection conn = null;
         try {
             conn = manager.getConnection();
-            return removeFromQueue(username,conn);
+            return removeFromQueue(username_ID,conn);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

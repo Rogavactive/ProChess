@@ -4,13 +4,15 @@ public class Account {
     private String username;
     private String email;
     private AccountManager manager;
+    private int id;
     private boolean type; //if google account: false, if native: true
 
-    Account(String username, String email, AccountManager manager,boolean type) {
+    Account(String username, String email, AccountManager manager, int id ,boolean type) {
         this.username = username;
         this.email = email;
         this.manager = manager;
         this.type = type;
+        this.id = id;
     }
 
     public synchronized String getUsername() {
@@ -23,6 +25,10 @@ public class Account {
 
     public synchronized boolean type(){
         return type;
+    }
+
+    public synchronized int getID(){
+        return id;
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {

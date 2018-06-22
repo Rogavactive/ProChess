@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/gamesearch", configurator = SearchServletConfig.class)
 public class GameSearchEndpoint {
 
-    private static ConcurrentHashMap<String, Session > users_in_queue = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Integer , Session > users_in_queue = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session,EndpointConfig config) {
@@ -30,8 +30,8 @@ public class GameSearchEndpoint {
         HttpSession httpSession = (HttpSession)session.getUserProperties().get("HttpSession");
         Account acc = (Account) httpSession.getAttribute("Account");
         GameSearchManager searchManager = (GameSearchManager) httpSession.getServletContext().getAttribute("GameSearchManager");
-        searchManager.removeFromQueue(acc.getUsername());
-        users_in_queue.remove(acc.getUsername());
+        searchManager.removeFromQueue(acc.getID());
+        users_in_queue.remove(acc.getID());
     }
 
     @OnMessage
@@ -45,11 +45,11 @@ public class GameSearchEndpoint {
         String gameType = (String) jsonObject.get("game_type");
         String time_primary = (String) jsonObject.get("time_primary");
         String time_bonus = (String) jsonObject.get("time_bonus");
-        String opponent = searchManager.findOpponent(acc,time_primary,time_bonus);
-        if(opponent==null)
+        int opponent = searchManager.findOpponent(acc,time_primary,time_bonus);
+        if(opponent==-1)
             return;
-        if(opponent.equals("")){
-            users_in_queue.put(acc.getUsername(),session);
+        if(opponent==0){
+            users_in_queue.put(acc.getID(),session);
         }else{
             //create game with this opponent
             Session opponentSession = users_in_queue.get(opponent);
