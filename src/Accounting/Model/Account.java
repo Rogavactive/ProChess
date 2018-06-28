@@ -6,7 +6,10 @@ public class Account {
     private AccountManager manager;
     private int id;
     private boolean type; //if google account: false, if native: true
-
+    int lasha=123;
+    void uselasha(){
+        lasha=23;
+    }
     Account(String username, String email, AccountManager manager, int id ,boolean type) {
         this.username = username;
         this.email = email;
