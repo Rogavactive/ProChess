@@ -2,6 +2,7 @@ package dbConnection;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,24 +10,19 @@ import java.sql.SQLException;
 
 public class DataBaseManager {
 
-
+    private static DataBaseManager managerInstance = new DataBaseManager();
     private MysqlDataSource dataSource = new MysqlDataSource();
 
-    public DataBaseManager(){
-        this("");
+    public static DataBaseManager getInstance() {return managerInstance;}
+
+    private DataBaseManager(){
+        connectDB();
     }
 
-    public DataBaseManager(String dbName){
-        connectDB(dbName);
-    }
-
-    private void connectDB(String dbName) {
+    private void connectDB() {
         dataSource.setUser(MyDBInfo.MYSQL_USERNAME);
         dataSource.setPassword(MyDBInfo.MYSQL_PASSWORD);
-        if(!dbName.equals(""))
-            dataSource.setUrl(dbName);
-        else
-            dataSource.setUrl(MyDBInfo.MYSQL_DATABASE_SERVER);
+        dataSource.setUrl(MyDBInfo.MYSQL_DATABASE_SERVER);
     }
 
     public void Dispose(){

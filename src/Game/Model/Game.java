@@ -21,6 +21,7 @@ public class Game {
     private Player player2;
     private Vector<Move> history;
     private Player curPlayer;
+    private DataBaseManager manager;
 
     // Constructor
     public Game(Player player1, Player player2){
@@ -29,6 +30,17 @@ public class Game {
         this.curPlayer = player1;
         board = new Board();
         history = new Vector<>();
+        manager = DataBaseManager.getInstance();
+    }
+
+    //for mocking and testing
+    public Game(Player player1, Player player2, DataBaseManager manager){
+        this.player1 = player1;
+        this.player2 = player2;
+        this.curPlayer = player1;
+        board = new Board();
+        history = new Vector<>();
+        this.manager = manager;
     }
 
     public Player getPlayer1(){
@@ -123,19 +135,18 @@ public class Game {
 
     // This method saves game in database
     private void saveGame(int winner) throws SQLException {
-        DataBaseManager manager = new DataBaseManager("gameHistory");
         Connection con = manager.getConnection();
 
         // Creates new game in database
         String updStm = "insert into games (player1ID, player2ID, ColorOfPlayer1, ColorOfPlayer2, winner) " +
-                "values (" + player1.getID() + ", " + player2.getID() + ", " + player1.getColor() + ", "
+                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() + ", " + player1.getColor() + ", "
                 + player2.getColor() + ", " + winner + ")";
         manager.executeUpdate(updStm, con);
 
         // find current game's ID
         int gameID = 0;
-        String findStm = "select ID from games where player1ID = " + player1.getID() + " and " +
-                "player2ID = " + player2.getID() + " and " + "ColorOfPlayer1 = " + player1.getColor() + " and " +
+        String findStm = "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
+                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " + player1.getColor() + " and " +
                 "ColorOfPlayer2 = " + player2.getColor() + " and " + "winner = " + winner + ")";
         ResultSet result = manager.executeQuerry(findStm, con);
         gameID = result.getInt(0);

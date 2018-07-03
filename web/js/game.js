@@ -106,3 +106,7 @@ function chatBtnClick() {
     sendToChat($('#chatMessage').val());
     $('#chatMessage').val("")
 }
+
+function makeMove() {
+    
+}
