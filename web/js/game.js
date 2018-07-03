@@ -1,9 +1,11 @@
 var gameWebSocket = null;
 var chatWebSocket = null;
-
+var canvas=null;
 $(document).ready(function(){
-    connectGame()
-    connectChat()
+    connectGame();
+    connectChat();
+    canvas=$('#board');
+
 });
 
 //GAME SOCKET
