@@ -1,6 +1,5 @@
 package Game.Model;
 
-import Game.Model.Game;
 import javafx.util.Pair;
 
 public class Move {
@@ -18,5 +17,25 @@ public class Move {
         this.to = new Pair<>(dstRow, dstCol);
         this.pieceType = pieceType;
         this.pieceColor = pieceColor;
+    }
+
+    // Returns destination cell of move
+    public Pair<Integer, Integer> getTo(){
+        return this.to;
+    }
+
+    // Returns source cell of move
+    public Pair<Integer, Integer> getFrom(){
+        return this.from;
+    }
+
+    // Returns piece color, which was moved
+    public boolean getColor(){
+        return this.pieceColor;
+    }
+
+    // Returns piece type, which was moved
+    public Piece.pieceType getType(){
+        return this.pieceType;
     }
 }

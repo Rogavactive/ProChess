@@ -111,4 +111,9 @@ public class Board {
         board.get(dstRow).get(dstCol).putPiece(board.get(srcRow).get(srcCol).getPiece());
         board.get(srcRow).get(srcCol).removePiece();
     }
+
+    // This method adds given piece on given cell
+    public void addPiece(int srcRow, int srcCol, Piece piece){
+        board.get(srcRow).get(srcCol).putPiece(piece);
+    }
 }
