@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/gamechat", configurator = ChatServletConfig.class)
+@ServerEndpoint(value = "/gamechat", configurator = SocketConfig.class)
 public class IngameChatEndpoint {
 
     static Set<Session> chatusers = Collections.synchronizedSet(new HashSet<Session>());

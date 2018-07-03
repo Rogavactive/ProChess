@@ -13,7 +13,8 @@ public abstract class Piece implements Cloneable{
         Knight,
         Pawn,
         Queen,
-        Rook
+        Rook,
+        emptyCell
     }
 
     // This method is called when piece has done a move
