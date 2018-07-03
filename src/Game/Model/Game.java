@@ -164,6 +164,17 @@ public class Game {
 
         manager.closeConnection(con);
     }
+    public Vector<Vector<Piece.pieceType>> getBoardState(){
+        Vector<Vector<Piece.pieceType>> result = new Vector<Vector<Piece.pieceType>>();
+
+        for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
+            result.add(new Vector<Piece.pieceType>(Constants.NUMBER_OF_COLUMNS));
+            for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
+                result.get(row).add(board.getCell(row,col).getPieceType());
+            }
+        }
+        return result;
+    }
 
  /*   public void click(int row, int col, Player player){
         if(curPlayer!=player)

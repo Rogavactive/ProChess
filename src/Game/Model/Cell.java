@@ -67,7 +67,7 @@ public class Cell{
 
     // This method returns type of piece, which is placed on cell
     public Piece.pieceType getPieceType(){
-        assert (this.piece != null);
+        if(piece == null) return Piece.pieceType.emptyCell;
         return piece.getType();
     }
 }
