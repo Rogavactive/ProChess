@@ -21,28 +21,8 @@
     width:75%;
     margin:auto;
     height:100%;
-    vertical-align: center;
-    position: relative;
-}
-
-.board-img{
-    display:block;
-    margin:auto;
-    height: auto;
-    width:auto;
-}
-
-.chess-board-div{
-    display:block;
-    margin:auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width:100%;
-    height:100%;
-
+   background-color: grey;
+    text-align: center;
 }
 
 .chat-box{
@@ -100,11 +80,42 @@
     padding: 2px 5px;
 }
 
-.canvas-container{
-    background-image: url("../src/Boards/board.png");
-    background-size:cover;
+.container{
+    text-align: center;
+      display: inline-block;
+}
+.contentPane{
 
-    width: 200px;
-    height: 200px;
+    display: inline-block;
+}
 
+#chess_board a {
+    color:#000;
+    display:block;
+    font-size:60px;
+    height:80px;
+    position:relative;
+    text-decoration:none;
+    text-shadow:0 1px #fff;
+    width:80px;
+}
+#chess_board { border:5px solid #333; }
+#chess_board td {
+    background:#fff;
+    cursor: pointer;
+    box-shadow:inset 0 0 0 1px #fff;
+    -moz-box-shadow:inset 0 0 0 1px #fff;
+    -webkit-box-shadow:inset 0 0 0 1px #fff;
+    height:80px;
+    text-align:center;
+    vertical-align:middle;
+    width:80px;
+}
+#chess_board tr:nth-child(odd) td:nth-child(even),
+#chess_board tr:nth-child(even) td:nth-child(odd) {
+    background:#ccc;
+
+    box-shadow:inset 0 0 10px rgba(0,0,0,.4);
+    -moz-box-shadow:inset 0 0 10px rgba(0,0,0,.4);
+    -webkit-box-shadow:inset 0 0 10px rgba(0,0,0,.4);
 }
