@@ -34,6 +34,6 @@ public class GameSocket {
 
     @OnError
     public void onError(Throwable t) {
-        System.out.println("onError::" + t.getMessage());
+        System.out.println("onError(game)::" + t.getMessage());
     }
 }

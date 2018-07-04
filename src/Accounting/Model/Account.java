@@ -7,12 +7,21 @@ public class Account {
     private int id;
     private boolean type; //if google account: false, if native: true
 
-    public Account(String username, String email, AccountManager manager, int id ,boolean type) {
+    private int bulletRaiting;
+    private int blitzRaiting;
+    private int classicalRaiting;
+
+    Account(String username, String email, AccountManager manager, int id, boolean type,
+            int bulletRaiting, int blitzRaiting, int classicalRaiting) {
         this.username = username;
         this.email = email;
         this.manager = manager;
         this.type = type;
         this.id = id;
+
+        this.bulletRaiting = bulletRaiting;
+        this.blitzRaiting = blitzRaiting;
+        this.classicalRaiting = classicalRaiting;
     }
 
     public synchronized String getUsername() {
@@ -29,6 +38,22 @@ public class Account {
 
     public synchronized int getID(){
         return id;
+    }
+
+    public synchronized int getDefaultRaiting() {
+        return 1500;
+    }
+
+    public synchronized int getBulletRaiting() {
+        return bulletRaiting;
+    }
+
+    public synchronized int getBlitzRaiting() {
+        return blitzRaiting;
+    }
+
+    public synchronized int getClassicalRaiting() {
+        return classicalRaiting;
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {
