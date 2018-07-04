@@ -6,17 +6,18 @@ public class Player {
     private Account account;
     private boolean color;
 
+    // Constructor
     public Player(Account account, boolean color){
         this.color = color;
         this.account = account;
     }
 
-//    public int getID(){ return this.ID; };
-
+    // Returns account for player
     public Account getAccount(){
         return account;
     }
 
+    // Returns color of player
     public boolean getColor() {
         return color;
     }

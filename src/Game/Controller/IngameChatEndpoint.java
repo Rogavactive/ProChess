@@ -87,6 +87,6 @@ public class IngameChatEndpoint {
 
     @OnError
     public void onError(Throwable t) {
-        System.out.println("onError::" + t.getMessage());
+        System.out.println("onError(chat)::" + t.getMessage());
     }
 }
