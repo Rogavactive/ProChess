@@ -1,11 +1,11 @@
 package Game.Model;
 
 import com.google.gson.Gson;
+import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
+import dbConnection.DataBaseTestManager;
 import javafx.util.Pair;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,11 +30,11 @@ public class Game {
         this.curPlayer = player1;
         board = new Board();
         history = new Vector<>();
-        manager = DataBaseManager.getInstance();
+        manager = DataBaseMainManager.getInstance();
     }
 
     //for mocking and testing
-    public Game(Player player1, Player player2, DataBaseManager manager){
+    public Game(Player player1, Player player2, DataBaseTestManager manager){
         this.player1 = player1;
         this.player2 = player2;
         this.curPlayer = player1;

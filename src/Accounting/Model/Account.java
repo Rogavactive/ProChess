@@ -7,7 +7,7 @@ public class Account {
     private int id;
     private boolean type; //if google account: false, if native: true
 
-    Account(String username, String email, AccountManager manager, int id ,boolean type) {
+    public Account(String username, String email, AccountManager manager, int id ,boolean type) {
         this.username = username;
         this.email = email;
         this.manager = manager;

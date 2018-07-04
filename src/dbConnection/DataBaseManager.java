@@ -1,33 +1,11 @@
 package dbConnection;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DataBaseManager {
-
-    private static DataBaseManager managerInstance = new DataBaseManager();
-    private MysqlDataSource dataSource = new MysqlDataSource();
-
-    public static DataBaseManager getInstance() {return managerInstance;}
-
-    private DataBaseManager(){
-        connectDB();
-    }
-
-    private void connectDB() {
-        dataSource.setUser(MyDBInfo.MYSQL_USERNAME);
-        dataSource.setPassword(MyDBInfo.MYSQL_PASSWORD);
-        dataSource.setUrl(MyDBInfo.MYSQL_DATABASE_SERVER);
-    }
-
-    public void Dispose(){
-        //nothing yet
-    }
+public abstract class DataBaseManager {
 
     public ResultSet executeQuerry(String statement, Connection conn){
         try {
@@ -83,7 +61,6 @@ public class DataBaseManager {
     }
 
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return null;
     }
-
 }

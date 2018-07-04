@@ -1,7 +1,9 @@
 package GameConnection.Model;
 
 import Accounting.Model.Account;
+import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
+import dbConnection.DataBaseTestManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,7 +15,11 @@ public class GameSearchManager {
     private DataBaseManager manager;
     private ReentrantLock lock = new ReentrantLock();
 
-    public GameSearchManager(DataBaseManager manager){
+    public GameSearchManager(DataBaseMainManager manager){
+        this.manager = manager;
+    }
+
+    public GameSearchManager(DataBaseTestManager manager){
         this.manager = manager;
     }
 

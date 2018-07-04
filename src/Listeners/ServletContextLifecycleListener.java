@@ -3,6 +3,7 @@ package Listeners;
 import Accounting.Model.AccountManager;
 import Game.Model.GameManager;
 import GameConnection.Model.GameSearchManager;
+import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
 
 import javax.servlet.ServletContextEvent;
@@ -25,7 +26,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     // ServletContextListener implementation
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
-        DataBaseManager manager = DataBaseManager.getInstance();
+        DataBaseMainManager manager = DataBaseMainManager.getInstance();
         sce.getServletContext().setAttribute("AccManager", new AccountManager(manager));
         sce.getServletContext().setAttribute("GameManager", new GameManager(manager));
         sce.getServletContext().setAttribute("GameSearchManager", new GameSearchManager(manager));

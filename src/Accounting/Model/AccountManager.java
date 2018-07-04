@@ -1,7 +1,9 @@
 package Accounting.Model;
 
 
+import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
+import dbConnection.DataBaseTestManager;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -23,7 +25,11 @@ public class AccountManager {
     private static final int CODE_MAX_LEN=60;
     private GoogleServices g_services = new GoogleServices();
 
-    public AccountManager(DataBaseManager manager) {
+    public AccountManager(DataBaseMainManager manager) {
+        this.manager = manager;
+    }
+
+    public AccountManager(DataBaseTestManager manager) {
         this.manager = manager;
     }
 

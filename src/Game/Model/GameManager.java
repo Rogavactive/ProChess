@@ -1,6 +1,8 @@
 package Game.Model;
 
+import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
+import dbConnection.DataBaseTestManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +14,12 @@ public class GameManager {
     private DataBaseManager manager;
     private ConcurrentHashMap<String,Game> games;
 
-    public GameManager(DataBaseManager manager){
+    public GameManager(DataBaseMainManager manager){
+        this.manager = manager;
+        games = new ConcurrentHashMap<>();
+    }
+
+    public GameManager(DataBaseTestManager manager){
         this.manager = manager;
         games = new ConcurrentHashMap<>();
     }
