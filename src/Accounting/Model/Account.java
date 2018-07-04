@@ -1,6 +1,7 @@
 package Accounting.Model;
 
 public class Account {
+
     private String username;
     private String email;
     private AccountManager manager;
@@ -11,17 +12,12 @@ public class Account {
     private int blitzRaiting;
     private int classicalRaiting;
 
-    Account(String username, String email, AccountManager manager, int id, boolean type,
-            int bulletRaiting, int blitzRaiting, int classicalRaiting) {
+    public Account(String username, String email, AccountManager manager, int id, boolean type) {
         this.username = username;
         this.email = email;
         this.manager = manager;
         this.type = type;
         this.id = id;
-
-        this.bulletRaiting = bulletRaiting;
-        this.blitzRaiting = blitzRaiting;
-        this.classicalRaiting = classicalRaiting;
     }
 
     public synchronized String getUsername() {

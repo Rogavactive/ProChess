@@ -8,7 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <%@ page import="Accounting.Model.Account" %>
     <title>Pro Chess</title>
+    <%
+        Account acc = (Account)request.getSession().getAttribute("Account");
+        if (acc == null) {
+            response.sendRedirect("index.html");
+            return ;
+        }
+        int rating = acc.getDefaultRaiting();
+    %>
 </head>
 <body>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
