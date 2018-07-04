@@ -22,6 +22,18 @@ public class Account {
         this.manager = manager;
         this.type = type;
         this.id = id;
+        int[] ranks = manager.getRanks(id);
+        if(ranks==null)
+            throw new IllegalArgumentException();
+        bulletRaiting = ranks[0];
+        blitzRaiting = ranks[1];
+        classicalRaiting = ranks[2];
+        int[] matches = manager.getMatches(id);
+        if(matches==null)
+            throw new IllegalArgumentException();
+        bulletMatches = matches[0];
+        blitzMatches = matches[1];
+        classicalMatches = matches[2];
     }
 
     public synchronized String getUsername() {
@@ -53,29 +65,23 @@ public class Account {
     }
 
     public synchronized int getBulletRaiting() {
-        if (this.getBulletMatches() > 0)
-            return bulletRaiting;
-        return this.getDefaultRaiting();
+        return bulletRaiting;
     }
 
     public synchronized int getBlitzRaiting() {
-        if (this.getBlitzMatches() > 0)
-            return blitzRaiting;
-        return this.getDefaultRaiting();
+        return blitzRaiting;
     }
 
     public synchronized int getClassicalRaiting() {
-        if (this.getClassicalMatches() > 0)
-            return classicalRaiting;
-        return this.getDefaultRaiting();
-    }
-
-    public synchronized int getDefaultRaiting() {
-        return 1500;
+        return classicalRaiting;
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {
-        return manager.setPassword(oldpass, newpass, username);
+        if(manager.setPassword(oldpass, newpass, id)){
+            type = true;
+            return true;
+        }
+        return false;
     }
 
     public synchronized boolean change(String username, String email) {
@@ -88,7 +94,37 @@ public class Account {
         }
     }
 
+    public synchronized boolean changeRating(int change,int gameType){
+        switch (gameType) {
+            case 0:
+                bulletMatches++;
+                if(!manager.setMatches(id,gameType,bulletMatches))
+                    return false;
+                bulletRaiting+=change;
+                if(manager.setRating(id,gameType,bulletRaiting))
+                    return false;
+                break;
+            case 1:
+                blitzMatches++;
+                if(manager.setMatches(id,gameType,blitzMatches))
+                    return false;
+                blitzRaiting+=change;
+                if(manager.setRating(id,gameType,blitzRaiting))
+                    return false;
+                break;
+            case 2:
+                classicalMatches++;
+                if(!manager.setMatches(id,gameType,classicalMatches))
+                    return false;
+                classicalRaiting+=change;
+                if(!manager.setRating(id,gameType,classicalRaiting))
+                    return false;
+                break;
+        }
+        return true;
+    }
+
     public synchronized boolean remove() {
-        return manager.removeAccount(username);
+        return manager.removeAccount(id);
     }
 }
