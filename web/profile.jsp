@@ -23,25 +23,47 @@
             response.sendRedirect("index.html");
             return ;
         }
-        int rating = acc.getDefaultRaiting();
+
+        String username = acc.getUsername();
+        String email = acc.getEmail();
+
+        int bulletRating = acc.getBulletRaiting();
+        int blitzRating = acc.getBlitzRaiting();
+        int classicalRating = acc.getClassicalRaiting();
+
+        int bulletMatches = acc.getBulletMatches();
+        int blitzMatches = acc.getBlitzMatches();
+        int classicalMatches = acc.getClassicalMatches();
     %>
 </head>
 
 <body>
-    <div class="ratings">
-        <h1>User Ratings</h1>
-        <div class="bullets" title="Very fast games: less than 3 minutes">
-            <h3>Bullet</h3>
-            <span class="rating">
-                <strong>X(rating)</strong>
-                <span>X(num games) games</span>
-                <span class="progress"></span>
-            </span>
-        </div>
+<div class="ratings" align="left">
+    <h1>User Ratings</h1>
 
-
-
+    <div class="bullet" title="Very fast games: less than 3 minutes">
+        <h3>Bullet</h3>
+        <strong> <h2> <%= bulletRating %> </h2> </strong>
+        <h5> <%= bulletMatches%> games</h5>
     </div>
+
+    <div class="blitz" title="Fast games: 3 to 8 minutes">
+        <h3>Blitz</h3>
+        <strong> <h2> <%= blitzRating %> </h2> </strong>
+        <h5> <%= blitzMatches%> games</h5>
+    </div>
+
+    <div class="classical" title="Long games: more than 8 minutes">
+        <h3>Classical</h3>
+        <strong> <h2> <%= classicalRating %> </h2> </strong>
+        <h5> <%= classicalMatches%> games</h5>
+    </div>
+</div>
+
+<div class="information" align="center">
+    <h3> <%= username %> </h3>
+    <h3> <%= email %> </h3>
+</div>
 
 </body>
 

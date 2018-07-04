@@ -12,6 +12,10 @@ public class Account {
     private int blitzRaiting;
     private int classicalRaiting;
 
+    private int bulletMatches;
+    private int blitzMatches;
+    private int classicalMatches;
+
     public Account(String username, String email, AccountManager manager, int id, boolean type) {
         this.username = username;
         this.email = email;
@@ -36,20 +40,38 @@ public class Account {
         return id;
     }
 
-    public synchronized int getDefaultRaiting() {
-        return 1500;
+    public synchronized int getBulletMatches() {
+        return bulletMatches;
+    }
+
+    public synchronized int getBlitzMatches() {
+        return blitzMatches;
+    }
+
+    public synchronized int getClassicalMatches() {
+        return classicalMatches;
     }
 
     public synchronized int getBulletRaiting() {
-        return bulletRaiting;
+        if (this.getBulletMatches() > 0)
+            return bulletRaiting;
+        return this.getDefaultRaiting();
     }
 
     public synchronized int getBlitzRaiting() {
-        return blitzRaiting;
+        if (this.getBlitzMatches() > 0)
+            return blitzRaiting;
+        return this.getDefaultRaiting();
     }
 
     public synchronized int getClassicalRaiting() {
-        return classicalRaiting;
+        if (this.getClassicalMatches() > 0)
+            return classicalRaiting;
+        return this.getDefaultRaiting();
+    }
+
+    public synchronized int getDefaultRaiting() {
+        return 1500;
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {
