@@ -43,10 +43,12 @@ public class Game {
         this.manager = manager;
     }
 
+    // Returns first player
     public Player getPlayer1(){
         return player1;
     }
 
+    // Returns second player
     public Player getPlayer2(){
         return player2;
     }
@@ -75,9 +77,11 @@ public class Game {
         return new Gson().toJson(result);
     }
 
-    // This method checks wheter cur player has any move
+    // This method checks whether current player has any move
     private boolean noMoveIsPossible(ConcurrentHashMap<Pair<Integer,Integer>,Vector<Pair<Integer,Integer>>> result) {
+        // Check for every piece of current player
         for (Pair<Integer, Integer> p :  result.keySet()) {
+            // If any piece has some moves, there is at least  one possible move
             if( !(result.get(p).isEmpty()) )
                 return false;
         }
@@ -138,25 +142,28 @@ public class Game {
         Connection con = manager.getConnection();
 
         // Creates new game in database
-        String updStm = "insert into games (player1ID, player2ID, ColorOfPlayer1, ColorOfPlayer2, winner) " +
-                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() + ", " + player1.getColor() + ", "
-                + player2.getColor() + ", " + winner + ")";
+        String updStm = "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner) " +
+                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() +
+                ", " + player1.getColor() + ", " + player2.getColor() + ", " + winner + ")";
         manager.executeUpdate(updStm, con);
 
         // find current game's ID
-        int gameID = 0;
+        int gameID = -1;
+
         String findStm = "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
-                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " + player1.getColor() + " and " +
-                "ColorOfPlayer2 = " + player2.getColor() + " and " + "winner = " + winner + ")";
+                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " +
+                player1.getColor() + " and " + "ColorOfPlayer2 = " + player2.getColor() +
+                " and winner = " + winner + ")";
         ResultSet result = manager.executeQuerry(findStm, con);
-        gameID = result.getInt(0);
+        gameID = result.getInt(1);
 
         // Saves every move
         for(int i = 0; i < history.size(); i++){
             Move curMove = history.get(i);
+
             String stm = "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor) " +
-                    "values (" + gameID + ", " + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", "
-                    + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", " + curMove.getType()
+                    "values (" + gameID + ", " + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", "
+                    + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getType()
                     + ", " + curMove.getColor() + ")";
 
             manager.executeUpdate(stm, con);
@@ -164,6 +171,8 @@ public class Game {
 
         manager.closeConnection(con);
     }
+
+    // Returns copy of board
     public Vector<Vector<Piece.pieceType>> getBoardState(){
         Vector<Vector<Piece.pieceType>> result = new Vector<Vector<Piece.pieceType>>();
 
@@ -173,32 +182,7 @@ public class Game {
                 result.get(row).add(board.getCell(row,col).getPieceType());
             }
         }
+
         return result;
     }
-
- /*   public void click(int row, int col, Player player){
-        if(curPlayer!=player)
-            return;
-        if(clickNum == 0){
-            if(!board.getCell(row,col).hasPiece() || board.getCell(row,col).getPieceColor()!=curPlayer.getColor())
-                return;
-            markedCell = new Pair<Integer, Integer>(row,col);
-            possibleMoves = board.getMoves(row,col,curPlayer.getColor());
-            // return board.getMoves(row,col,curPlayer.getColor());
-        }
-        if(markedCell.equals(new Pair<>(row, col))){
-            clickNum = 0;
-            markedCell = new Pair<>(-1,-1);
-            possibleMoves = null;
-            return;
-        }
-        if(!possibleMoves.contains(new Pair<>(row,col)))
-            return;
-        switchPlayer();
-        clickNum=0;
-        board.move(markedCell.getKey(), markedCell.getValue(), row, col);
-        markedCell = new Pair<>(-1,-1);
-        possibleMoves = null;
-    }
-*/
 }

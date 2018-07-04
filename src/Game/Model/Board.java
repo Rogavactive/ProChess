@@ -76,14 +76,13 @@ public class Board {
                 } else {
                     result.put(new Pair<>(row, col), new Vector< Pair<Integer, Integer> >());
                 }
-
             }
         }
 
         return result;
     }
 
-    // Retuns cell on given coordinates
+    // Returns cell on given coordinates
     public Cell getCell(int row, int col) {
         if (row < 0 || row >= Constants.NUMBER_OF_ROWS || col < 0 || col >= Constants.NUMBER_OF_COLUMNS)
             return null;
