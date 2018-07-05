@@ -8,16 +8,16 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Rook extends Piece {
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
 
     // Constructor
-    public Rook(boolean color){
+    public Rook(Constants.pieceColor color){
         this.color = color;
         this.hasMoved = false;
     }
 
-    public Rook(boolean color, boolean hasMoved){
+    public Rook(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
     }
@@ -30,6 +30,7 @@ public class Rook extends Piece {
                 && !(state.get(curRow).get(curCol).hasPiece()) ){
             return true;
         }
+
         return false;
     }
 
@@ -68,6 +69,7 @@ public class Rook extends Piece {
                 && noCheckCaused(row, col, curRow, curCol, state, allieKingPos)){
             return true;
         }
+
         return false;
     }
 
@@ -95,7 +97,7 @@ public class Rook extends Piece {
 
     @Override
     // This method returns color of rook
-    public boolean getColor() {
+    public Constants.pieceColor getColor() {
         return this.color;
     }
 
@@ -107,15 +109,16 @@ public class Rook extends Piece {
 
     @Override
     // This method returns type of piece
-    public pieceType getType() {
-        return pieceType.Rook;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.Rook;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " Rook";
     }
 

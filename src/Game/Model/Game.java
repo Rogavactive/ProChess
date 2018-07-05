@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static Game.Model.Move.deadCol;
-import static Game.Model.Move.deadRow;
+import static Game.Model.Constants.deadCol;
+import static Game.Model.Constants.deadRow;
 
 public class Game {
     private Board board;
@@ -33,7 +33,7 @@ public class Game {
         manager = DataBaseMainManager.getInstance();
     }
 
-    //for mocking and testing
+    // for mocking and testing
     public Game(Player player1, Player player2, DataBaseTestManager manager){
         this.player1 = player1;
         this.player2 = player2;
@@ -55,7 +55,8 @@ public class Game {
 
     // This method returns all possible moves
     // for all pieces of current player
-    public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol) throws CloneNotSupportedException, SQLException {
+    public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
+            throws CloneNotSupportedException, SQLException {
         // make move and add it in history
         history.add(new Move(srcRow, srcCol, dstRow, dstCol,
                 board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
@@ -74,6 +75,7 @@ public class Game {
         if(noMoveIsPossible(result)){
             gameOver(true);
         }
+
         return new Gson().toJson(result);
     }
 
@@ -142,29 +144,19 @@ public class Game {
         Connection con = manager.getConnection();
 
         // Creates new game in database
-        String updStm = "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner) " +
-                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() +
-                ", " + player1.getColor() + ", " + player2.getColor() + ", " + winner + ")";
+        String updStm = insertGameStatement(winner);
         manager.executeUpdate(updStm, con);
 
         // find current game's ID
         int gameID = -1;
 
-        String findStm = "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
-                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " +
-                player1.getColor() + " and " + "ColorOfPlayer2 = " + player2.getColor() +
-                " and winner = " + winner + ")";
+        String findStm = findGameStatement(winner);
         ResultSet result = manager.executeQuerry(findStm, con);
         gameID = result.getInt(1);
 
         // Saves every move
         for(int i = 0; i < history.size(); i++){
-            Move curMove = history.get(i);
-
-            String stm = "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor) " +
-                    "values (" + gameID + ", " + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", "
-                    + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getType()
-                    + ", " + curMove.getColor() + ")";
+            String stm = addMovesStatement(gameID, history.get(i));
 
             manager.executeUpdate(stm, con);
         }
@@ -172,12 +164,35 @@ public class Game {
         manager.closeConnection(con);
     }
 
+    // Statement for adding moves in database
+    private String addMovesStatement(int gameID, Move curMove){
+        return "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor) " +
+                "values (" + gameID + ", " + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", "
+                + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getType()
+                + ", " + curMove.getColor() + ")";
+    }
+
+    // Statement for finding game in database
+    private String findGameStatement(int winner){
+        return "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
+                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " +
+                player1.getColor() + " and " + "ColorOfPlayer2 = " + player2.getColor() +
+                " and winner = " + winner + ")";
+    }
+
+    // Statement for creating new game in database
+    private String insertGameStatement(int winner){
+        return "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner) " +
+                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() +
+                ", " + player1.getColor() + ", " + player2.getColor() + ", " + winner + ")";
+    }
+
     // Returns copy of board
-    public Vector<Vector<Piece.pieceType>> getBoardState(){
-        Vector<Vector<Piece.pieceType>> result = new Vector<Vector<Piece.pieceType>>();
+    public Vector<Vector<Constants.pieceType>> getBoardState(){
+        Vector<Vector<Constants.pieceType>> result = new Vector<Vector<Constants.pieceType>>();
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
-            result.add(new Vector<Piece.pieceType>(Constants.NUMBER_OF_COLUMNS));
+            result.add(new Vector<Constants.pieceType>(Constants.NUMBER_OF_COLUMNS));
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
                 result.get(row).add(board.getCell(row,col).getPieceType());
             }

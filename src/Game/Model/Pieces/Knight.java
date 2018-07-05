@@ -9,13 +9,13 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Knight extends Piece {
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
     private int[] dr,dc;
     private final int MAX_MOVES_COUNT = 8;
 
     // Constructor
-    public Knight(boolean color){
+    public Knight(Constants.pieceColor color){
         this.color = color;
         this.hasMoved = false;
 
@@ -24,7 +24,7 @@ public class Knight extends Piece {
         this.dc = new int[] {-1, 1, -2, 2, -2, 2, -1, 1};
     }
 
-    public Knight(boolean color, boolean hasMoved){
+    public Knight(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
 
@@ -56,7 +56,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean getColor() {
+    public Constants.pieceColor getColor() {
         return this.color;
     }
 
@@ -68,6 +68,7 @@ public class Knight extends Piece {
     //returns if there is an allie piece standing on the given location
     private boolean noAllies(int r, int c, Vector<Vector<Cell> > state){
         if(state.get(r).get(c).hasPiece() && state.get(r).get(c).getPieceColor() == this.color) return false;
+
         return true;
     }
 
@@ -75,19 +76,21 @@ public class Knight extends Piece {
     private boolean inBounds(int r, int c){
         if(r<0 || r> Constants.NUMBER_OF_ROWS) return false;
         if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
+
         return true;
     }
 
     @Override
-    public pieceType getType() {
-        return pieceType.Knight;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.Knight;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " Knight";
     }
 

@@ -45,7 +45,7 @@ public class Cell{
     }
 
     // This method returns color of piece on cell
-    public boolean getPieceColor(){
+    public Constants.pieceColor getPieceColor(){
         assert(this.piece != null);
         return this.piece.getColor();
     }
@@ -66,8 +66,8 @@ public class Cell{
     }
 
     // This method returns type of piece, which is placed on cell
-    public Piece.pieceType getPieceType(){
-        if(piece == null) return Piece.pieceType.emptyCell;
+    public Constants.pieceType getPieceType(){
+        if(piece == null) return Constants.pieceType.emptyCell;
         return piece.getType();
     }
 }

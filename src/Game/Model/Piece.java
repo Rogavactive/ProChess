@@ -7,20 +7,7 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public abstract class Piece implements Cloneable{
-    public enum pieceType{
-        Bishop,
-        King,
-        Knight,
-        Pawn,
-        Queen,
-        Rook,
-        emptyCell
-    }
-
-    // This method is called when piece has done a move
-    public abstract void hasMoved();
-
-    public static Piece createPiece(pieceType t, boolean col){
+    public static Piece createPiece(Constants.pieceType t, Constants.pieceColor col){
         switch (t){
             case King: return new King(col);
             case Pawn: return new Pawn(col);
@@ -31,7 +18,11 @@ public abstract class Piece implements Cloneable{
             default: return null;
         }
     }
-    // This mehod checks if king is safe
+
+    // This method is called when piece has done a move
+    public abstract void hasMoved();
+
+    // This method checks if king is safe
     protected static boolean noCheckCaused(int row, int col, int newRow, int newCol,
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         boolean check = false;
@@ -56,7 +47,7 @@ public abstract class Piece implements Cloneable{
     private static boolean checkForCheck( Vector<Vector<Cell>> state, Pair<Integer, Integer> allieKingPos){
         int r = allieKingPos.getKey();
         int c = allieKingPos.getValue();
-        boolean kingColor = state.get(r).get(c).getPieceColor();
+        Constants.pieceColor kingColor = state.get(r).get(c).getPieceColor();
 
         if(checkKnights(r, c, state, kingColor) ||
                 checkPawns(r, c, state, kingColor) ||
@@ -68,7 +59,7 @@ public abstract class Piece implements Cloneable{
 
     // Ths method checks rows and columns where king is places
     private static boolean checkRowsAndCols(int row, int col,
-                                            Vector<Vector<Cell>> state, boolean kingColor) {
+                                            Vector<Vector<Cell>> state, Constants.pieceColor kingColor) {
         Piece firstPiece;
         int[] dr = new int[]{1,0,-1,0};
         int[] dc = new int[]{0,1,0,-1};
@@ -76,7 +67,7 @@ public abstract class Piece implements Cloneable{
         for(int i=0; i < 4; i++) {
             firstPiece = findFirstPiece(row, col, dr[i], dc[i],state);
             if (firstPiece != null && firstPiece.getColor() != kingColor &&
-                    (firstPiece.getType()==pieceType.Rook || firstPiece.getType() == pieceType.Queen))
+                    (firstPiece.getType()==Constants.pieceType.Rook || firstPiece.getType() == Constants.pieceType.Queen))
                 return true;
         }
 
@@ -101,7 +92,7 @@ public abstract class Piece implements Cloneable{
     }
 
     // This method checks diagonals from king's position
-    private static boolean checkDiagonals(int row, int col, Vector<Vector<Cell>> state, boolean kingColor) {
+    private static boolean checkDiagonals(int row, int col, Vector<Vector<Cell>> state, Constants.pieceColor kingColor) {
         Piece firstPiece;
         int[] dr = new int[]{1,1,-1,-1};
         int[] dc = new int[]{-1,1,1,-1};
@@ -109,7 +100,8 @@ public abstract class Piece implements Cloneable{
         for(int i=0; i < 4; i++) {
             firstPiece = findFirstPiece(row, col, dr[i], dc[i], state);
             if (firstPiece != null && firstPiece.getColor() != kingColor &&
-                    (firstPiece.getType()==pieceType.Bishop || firstPiece.getType() == pieceType.Queen))
+                    (firstPiece.getType()==Constants.pieceType.Bishop ||
+                            firstPiece.getType() == Constants.pieceType.Queen))
                 return true;
         }
 
@@ -119,24 +111,24 @@ public abstract class Piece implements Cloneable{
     // This method checks every possible position
     // where opponent's pawn can be placed
     private static boolean checkPawns(int row, int col, Vector<Vector<Cell>> state,
-                                      boolean kingColor) {
-        if(kingColor == true){
+                                      Constants.pieceColor kingColor) {
+        if(kingColor == Constants.pieceColor.black){
             if(inbounds(row-1,col-1) &&
                     state.get(row-1).get(col-1).hasPiece() && state.get(row-1).get(col-1).getPieceColor() != kingColor &&
-                    state.get(row-1).get(col-1).getPieceType()==pieceType.Pawn)
+                    state.get(row-1).get(col-1).getPieceType() == Constants.pieceType.Pawn)
                 return true;
             if(inbounds(row-1,col+1) &&
                     state.get(row-1).get(col+1).hasPiece() && state.get(row-1).get(col+1).getPieceColor() != kingColor &&
-                    state.get(row-1).get(col+1).getPieceType()==pieceType.Pawn)
+                    state.get(row-1).get(col+1).getPieceType() == Constants.pieceType.Pawn)
                 return true;
         }else{
             if(inbounds(row+1,col-1) &&
                     state.get(row+1).get(col-1).hasPiece() && state.get(row+1).get(col-1).getPieceColor() != kingColor &&
-                    state.get(row+1).get(col-1).getPieceType()==pieceType.Pawn)
+                    state.get(row+1).get(col-1).getPieceType() == Constants.pieceType.Pawn)
                 return true;
             if(inbounds(row+1,col+1) &&
                     state.get(row+1).get(col+1).hasPiece() && state.get(row+1).get(col+1).getPieceColor() != kingColor &&
-                    state.get(row+1).get(col+1).getPieceType()==pieceType.Pawn)
+                    state.get(row+1).get(col+1).getPieceType() == Constants.pieceType.Pawn)
                 return true;
         }
         return false;
@@ -151,7 +143,7 @@ public abstract class Piece implements Cloneable{
 
     // This method checks every possible position
     // where opponent's knights can be placed
-    private static boolean checkKnights(int row, int col, Vector<Vector<Cell>> state, boolean kingColor) {
+    private static boolean checkKnights(int row, int col, Vector<Vector<Cell>> state, Constants.pieceColor kingColor) {
         int[] dr = new int[] {2, 2, 1, 1, -1, -1, -2, -2};
         int[] dc = new int[] {-1, 1, -2, 2, -2, 2, -1, 1};
 
@@ -159,7 +151,7 @@ public abstract class Piece implements Cloneable{
             if(inbounds(row+dr[i], col+dc[i]) &&
                     state.get(row + dr[i]).get(col+dc[i]).hasPiece() &&
                     state.get(row + dr[i]).get(col+dc[i]).getPieceColor()!=kingColor &&
-                    state.get(row + dr[i]).get(col+dc[i]).getPieceType() == pieceType.Knight)
+                    state.get(row + dr[i]).get(col+dc[i]).getPieceType() == Constants.pieceType.Knight)
                 return true;
         }
 
@@ -168,11 +160,11 @@ public abstract class Piece implements Cloneable{
 
     public abstract Vector< Pair<Integer, Integer> > possibleMoves(int row, int col,
                                                           Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos);
-    public abstract boolean getColor();
+    public abstract Constants.pieceColor getColor();
 
     public abstract boolean getHasMove();
 
-    public abstract pieceType getType();
+    public abstract Constants.pieceType getType();
 
     public abstract String toString();
 
