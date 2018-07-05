@@ -1,6 +1,7 @@
 package Game.Model;
 
 import Accounting.Model.Account;
+import com.google.gson.Gson;
 import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
 import dbConnection.DataBaseTestManager;
@@ -262,7 +263,7 @@ public class Game {
     }
 
     // Returns copy of board
-    public Vector<Vector<Constants.pieceType>> getBoardState(){
+    public String getBoardState(){
         Vector<Vector<Constants.pieceType>> result = new Vector<Vector<Constants.pieceType>>();
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
@@ -272,7 +273,7 @@ public class Game {
             }
         }
 
-        return result;
+        return new Gson().toJson(result);
     }
 
     public Player getCurPlayer() {
