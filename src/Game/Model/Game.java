@@ -56,6 +56,11 @@ public class Game {
     // for all pieces of current player
     public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
             throws CloneNotSupportedException, SQLException {
+        if(srcRow == board.getKingPos(curPlayer.getColor()).getKey() &&
+                srcCol == board.getKingPos(curPlayer.getColor()).getValue()){
+            if(Math.abs(dstCol-srcCol)>1)
+                return Castling(srcRow,srcCol,dstRow,dstCol);
+        }
         // make move and add it in history
         history.add(new Move(srcRow, srcCol, dstRow, dstCol,
                 board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
@@ -65,6 +70,7 @@ public class Game {
             history.add(new Move(dstRow, dstCol, deadRow, deadCol,
                     board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
         }
+
 
         board.move(srcRow, srcCol, dstRow, dstCol);
         switchPlayer();
@@ -78,17 +84,20 @@ public class Game {
         return Stringify(result);
     }
 
-    public String Castling(String len){
-        if(len == "ooo"){
-
+    public String Castling(int srcRow, int srcCol, int dstRow, int dstCol){
+        assert (srcCol-dstCol==2 || dstCol-srcCol==3);
+        board.move(srcRow,srcCol,dstRow,dstCol);
+        if(srcCol-dstCol==2){
+            board.move(srcRow,srcCol-4, dstRow,dstCol+1);
         }else{
-
+            board.move(srcRow, srcCol+3,dstRow,dstCol-1);
         }
+        switchPlayer();
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
         return Stringify(result);
     }
     public String getStartingMoves(){
-        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(player1.getColor());
+        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
         return Stringify(result);
     }
 
