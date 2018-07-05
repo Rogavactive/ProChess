@@ -25,7 +25,7 @@ public abstract class Piece implements Cloneable{
     // This method checks if king is safe
     protected static boolean noCheckCaused(int row, int col, int newRow, int newCol,
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
-        boolean check = false;
+        boolean NoCheck = true;
         // Save pieces on given coordinates
         Piece killedPiece = state.get(newRow).get(newCol).getPiece();
         Piece curPiece = state.get(row).get(col).getPiece();
@@ -34,12 +34,12 @@ public abstract class Piece implements Cloneable{
         state.get(newRow).get(newCol).putPiece(curPiece);
         // Check if king is safe after this move
         if(checkForCheck(state, allieKingPos))
-            check = true;
+            NoCheck = false ;
         // Undo move
         state.get(row).get(col).putPiece(curPiece);
         state.get(newRow).get(newCol).putPiece(killedPiece);
 
-        return check;
+        return NoCheck;
     }
 
     // This method checks every possible cell
@@ -136,8 +136,8 @@ public abstract class Piece implements Cloneable{
 
     // This method checks if cell is in bounds of board
     private static boolean inbounds(int row, int col) {
-        if(row<0 || row> Constants.NUMBER_OF_ROWS) return false;
-        if (col<0|| col> Constants.NUMBER_OF_COLUMNS) return false;
+        if(row<0 || row>= Constants.NUMBER_OF_ROWS) return false;
+        if (col<0|| col>= Constants.NUMBER_OF_COLUMNS) return false;
         return true;
     }
 

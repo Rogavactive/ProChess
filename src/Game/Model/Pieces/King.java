@@ -1,6 +1,5 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
@@ -68,8 +67,8 @@ public class King extends Piece {
 
     //returns if the given location is on the board
     private boolean inBounds(int r, int c){
-        if(r<0 || r> Constants.NUMBER_OF_ROWS) return false;
-        if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
+        if(r<0 || r>= Constants.NUMBER_OF_ROWS) return false;
+        if (c<0|| c>= Constants.NUMBER_OF_COLUMNS) return false;
 
         return true;
     }

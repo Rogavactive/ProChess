@@ -1,6 +1,5 @@
 package Game.Model;
 
-import com.google.gson.Gson;
 import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
 import dbConnection.DataBaseTestManager;
@@ -76,9 +75,37 @@ public class Game {
             gameOver(true);
         }
 
-        return new Gson().toJson(result);
+        return Stringify(result);
     }
 
+    public String Castling(String len){
+        if(len == "ooo"){
+
+        }else{
+
+        }
+        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
+        return Stringify(result);
+    }
+    public String getStartingMoves(){
+        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(player1.getColor());
+        return Stringify(result);
+    }
+
+    public String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
+        String res;
+        if(curPlayer.getColor()== Constants.pieceColor.black)
+            res = "B";
+        else
+            res = "W";
+        for(Pair<Integer,Integer> key : result.keySet()){
+            Vector<Pair<Integer,Integer>> val = result.get(key);
+            for(int i  = 0; i < val.size(); i++){
+                res += key.getKey() + "" + key.getValue() + "" + val.get(i).getKey() + "" + val.get(i).getValue();
+            }
+        }
+        return res;
+    }
     // This method checks whether current player has any move
     private boolean noMoveIsPossible(ConcurrentHashMap<Pair<Integer,Integer>,Vector<Pair<Integer,Integer>>> result) {
         // Check for every piece of current player

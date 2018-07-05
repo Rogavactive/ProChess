@@ -1,6 +1,5 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
@@ -16,12 +15,7 @@ public class Knight extends Piece {
 
     // Constructor
     public Knight(Constants.pieceColor color){
-        this.color = color;
-        this.hasMoved = false;
-
-        //initialise possible move arrays ( knight can move from (r,c) to (r+dr[i],c+dc[i]))
-        this.dr = new int[] {2, 2, 1, 1, -1, -1, -2, -2};
-        this.dc = new int[] {-1, 1, -2, 2, -2, 2, -1, 1};
+        this(color, false);
     }
 
     public Knight(Constants.pieceColor color, boolean hasMoved){
@@ -74,8 +68,8 @@ public class Knight extends Piece {
 
     //returns if the given location is on the board
     private boolean inBounds(int r, int c){
-        if(r<0 || r> Constants.NUMBER_OF_ROWS) return false;
-        if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
+        if(r<0 || r>= Constants.NUMBER_OF_ROWS) return false;
+        if (c<0|| c>= Constants.NUMBER_OF_COLUMNS) return false;
 
         return true;
     }

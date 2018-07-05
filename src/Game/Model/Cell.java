@@ -2,7 +2,6 @@ package Game.Model;
 
 import javafx.util.Pair;
 
-import java.io.PipedReader;
 import java.util.Vector;
 
 public class Cell{
@@ -21,11 +20,15 @@ public class Cell{
         this.row = cell.row;
         this.col = cell.col;
 
-        try {
-            this.piece = (Piece) cell.piece.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            System.out.println("Clone not supported");
+        if(cell.piece == null)
+            this.piece = null;
+        else{
+            try {
+                this.piece = (Piece) cell.piece.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                System.out.println("Clone not supported");
+            }
         }
     }
 
@@ -70,4 +73,8 @@ public class Cell{
         if(piece == null) return Constants.pieceType.emptyCell;
         return piece.getType();
     }
+    public String toString(){
+        return row + "-" + col + "-" + getPieceType();
+    }
+
 }

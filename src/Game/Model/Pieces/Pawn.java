@@ -1,6 +1,5 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
@@ -46,7 +45,7 @@ public class Pawn extends Piece {
 
             // Checks if cell is empty, to make move
             if( !(state.get(curRow - step).get(curCol).hasPiece()) ){
-                result.add(new Pair<>(curRow + step, curCol));
+                result.add(new Pair<>(curRow - step, curCol));
             }
         }
 

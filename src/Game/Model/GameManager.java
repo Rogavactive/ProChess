@@ -42,5 +42,8 @@ public class GameManager {
         }
         return bldr.toString();
     }
+    public Game getGameByID(String id){
+        return games.get(id);
+    }
 
 }
