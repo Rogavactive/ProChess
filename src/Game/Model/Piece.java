@@ -162,7 +162,9 @@ public abstract class Piece implements Cloneable{
                                                           Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos);
     public abstract Constants.pieceColor getColor();
 
-    public abstract boolean getHasMove();
+    public abstract boolean getHasMoved();
+
+    public abstract void setHasMoved(boolean b);
 
     public abstract Constants.pieceType getType();
 

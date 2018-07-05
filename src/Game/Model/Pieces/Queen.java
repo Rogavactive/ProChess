@@ -110,9 +110,13 @@ public class Queen extends Piece {
     }
 
     @Override
-    // This method returns whether queen has made a move
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     @Override
@@ -132,7 +136,7 @@ public class Queen extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Queen newQueen = new Queen(this.getColor(), this.getHasMove());
+        Queen newQueen = new Queen(this.getColor(), this.getHasMoved());
 
         return newQueen;
     }

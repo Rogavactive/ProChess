@@ -58,9 +58,10 @@ public class Game {
             throws CloneNotSupportedException, SQLException {
         if(srcRow == board.getKingPos(curPlayer.getColor()).getKey() &&
                 srcCol == board.getKingPos(curPlayer.getColor()).getValue()){
-            if(Math.abs(dstCol-srcCol)>1)
-                return Castling(srcRow,srcCol,dstRow,dstCol);
+            if(Math.abs(dstCol-srcCol) > 1)
+                castling(srcRow,srcCol,dstRow,dstCol);
         }
+
         // make move and add it in history
         history.add(new Move(srcRow, srcCol, dstRow, dstCol,
                 board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
@@ -70,7 +71,6 @@ public class Game {
             history.add(new Move(dstRow, dstCol, deadRow, deadCol,
                     board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
         }
-
 
         board.move(srcRow, srcCol, dstRow, dstCol);
         switchPlayer();
@@ -84,37 +84,51 @@ public class Game {
         return Stringify(result);
     }
 
-    public String Castling(int srcRow, int srcCol, int dstRow, int dstCol){
-        assert (srcCol-dstCol==2 || dstCol-srcCol==3);
-        board.move(srcRow,srcCol,dstRow,dstCol);
-        if(srcCol-dstCol==2){
-            board.move(srcRow,srcCol-4, dstRow,dstCol+1);
+    // Special move where two pieces change their position
+    private void castling(int srcRow, int srcCol, int dstRow, int dstCol){
+        assert (srcCol - dstCol == 2 || dstCol - srcCol == 3);
+
+        if(srcCol-dstCol == 2){
+            history.add(new Move(srcRow, srcCol - 4, dstRow, dstCol + 1,
+                    board.getCell(srcRow, srcCol - 4).getPieceType(),
+                    board.getCell(srcRow, srcCol - 4).getPieceColor()));
+
+            board.move(srcRow,srcCol - 4, dstRow,dstCol + 1);
         }else{
-            board.move(srcRow, srcCol+3,dstRow,dstCol-1);
+            history.add(new Move(srcRow, srcCol + 3, dstRow, dstCol - 1,
+                    board.getCell(srcRow, srcCol + 3).getPieceType(),
+                    board.getCell(srcRow, srcCol + 3).getPieceColor()));
+
+            board.move(srcRow, srcCol + 3,dstRow,dstCol - 1);
         }
-        switchPlayer();
-        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
-        return Stringify(result);
     }
+
+    // Possible moves when no move is made before
     public String getStartingMoves(){
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
+
         return Stringify(result);
     }
 
-    public String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
+    // Making string of possible moves
+    private String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
         String res;
         if(curPlayer.getColor()== Constants.pieceColor.black)
             res = "B";
         else
             res = "W";
+
         for(Pair<Integer,Integer> key : result.keySet()){
             Vector<Pair<Integer,Integer>> val = result.get(key);
+
             for(int i  = 0; i < val.size(); i++){
                 res += key.getKey() + "" + key.getValue() + "" + val.get(i).getKey() + "" + val.get(i).getValue();
             }
         }
+
         return res;
     }
+
     // This method checks whether current player has any move
     private boolean noMoveIsPossible(ConcurrentHashMap<Pair<Integer,Integer>,Vector<Pair<Integer,Integer>>> result) {
         // Check for every piece of current player
@@ -146,6 +160,7 @@ public class Game {
             if(lastMove.getTo().equals(new Pair<>(deadRow, deadCol))){
                 Pair<Integer, Integer> cor = lastMove.getFrom();
                 board.addPiece(cor.getKey(), cor.getValue(), Piece.createPiece(lastMove.getType(), lastMove.getColor()));
+
                 history.remove(history.size() - 1);
                 lastMove = history.get(history.size() - 1);
             }else{
@@ -154,9 +169,28 @@ public class Game {
                 board.addPiece(cor.getKey(), cor.getValue(), null);
             }
 
+            boolean castling = false;
+            // if last move was castling, return king to it's place
+            if(lastMove.getType() == Constants.pieceType.King &&
+                    Math.abs( lastMove.getTo().getValue() - lastMove.getFrom().getValue() ) > 1 ){
+                castling = true;
+
+                board.move(lastMove.getTo().getKey(), lastMove.getTo().getValue(),
+                        lastMove.getFrom().getKey(), lastMove.getFrom().getValue());
+                // king is at the starting position again
+                board.getCell(lastMove.getFrom().getKey(), lastMove.getFrom().getValue()).getPiece().setHasMoved(false);
+
+                history.remove(history.size() - 1);
+                lastMove = history.get(history.size() - 1);
+            }
+
             // undo last move
-            Pair<Integer, Integer> cor = lastMove.getFrom();
-            board.addPiece(cor.getKey(), cor.getValue(), Piece.createPiece(lastMove.getType(), lastMove.getColor()));
+            board.move(lastMove.getTo().getKey(), lastMove.getTo().getValue(),
+                    lastMove.getFrom().getKey(), lastMove.getFrom().getValue());
+            // if castling was done, return rook to it's starting position
+            if(castling)
+                board.getCell(lastMove.getFrom().getKey(), lastMove.getFrom().getValue()).getPiece().setHasMoved(false);
+
             history.remove(history.size() - 1);
         }
     }

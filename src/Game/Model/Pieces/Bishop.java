@@ -48,8 +48,13 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     // This method finds all possible moves for bishop
@@ -119,7 +124,7 @@ public class Bishop extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Bishop newBishop = new Bishop(this.getColor(), this.getHasMove());
+        Bishop newBishop = new Bishop(this.getColor(), this.getHasMoved());
 
         return newBishop;
     }

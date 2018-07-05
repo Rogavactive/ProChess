@@ -139,9 +139,13 @@ public class Pawn extends Piece {
     }
 
     @Override
-    // This method returns whether pawn has already made a move
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     @Override
@@ -161,7 +165,7 @@ public class Pawn extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Pawn newPawn = new Pawn(this.getColor(), this.getHasMove());
+        Pawn newPawn = new Pawn(this.getColor(), this.getHasMoved());
 
         return newPawn;
     }

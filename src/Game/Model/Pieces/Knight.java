@@ -55,8 +55,13 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     //returns if there is an allie piece standing on the given location
@@ -90,7 +95,7 @@ public class Knight extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Knight newKnight = new Knight(this.getColor(), this.getHasMove());
+        Knight newKnight = new Knight(this.getColor(), this.getHasMoved());
 
         return newKnight;
     }

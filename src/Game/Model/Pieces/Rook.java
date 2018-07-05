@@ -102,9 +102,13 @@ public class Rook extends Piece {
     }
 
     @Override
-    // called when move has been done
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     @Override
@@ -124,7 +128,7 @@ public class Rook extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Rook newRook = new Rook(this.getColor(), this.getHasMove());
+        Rook newRook = new Rook(this.getColor(), this.getHasMoved());
 
         return newRook;
     }

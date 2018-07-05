@@ -51,10 +51,10 @@ public class King extends Piece {
         if(this.hasMoved) return;
 
         if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
-                (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMove()))
+                (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMoved()))
             result.add(new Pair<>(row, col + 2));
         if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
-                (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMove()))
+                (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMoved()))
             result.add(new Pair<>(row, col - 3));
     }
 
@@ -77,8 +77,13 @@ public class King extends Piece {
     public Constants.pieceColor getColor() { return this.color; }
 
     @Override
-    public boolean getHasMove() {
+    public boolean getHasMoved() {
         return this.hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean b){
+        this.hasMoved = b;
     }
 
     @Override
@@ -97,7 +102,7 @@ public class King extends Piece {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        King newKing = new King(this.getColor(), this.getHasMove());
+        King newKing = new King(this.getColor(), this.getHasMoved());
 
         return newKing;
     }
