@@ -8,16 +8,16 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Bishop extends Piece {
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
 
     // Constructor
-    public Bishop(boolean color){
+    public Bishop(Constants.pieceColor color){
         this.color = color;
         this.hasMoved = false;
     }
 
-    public Bishop(boolean color, boolean hasMoved){
+    public Bishop(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
     }
@@ -43,7 +43,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean getColor() {
+    public Constants.pieceColor getColor() {
         return this.color;
     }
 
@@ -71,7 +71,7 @@ public class Bishop extends Piece {
             curCol += dir2;
         }
 
-        // Cheking if rook can kill opponent's piece
+        // Checking if rook can kill opponent's piece
         if( canKill(row, col, curRow, curCol, state, allieKingPos) )
             result.add(new Pair<>(curRow, curCol));
     }
@@ -84,6 +84,7 @@ public class Bishop extends Piece {
                 && !(state.get(curRow).get(curCol).hasPiece()) ){
             return true;
         }
+
         return false;
     }
 
@@ -98,19 +99,21 @@ public class Bishop extends Piece {
                 && noCheckCaused(row, col, curRow, curCol, state, allieKingPos)){
             return true;
         }
+
         return false;
     }
 
     @Override
-    public pieceType getType() {
-        return pieceType.Bishop;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.Bishop;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " Bishop";
     }
 

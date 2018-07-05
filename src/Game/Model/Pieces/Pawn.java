@@ -1,6 +1,5 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
@@ -9,16 +8,16 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class Pawn extends Piece {
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
 
     // Constructor
-    public Pawn(boolean color){
+    public Pawn(Constants.pieceColor color){
         this.color = color;
         this.hasMoved =false;
     }
 
-    public Pawn(boolean color, boolean hasMoved){
+    public Pawn(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
     }
@@ -26,9 +25,9 @@ public class Pawn extends Piece {
     // This method checks if pawns move is valid
     // and if it is adds move into possible moves vector
     private void Step(int curRow, int curCol, Vector<Vector<Cell>> state,
-                      Vector< Pair<Integer, Integer> > result, int step, boolean color){
+                      Vector< Pair<Integer, Integer> > result, int step, Constants.pieceColor color){
         // If pawn is white, it moves throw positive direction on board
-        if(!color){
+        if(color == Constants.pieceColor.white){
             // Checks if board has enough rows to make move
             if(curRow + step >= Constants.NUMBER_OF_ROWS)
                 return;
@@ -46,7 +45,7 @@ public class Pawn extends Piece {
 
             // Checks if cell is empty, to make move
             if( !(state.get(curRow - step).get(curCol).hasPiece()) ){
-                result.add(new Pair<>(curRow + step, curCol));
+                result.add(new Pair<>(curRow - step, curCol));
             }
         }
 
@@ -54,9 +53,9 @@ public class Pawn extends Piece {
 
     // This method checks if given cell has piece of opponent
     private boolean hasPieceToKill(Cell cellToKill){
-        if(cellToKill.hasPiece() && cellToKill.getPieceColor() != this.getColor()){
+        if(cellToKill.hasPiece() && cellToKill.getPieceColor() != this.getColor())
             return true;
-        }
+
         return false;
     }
 
@@ -86,9 +85,9 @@ public class Pawn extends Piece {
 
     // This method checks if pawn can kill opponent's piece
     private void pawnCanKill(int curRow, int curCol, Vector<Vector<Cell>> state,
-                             Vector< Pair<Integer, Integer> > result, boolean color){
+                             Vector< Pair<Integer, Integer> > result, Constants.pieceColor color){
 
-        if(!color){
+        if(color == Constants.pieceColor.white){
             // Checks if there is space in front of pawn
             if(curRow + 1 >= Constants.NUMBER_OF_ROWS)
                 return;
@@ -135,7 +134,7 @@ public class Pawn extends Piece {
 
     @Override
     // This method returns color of pawn
-    public boolean getColor() {
+    public Constants.pieceColor getColor() {
         return this.color;
     }
 
@@ -145,22 +144,18 @@ public class Pawn extends Piece {
         return this.hasMoved;
     }
 
-    // This method is called when pawn has made move
-    public void moveMade(){
-        hasMoved = true;
-    }
-
     @Override
     // This method returns type of piece
-    public pieceType getType() {
-        return pieceType.Pawn;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.Pawn;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " Pawn";
     }
 

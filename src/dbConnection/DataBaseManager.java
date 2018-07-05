@@ -1,5 +1,7 @@
 package dbConnection;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ public abstract class DataBaseManager {
             PreparedStatement stmt = conn.prepareStatement(statement);
             stmt.executeUpdate();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLException e ) {
             e.printStackTrace();
             return false;
         }

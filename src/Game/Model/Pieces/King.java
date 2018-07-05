@@ -1,6 +1,5 @@
 package Game.Model.Pieces;
 
-import Game.Model.Board;
 import Game.Model.Cell;
 import Game.Model.Constants;
 import Game.Model.Piece;
@@ -9,16 +8,16 @@ import javafx.util.Pair;
 import java.util.Vector;
 
 public class King extends Piece {
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
 
     // Constructor
-    public King(boolean color){
+    public King(Constants.pieceColor color){
         this.color = color;
         this.hasMoved = false;
     }
 
-    public King(boolean color, boolean hasMoved){
+    public King(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
     }
@@ -47,7 +46,7 @@ public class King extends Piece {
         return result;
     }
 
-    // This method chekes if castling is possible
+    // This method checks if castling is possible
     private void castling(Vector<Pair<Integer, Integer>> result, int row, int col, Vector<Vector<Cell>> state){
         if(this.hasMoved) return;
 
@@ -57,24 +56,25 @@ public class King extends Piece {
         if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
                 (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMove()))
             result.add(new Pair<>(row, col - 3));
-
     }
 
     //returns if there is an allie piece standing on the given location
     private boolean noAllies(int r, int c, Vector<Vector<Cell> > state){
         if(state.get(r).get(c).hasPiece() && state.get(r).get(c).getPieceColor() == this.color) return false;
+
         return true;
     }
 
     //returns if the given location is on the board
     private boolean inBounds(int r, int c){
-        if(r<0 || r> Constants.NUMBER_OF_ROWS) return false;
-        if (c<0|| c> Constants.NUMBER_OF_COLUMNS) return false;
+        if(r<0 || r>= Constants.NUMBER_OF_ROWS) return false;
+        if (c<0|| c>= Constants.NUMBER_OF_COLUMNS) return false;
+
         return true;
     }
 
     @Override
-    public boolean getColor() { return this.color; }
+    public Constants.pieceColor getColor() { return this.color; }
 
     @Override
     public boolean getHasMove() {
@@ -82,15 +82,16 @@ public class King extends Piece {
     }
 
     @Override
-    public pieceType getType() {
-        return pieceType.King;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.King;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " King";
     }
 

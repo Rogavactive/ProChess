@@ -18,12 +18,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class AccountManager {
     private DataBaseManager manager;
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock hashlock = new ReentrantLock();
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int CHARS_LEN = CHARS.length();
     private static final int CODE_MIN_LEN=40;
     private static final int CODE_MAX_LEN=60;
     private GoogleServices g_services = new GoogleServices();
+    private ReentrantLock lock = new ReentrantLock();
 
     public AccountManager(DataBaseMainManager manager) {
         this.manager = manager;
@@ -38,9 +39,8 @@ public class AccountManager {
     }
 
 
-
-
     public Account register(String username, String email, String password) {
+        lock.lock();
         String pass_hash = hash(password);
         if(pass_hash!=null&&pass_hash.equals(""))
             return null;
@@ -63,6 +63,8 @@ public class AccountManager {
             rslt = manager.executeQuerry(sqlQueryStatement,conn);
             if (rslt!=null&&rslt.next()) {
                 int id = rslt.getInt("ID");
+                if(!addToStatsTable(id))
+                    return null;
                 if(password==null)
                     return new Account(username,email,this,id,false);
                 else
@@ -73,8 +75,14 @@ public class AccountManager {
             e.printStackTrace();
             return null;
         }finally {
+            lock.unlock();
             manager.closeConnections(conn,rslt);
         }
+    }
+
+    private boolean addToStatsTable(int id) {
+        String sqlQueryStatement = "insert into account_stats value ("+id+",1500,0,1500,0,1500,0);";
+        return simpleExecuteUpdate(sqlQueryStatement);
     }
 
     public Account accountExists(String username, String password) {
@@ -153,24 +161,55 @@ public class AccountManager {
 
     }
 
-    public boolean removeAccount(String username) {
-        String sqlQueryStatement = "delete from accounts where username=\""+username+"\";";
+    public boolean removeAccount(int id) {
+        String sqlQueryStatement = "select * from accounts where id="+id+";";
+        if(!checkAvaliability(sqlQueryStatement))
+            return false;
+        sqlQueryStatement = "delete from accounts where id="+id+";";
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
     private boolean simpleExecuteUpdate(String statement) {
-        try (Connection conn = manager.getConnection()) {
+        Connection conn = null;
+        try {
+            conn = manager.getConnection();
             return manager.executeUpdate(statement, conn);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            manager.closeConnection(conn);
         }
     }
 
     public boolean change(String old_username, String old_email, String username, String email) {
-        String sqlQueryStatement = "update accounts set username=\""+username+"\", email=\""+email+"\" " +
+        if(email==null||username==null)
+            return false;
+        String sqlQueryStatement = "select * from accounts where username=\""+old_username+"\" and email=\""+old_email+"\";";
+        if(!checkAvaliability(sqlQueryStatement))
+            return false;
+        if(existsUsername(username)||existsEmail(email))
+            return false;
+        sqlQueryStatement = "update accounts set username=\""+username+"\", email=\""+email+"\" " +
                 "where username=\""+old_username+"\" and email=\""+old_email+"\";";
         return simpleExecuteUpdate(sqlQueryStatement);
+    }
+
+    private boolean checkAvaliability(String sqlQueryStatement){
+        Connection conn = null;
+        ResultSet rslt = null;
+        try{
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
+            if(rslt==null||!rslt.next())
+                return false;
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            manager.closeConnections(conn,rslt);
+        }
     }
 
     public Account googleAccountExists(String email){
@@ -199,13 +238,24 @@ public class AccountManager {
 
     }
 
-    public boolean setPassword(String oldpass, String newpass, String username) {
+    public boolean setPassword(String oldpass, String newpass, int id) {
         String old_hash = hash(oldpass);
         String new_hash = hash(newpass);
-        if(old_hash.equals("")||new_hash.equals(""))
+        if(new_hash==null||(old_hash!=null&&old_hash.equals(""))||new_hash.equals(""))
             return false;
-        String sqlQueryStatement = "update accounts set pass_hash=\""+new_hash+"\" " +
-                "where username=\""+username+"\" and pass_hash=\""+old_hash+"\";";
+        String sqlQueryStatement;
+        if(old_hash==null)
+            sqlQueryStatement = "select * from accounts where id =" + id + " and pass_hash is null;";
+        else
+            sqlQueryStatement = "select * from accounts where id =" + id + " and pass_hash = \""+ old_hash + "\";";
+        if(!checkAvaliability(sqlQueryStatement))
+            return false;
+        if(old_hash==null)
+            sqlQueryStatement = "update accounts set pass_hash=\""+new_hash+"\" " +
+                    "where id="+id+" and pass_hash is null;";
+        else
+            sqlQueryStatement = "update accounts set pass_hash=\""+new_hash+"\" " +
+                "where id="+id+" and pass_hash=\""+old_hash+"\";";
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
@@ -213,7 +263,7 @@ public class AccountManager {
         if(password==null)
             return null;
         try {
-            lock.lock();
+            hashlock.lock();
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
             return hexToString(md.digest());
@@ -223,7 +273,7 @@ public class AccountManager {
             e.printStackTrace();
             return "";
         }finally {
-            lock.unlock();
+            hashlock.unlock();
         }
     }
 
@@ -294,6 +344,92 @@ public class AccountManager {
         } finally{
             manager.closeConnections(conn,rslt);
         }
+    }
+
+    public int[] getRanks(int id){
+        lock.lock();
+        int[] ranks = {1500,1500,1500};
+        String sqlQueryStatement = "select bulletRank, blitzRank, classicalRank from account_stats where acc_ID="+id+";";
+        Connection conn = null;
+        ResultSet rslt = null;
+        try{
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
+            if(rslt!=null&&rslt.next()){
+                ranks[0]=rslt.getInt("bulletRank");
+                ranks[1]=rslt.getInt("blitzRank");
+                ranks[2]=rslt.getInt("classicalRank");
+                return ranks;
+            }
+                return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            lock.unlock();
+            manager.closeConnections(conn,rslt);
+        }
+    }
+
+    public int[] getMatches(int id) {
+        lock.lock();
+        int[] matches = {0,0,0};
+        String sqlQueryStatement = "select bulletGames, blitzGames, classicalGames from account_stats where acc_ID="+id+";";
+        Connection conn = null;
+        ResultSet rslt = null;
+        try{
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
+            if(rslt!=null&&rslt.next()){
+                matches[0]=rslt.getInt("bulletGames");
+                matches[1]=rslt.getInt("blitzGames");
+                matches[2]=rslt.getInt("classicalGames");
+                return matches;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            lock.unlock();
+            manager.closeConnections(conn,rslt);
+        }
+    }
+
+    public boolean setMatches(int id, int gameType, int matches) {
+        String gameType_str = "";
+        switch (gameType){
+            case 0:
+                gameType_str="bulletGames";
+                break;
+            case 1:
+                gameType_str="blitzGames";
+                break;
+            case 2:
+                gameType_str="classicalGames";
+                break;
+                default: return false;
+        }
+        String sqlQueryStatement = "update account_stats set \""+gameType_str+"\"="+matches+" where acc_ID="+id+";";
+        return simpleExecuteUpdate(sqlQueryStatement);
+    }
+
+    public boolean setRating(int id, int gameType, int rating) {
+        String gameType_str = "";
+        switch (gameType){
+            case 0:
+                gameType_str="bulletRank";
+                break;
+            case 1:
+                gameType_str="blitzRank";
+                break;
+            case 2:
+                gameType_str="classicalRank";
+                break;
+            default: return false;
+        }
+        String sqlQueryStatement = "update account_stats set \""+gameType_str+"\"="+rating+" where acc_ID="+id+";";
+        return simpleExecuteUpdate(sqlQueryStatement);
     }
 
     private class GoogleServices{

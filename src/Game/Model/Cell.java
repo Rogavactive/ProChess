@@ -2,7 +2,6 @@ package Game.Model;
 
 import javafx.util.Pair;
 
-import java.io.PipedReader;
 import java.util.Vector;
 
 public class Cell{
@@ -21,11 +20,15 @@ public class Cell{
         this.row = cell.row;
         this.col = cell.col;
 
-        try {
-            this.piece = (Piece) cell.piece.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            System.out.println("Clone not supported");
+        if(cell.piece == null)
+            this.piece = null;
+        else{
+            try {
+                this.piece = (Piece) cell.piece.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                System.out.println("Clone not supported");
+            }
         }
     }
 
@@ -45,7 +48,7 @@ public class Cell{
     }
 
     // This method returns color of piece on cell
-    public boolean getPieceColor(){
+    public Constants.pieceColor getPieceColor(){
         assert(this.piece != null);
         return this.piece.getColor();
     }
@@ -66,8 +69,12 @@ public class Cell{
     }
 
     // This method returns type of piece, which is placed on cell
-    public Piece.pieceType getPieceType(){
-        if(piece == null) return Piece.pieceType.emptyCell;
+    public Constants.pieceType getPieceType(){
+        if(piece == null) return Constants.pieceType.emptyCell;
         return piece.getType();
     }
+    public String toString(){
+        return row + "-" + col + "-" + getPieceType();
+    }
+
 }

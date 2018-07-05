@@ -1,6 +1,5 @@
 package Game.Model;
 
-import Game.Model.Game;
 import Game.Model.Pieces.*;
 import javafx.util.Pair;
 
@@ -30,45 +29,51 @@ public class Board {
         blackKingPos = new Pair<>(7, 3);
     }
 
+    public Pair<Integer,Integer> getKingPos(Constants.pieceColor color){
+        if(color==Constants.pieceColor.white)
+            return new Pair<>(whiteKingPos.getKey(),whiteKingPos.getValue());
+        return new Pair<>(blackKingPos.getKey(),blackKingPos.getValue());
+    }
     // This method sets board to it's starting state
     private void placePieces() {
         // Placing second line of white pieces
-        board.get(0).get(0).putPiece(new Rook(false));
-        board.get(0).get(1).putPiece(new Knight(false));
-        board.get(0).get(2).putPiece(new Bishop(false));
-        board.get(0).get(3).putPiece(new Queen(false));
-        board.get(0).get(4).putPiece(new King(false));
-        board.get(0).get(5).putPiece(new Bishop(false));
-        board.get(0).get(6).putPiece(new Knight(false));
-        board.get(0).get(7).putPiece(new Rook(false));
+        board.get(0).get(0).putPiece(new Rook(Constants.pieceColor.white));
+        board.get(0).get(1).putPiece(new Knight(Constants.pieceColor.white));
+        board.get(0).get(2).putPiece(new Bishop(Constants.pieceColor.white));
+        board.get(0).get(3).putPiece(new Queen(Constants.pieceColor.white));
+        board.get(0).get(4).putPiece(new King(Constants.pieceColor.white));
+        board.get(0).get(5).putPiece(new Bishop(Constants.pieceColor.white));
+        board.get(0).get(6).putPiece(new Knight(Constants.pieceColor.white));
+        board.get(0).get(7).putPiece(new Rook(Constants.pieceColor.white));
 
         // Placing pawns of both color
         for (int i = 0; i < Constants.NUMBER_OF_COLUMNS; i++) {
-            board.get(1).get(i).putPiece(new Pawn(false));
-            board.get(Constants.NUMBER_OF_ROWS - 2).get(i).putPiece(new Pawn(true));
+            board.get(1).get(i).putPiece(new Pawn(Constants.pieceColor.white));
+            board.get(Constants.NUMBER_OF_ROWS - 2).get(i).putPiece(new Pawn(Constants.pieceColor.black));
         }
 
         // Placing second line of black pieces
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(0).putPiece(new Rook(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(1).putPiece(new Knight(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(2).putPiece(new Bishop(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(3).putPiece(new Queen(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(4).putPiece(new King(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(5).putPiece(new Bishop(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(6).putPiece(new Knight(true));
-        board.get(Constants.NUMBER_OF_ROWS - 1).get(7).putPiece(new Rook(true));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(0).putPiece(new Rook(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(1).putPiece(new Knight(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(2).putPiece(new Bishop(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(3).putPiece(new Queen(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(4).putPiece(new King(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(5).putPiece(new Bishop(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(6).putPiece(new Knight(Constants.pieceColor.black));
+        board.get(Constants.NUMBER_OF_ROWS - 1).get(7).putPiece(new Rook(Constants.pieceColor.black));
     }
 
     // This method finds all possible moves
     // for all pieces of given color
-    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > getAllPossibleMoves(boolean color) {
+    public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > getAllPossibleMoves
+    (Constants.pieceColor color) {
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = new ConcurrentHashMap<>();
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
                 Cell curCell = board.get(row).get(col);
                 if (curCell.hasPiece() && curCell.getPieceColor() == color) {
-                    if (color) {
+                    if (color == Constants.pieceColor.white) {
                         result.put(new Pair<>(row, col), curCell.getMoves(this.getStateClone(), whiteKingPos));
                     } else {
                         result.put(new Pair<>(row, col), curCell.getMoves(this.getStateClone(), blackKingPos));
@@ -89,7 +94,6 @@ public class Board {
 
         return board.get(row).get(col);
     }
-
 
     // This method returns clone of board
     private Vector<Vector<Cell>> getStateClone() {

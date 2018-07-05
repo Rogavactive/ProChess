@@ -4,10 +4,10 @@ import Accounting.Model.Account;
 
 public class Player {
     private Account account;
-    private boolean color;
+    private Constants.pieceColor color;
 
     // Constructor
-    public Player(Account account, boolean color){
+    public Player(Account account, Constants.pieceColor color){
         this.color = color;
         this.account = account;
     }
@@ -18,7 +18,7 @@ public class Player {
     }
 
     // Returns color of player
-    public boolean getColor() {
+    public Constants.pieceColor getColor() {
         return color;
     }
 }

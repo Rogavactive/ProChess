@@ -26,6 +26,27 @@ CREATE TABLE validations(
     primary key	(ID)
 );
 
+-- GAMES FOR ACCOUNTS
+
+drop TABLE IF EXISTS account_stats;
+
+CREATE TABLE account_stats(
+  acc_ID INT,
+  bulletRank INT,
+  bulletGames INT,
+  blitzRank INT,
+  blitzGames INT,
+  classicalRank INT,
+  classicalGames INT,
+  UNIQUE (acc_ID),
+  FOREIGN KEY (acc_ID) REFERENCES accounts(ID) on DELETE CASCADE
+);
+
+ALTER TABLE account_stats
+  ADD CONSTRAINT acc_id_fk
+FOREIGN KEY (acc_ID) REFERENCES accounts(ID) on DELETE CASCADE;
+
+
 -- GAME HISTORY DDL INITIALIZATION
 
 DROP TABLE IF EXISTS games;

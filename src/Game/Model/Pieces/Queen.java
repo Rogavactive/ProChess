@@ -9,16 +9,16 @@ import java.util.Vector;
 
 public class Queen extends Piece {
     // Private variable
-    private boolean color;
+    private final Constants.pieceColor color;
     private boolean hasMoved;
 
     // Constructor
-    public Queen(boolean color){
+    public Queen(Constants.pieceColor color){
         this.color = color;
         this.hasMoved = false;
     }
 
-    public Queen(boolean color, boolean hasMoved){
+    public Queen(Constants.pieceColor color, boolean hasMoved){
         this.color = color;
         this.hasMoved = hasMoved;
     }
@@ -31,6 +31,7 @@ public class Queen extends Piece {
                 && !( state.get(curRow).get(curCol).hasPiece() ) ){
             return true;
         }
+
         return false;
     }
 
@@ -56,7 +57,7 @@ public class Queen extends Piece {
         }
 
         // Checking if after last step, queen is in board
-        // and given cell has oponent's cell, so queen can kill it
+        // and given cell has opponent's cell, so queen can kill it
         if( canKillOpponent(row, col, curRow, curCol, state, allieKingPos) ){
             result.add(new Pair<>(curRow, curCol));
         }
@@ -103,8 +104,8 @@ public class Queen extends Piece {
     }
 
     @Override
-    // This method returns colorr of queen
-    public boolean getColor() {
+    // This method returns color of queen
+    public Constants.pieceColor getColor() {
         return this.color;
     }
 
@@ -116,15 +117,16 @@ public class Queen extends Piece {
 
     @Override
     // This method returns type of piece
-    public pieceType getType() {
-        return pieceType.Queen;
+    public Constants.pieceType getType() {
+        return Constants.pieceType.Queen;
     }
 
     @Override
     public String toString() {
         String col = "White";
-        if(this.color)
+        if(this.color == Constants.pieceColor.black)
             col = "Black";
+
         return col + " Queen";
     }
 
