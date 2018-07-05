@@ -83,14 +83,14 @@ CREATE TABLE moves(
 
 -- GAME SEARCH MANAGMENT DDL
 
-# drop table if exists ongoing_games_ids;
-#
-# CREATE TABLE ongoing_games_ids(
-#   ID	INT auto_increment,
-#   temp_id	nvarchar(128),
-#   primary key	(ID),
-#   unique key (temp_id)
-# );
+ drop table if exists ongoing_games_ids;
+
+ CREATE TABLE ongoing_games_ids(
+   ID	INT auto_increment,
+   temp_id	nvarchar(128),
+   primary key	(ID),
+   unique key (temp_id)
+ );
 
 drop table if exists search_queue;
 
@@ -112,4 +112,4 @@ insert into accounts (username, pass_hash, email) values
 -- 	where username = "aa" and pass_hash = "aa";
 
 select *
-from accounts;
+from account_stats;

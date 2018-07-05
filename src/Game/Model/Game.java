@@ -1,5 +1,6 @@
 package Game.Model;
 
+import Accounting.Model.Account;
 import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
 import dbConnection.DataBaseTestManager;
@@ -54,8 +55,8 @@ public class Game {
 
     // This method returns all possible moves
     // for all pieces of current player
-    public String pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
-            throws CloneNotSupportedException, SQLException {
+    public void pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
+            throws CloneNotSupportedException {
         if(srcRow == board.getKingPos(curPlayer.getColor()).getKey() &&
                 srcCol == board.getKingPos(curPlayer.getColor()).getValue()){
             if(Math.abs(dstCol-srcCol) > 1)
@@ -74,14 +75,6 @@ public class Game {
 
         board.move(srcRow, srcCol, dstRow, dstCol);
         switchPlayer();
-
-        // Calculate all possible moves
-        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
-        if(noMoveIsPossible(result)){
-            gameOver(true);
-        }
-
-        return Stringify(result);
     }
 
     // Special move where two pieces change their position
@@ -103,10 +96,18 @@ public class Game {
         }
     }
 
-    // Possible moves when no move is made before
-    public String getStartingMoves(){
+    // Possible moves for given player in current state of the board
+    public String getCurrentPossibleMoves(Account acc) throws SQLException {
+        if(curPlayer.getAccount() != acc){
+            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
+                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
+                return "B";
+            return "W";
+        }
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
-
+        if(noMoveIsPossible(result)){
+            return gameOver(true);
+        }
         return Stringify(result);
     }
 
@@ -196,15 +197,18 @@ public class Game {
     }
 
     // This method is called when game is over
-    public void gameOver(boolean winnerExists) throws SQLException {
+    public String gameOver(boolean winnerExists) throws SQLException {
         // if game ended as draw
         if(!winnerExists){
             saveGame(0);
+            return "Draw";
         }else{
             if(curPlayer.equals(player1)){
                 saveGame(2);
+                return "Winner2";
             }else{
                 saveGame(1);
+                return "Winner1";
             }
         }
     }
@@ -269,5 +273,9 @@ public class Game {
         }
 
         return result;
+    }
+
+    public Player getCurPlayer() {
+        return curPlayer;
     }
 }
