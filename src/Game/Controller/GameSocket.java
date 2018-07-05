@@ -61,23 +61,31 @@ public class GameSocket {
         //if it is not players turn to play
         if(acc != game.getCurPlayer().getAccount())
             return;
-        executeMessage(message,session,game,Opponent,acc);
+        executeMessage(message,session,ID,manager,Opponent,acc);
         System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
 
     }
 
-    private void executeMessage(String message, Session session, Game game, Account Opponent, Account acc) {
+    private void executeMessage(String message, Session session,String GameID, GameManager manager, Account Opponent, Account acc) {
+        Game game = manager.getGameByID(GameID);
         int srcRow = Character.getNumericValue(message.charAt(0));
         int srcCol = Character.getNumericValue(message.charAt(1));
         int dstRow = Character.getNumericValue(message.charAt(2));
         int dstCol = Character.getNumericValue(message.charAt(3));
         try {
             game.pieceMoved(srcRow,srcCol,dstRow,dstCol);
+            Session OpponentSession = sessions.get(Opponent);
+            String CurrentMoves = game.getCurrentPossibleMoves(Opponent);
+            OpponentSession.getBasicRemote().sendText(game.getBoardState() + " "+ CurrentMoves);
+
             //the player already used his move so the opponent becomes the currentPlayer and these moves are
             //for him
-            session.getBasicRemote().sendText(game.getBoardState() + " " + game.getCurrentPossibleMoves(acc));
-            Session OpponentSession = sessions.get(Opponent);
-            OpponentSession.getBasicRemote().sendText(game.getBoardState() + " "+ game.getCurrentPossibleMoves(Opponent));
+            if(CurrentMoves == "Winner1" || CurrentMoves == "Winner2" || CurrentMoves == "Draw"){
+                session.getBasicRemote().sendText(game.getBoardState() + " " + CurrentMoves);
+                manager.endGame(GameID);
+            } else
+                session.getBasicRemote().sendText(game.getBoardState() + " " + game.getCurrentPossibleMoves(acc));
+
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         } catch (SQLException e) {

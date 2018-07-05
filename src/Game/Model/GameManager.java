@@ -45,5 +45,8 @@ public class GameManager {
     public Game getGameByID(String id){
         return games.get(id);
     }
+    public void endGame(String gameID){
+        games.remove(gameID);
+    }
 
 }
