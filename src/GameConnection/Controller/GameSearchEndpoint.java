@@ -1,6 +1,7 @@
 package GameConnection.Controller;
 
 import Accounting.Model.Account;
+import Game.Model.Constants;
 import Game.Model.GameManager;
 import Game.Model.Player;
 import GameConnection.Model.GameSearchManager;
@@ -55,7 +56,7 @@ public class GameSearchEndpoint {
             Session opponentSession = users_in_queue.get(opponent);
             HttpSession opponentHttpSession = (HttpSession) opponentSession.getUserProperties().get("HttpSession");
             Account opponentAcc = (Account) opponentHttpSession.getAttribute("Account");
-            String id = gameManager.registerGame(new Player(acc,false),new Player(opponentAcc,true));
+            String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black));
             if(id==null)
                 return;
             //search for the game, store user's session and search for the game here. if found send them callbacks.
