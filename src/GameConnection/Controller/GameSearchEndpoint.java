@@ -31,8 +31,10 @@ public class GameSearchEndpoint {
         HttpSession httpSession = (HttpSession)session.getUserProperties().get("HttpSession");
         Account acc = (Account) httpSession.getAttribute("Account");
         GameSearchManager searchManager = (GameSearchManager) httpSession.getServletContext().getAttribute("GameSearchManager");
-        searchManager.removeFromQueue(acc.getID());
-        users_in_queue.remove(acc.getID());
+        if(users_in_queue.containsKey(acc.getID())) {
+            searchManager.removeFromQueue(acc.getID());
+            users_in_queue.remove(acc.getID());
+        }
     }
 
     @OnMessage

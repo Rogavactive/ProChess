@@ -1,4 +1,5 @@
-<%--
+<%@ page import="Game.Model.GameManager" %>
+<%@ page import="Accounting.Model.Account" %><%--
   Created by IntelliJ IDEA.
   User: dimit
   Date: 06/20/18
@@ -10,9 +11,18 @@
 <head>
     <title>Logout</title>
     <%
-        if(request.getSession().getAttribute("Account")!=null)
-            request.getSession().removeAttribute("Account");
-        //Remove game here also.
+        Account acc = (Account) request.getSession().getAttribute("Account");
+        if(acc==null) {
+            response.sendRedirect("index.html");
+            return;
+        }
+        if(request.getSession().getAttribute("gameID")!=null){
+            String gameID = (String) request.getSession().getAttribute("gameID");
+            GameManager manager = (GameManager) request.getServletContext().getAttribute("GameManager");
+            //Remove the game too here
+            request.getSession().removeAttribute("gameID");
+        }
+        request.getSession().removeAttribute("Account");
         response.sendRedirect("index.html");
     %>
 </head>

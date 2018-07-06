@@ -39,8 +39,9 @@ function connectGame() {
 
         this.gameWebSocket.onmessage = function(event) {
             var msg = event.data;
-            console.log('onmessage::' + JSON.stringify(msg, null, 4));
-            BoardStateChanged(msg);
+            console.log(msg)
+            // console.log('onmessage::' + JSON.stringify(msg, null, 4));
+            // BoardStateChanged(msg);
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));

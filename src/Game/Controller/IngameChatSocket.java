@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/gamechat", configurator = SocketConfig.class)
-public class IngameChatEndpoint {
+@ServerEndpoint(value = "/gamechat", configurator = ChatSocketConfig.class)
+public class IngameChatSocket {
 
     static Set<Session> chatusers = Collections.synchronizedSet(new HashSet<Session>());
     private static ReentrantLock onopen_lock = new ReentrantLock();

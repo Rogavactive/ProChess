@@ -61,7 +61,7 @@
                         <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
                     </td>
                     <td colspan="2">
-                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Profile</span></a>
+                        <a class="top-navbar-anchors" href="profile.jsp"><span class="top-navbar-elem">Profile</span></a>
                     </td>
                     <td>
                         <a class="top-navbar-anchors" href="logout.jsp"><span class="top-navbar-right">Logout</span></a>
