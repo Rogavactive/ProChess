@@ -82,7 +82,7 @@ class BishopTest {
         state.get(0).get(2).putPiece(Piece.createPiece(Constants.pieceType.King,
                 Constants.pieceColor.white));
 
-        // result should be vertical lines
+        // result should be straight lines
         // from 4,4 to 7,7; from 2,4 to 0,6; from 4,2 to 6,0; 2,2 to 0,0
         Vector<Pair<Integer, Integer>> actualResult = new Vector<>();
         for(int i = 4; i <= 7; i++)
@@ -120,7 +120,7 @@ class BishopTest {
         state.get(0).get(7).putPiece(Piece.createPiece(Constants.pieceType.King,
                 Constants.pieceColor.white));
 
-        // result should be vertical line from 1,1 to 4,4
+        // result should be straight line from 1,1 to 4,4
         Vector<Pair<Integer, Integer>> actualResult = new Vector<>();
         for(int i = 1; i <= 4; i++)
             actualResult.add(new Pair<>(i, i));
