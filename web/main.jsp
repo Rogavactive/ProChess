@@ -41,35 +41,35 @@
     %>
 </head>
 <body>
-    <nav class="top-navbar-container">
-        <table width="99%" align="center" class = "top-navbar-table">
-            <tbody>
-                <tr>
-                    <td>
-                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-left">ProChess</span></a>
-                    </td>
-                    <td colspan="2">
-                        <a class="top-navbar-anchors" href="game.jsp<%
-                            String id = (String) request.getSession().getAttribute("gameID");
-                            if(id!=null)
-                                out.print("?id="+id);
-                            %>">
-                            <span class="top-navbar-elem">Game</span>
-                        </a>
-                    </td>
-                    <td colspan="2">
-                        <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
-                    </td>
-                    <td colspan="2">
-                        <a class="top-navbar-anchors" href="profile.jsp"><span class="top-navbar-elem">Profile</span></a>
-                    </td>
-                    <td>
-                        <a class="top-navbar-anchors" href="logout.jsp"><span class="top-navbar-right">Logout</span></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </nav>
+<nav class="top-navbar-container">
+    <table width="99%" align="center" class = "top-navbar-table">
+        <tbody>
+        <tr>
+            <td>
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-left">ProChess</span></a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="game.jsp<%
+                String id = (String) request.getSession().getAttribute("gameID");
+                if(id!=null)
+                    out.print("?id="+id);
+                %>">
+                    <span class="top-navbar-elem">Game</span>
+                </a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Puzzles</span></a>
+            </td>
+            <td colspan="2">
+                <a class="top-navbar-anchors" href="profile.jsp"><span class="top-navbar-elem">Profile</span></a>
+            </td>
+            <td>
+                <a class="top-navbar-anchors" href="logout.jsp"><span class="top-navbar-right">Logout</span></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</nav>
 
             <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getUsername() %></p></td>--%>
             <%--<td><p><%=((Account)request.getSession().getAttribute("Account")).getEmail() %></p></td>--%>

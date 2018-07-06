@@ -33,6 +33,13 @@
     <!--google-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300">
+    <%
+        String link_id = (String)request.getParameter("id");
+        if(link_id==null){
+            response.sendRedirect("main.jsp");
+            return;
+        }
+    %>
 </head>
 <body>
 
@@ -48,12 +55,17 @@
                 String id = (String) request.getSession().getAttribute("gameID");
                 if(id!=null)
                     out.print("?id="+id);
+                if(id==null||!id.equals(link_id)){
+                    //spectator here. before it just redirect.
+                    response.sendRedirect("main.jsp");
+                    return;
+                }
                 %>">
                     <span class="top-navbar-elem">Game</span>
                 </a>
             </td>
             <td colspan="2">
-                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Friends</span></a>
+                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Puzzles</span></a>
             </td>
             <td colspan="2">
                 <a class="top-navbar-anchors" href="profile.jsp"><span class="top-navbar-elem">Profile</span></a>
