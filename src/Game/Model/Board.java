@@ -3,6 +3,7 @@ package Game.Model;
 import Game.Model.Pieces.*;
 import javafx.util.Pair;
 
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,11 +30,29 @@ public class Board {
         blackKingPos = new Pair<>(7, 3);
     }
 
+    // Constructor for tests
+    public Board(HashMap<Piece, Pair<Integer, Integer>> state){
+        board = new Vector<>(Constants.NUMBER_OF_ROWS);
+        for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
+            board.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
+            for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
+                board.get(row).add(new Cell(row, col));
+            }
+        }
+
+        // Placing every given piece on given place
+        for (Piece p: state.keySet()) {
+            board.get(state.get(p).getKey()).get(state.get(p).getValue()).putPiece(p);
+        }
+    }
+
+    // Returns coordinates of given color's king
     public Pair<Integer,Integer> getKingPos(Constants.pieceColor color){
         if(color==Constants.pieceColor.white)
             return new Pair<>(whiteKingPos.getKey(),whiteKingPos.getValue());
         return new Pair<>(blackKingPos.getKey(),blackKingPos.getValue());
     }
+
     // This method sets board to it's starting state
     private void placePieces() {
         // Placing second line of white pieces
