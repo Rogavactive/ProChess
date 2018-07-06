@@ -24,36 +24,41 @@ public class Pawn extends Piece {
 
     // This method checks if pawns move is valid
     // and if it is adds move into possible moves vector
-    private void Step(int curRow, int curCol, Vector<Vector<Cell>> state,
+    private boolean Step(int curRow, int curCol, Vector<Vector<Cell>> state,
                       Vector< Pair<Integer, Integer> > result, int step,
                       Constants.pieceColor color, Pair<Integer,Integer> allieKingPos){
         // If pawn is white, it moves throw positive direction on board
         if(color == Constants.pieceColor.white){
             // Checks if board has enough rows to make move
             if(curRow + step >= Constants.NUMBER_OF_ROWS)
-                return;
+                return false;
 
             // Checks if cell is empty, to make move
-            if( !(state.get(curRow + step).get(curCol).hasPiece()) &&
-                    noCheckCaused(curRow, curCol, curRow + step, curCol,
-                            state, allieKingPos)){
-                result.add(new Pair<>(curRow + step, curCol));
-            }
+            if( !(state.get(curRow + step).get(curCol).hasPiece()) ) {
+                if(noCheckCaused(curRow, curCol, curRow + step, curCol,
+                        state, allieKingPos)){
+                    result.add(new Pair<>(curRow + step, curCol));
+                }
+                return true;
+            }else
+                return false;
         }else{
             // If pawn is black, it moves throw negative direction
 
             // Checks if board has enough rows to make move
             if(curRow - step < 0)
-                return;
+                return false;
 
             // Checks if cell is empty, to make move
-            if( !(state.get(curRow - step).get(curCol).hasPiece()) &&
-                    noCheckCaused(curRow, curCol, curRow - step, curCol,
-                            state, allieKingPos) ){
-                result.add(new Pair<>(curRow - step, curCol));
-            }
+            if( !(state.get(curRow - step).get(curCol).hasPiece()) ) {
+                if(noCheckCaused(curRow, curCol, curRow - step, curCol,
+                        state, allieKingPos) ){
+                    result.add(new Pair<>(curRow - step, curCol));
+                }
+                return true;
+            }else
+                return false;
         }
-
     }
 
     // This method checks if given cell has piece of opponent
@@ -131,9 +136,9 @@ public class Pawn extends Piece {
             Step(curRow, curCol, state, result, 1, this.color, allieKingPos);
         }else{
             // if pawn hasn't moved, it can make either one or two steps forward
-            Step(curRow, curCol, state, result, 1, this.color, allieKingPos);
+            boolean canMakeSecondStep = Step(curRow, curCol, state, result, 1, this.color, allieKingPos);
             // two step only can be made, when one step is possible
-            if(result.size() != 0)
+            if(canMakeSecondStep)
                 Step(curRow, curCol, state, result, 2, this.color, allieKingPos);
         }
 

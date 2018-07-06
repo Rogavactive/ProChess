@@ -54,8 +54,7 @@ public class Game {
         return player2;
     }
 
-    // This method returns all possible moves
-    // for all pieces of current player
+    // Makes move on board
     public void pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
             throws CloneNotSupportedException {
         if(srcRow == board.getKingPos(curPlayer.getColor()).getKey() &&

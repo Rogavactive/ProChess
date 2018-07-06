@@ -132,6 +132,12 @@ public class Board {
 
     // This method makes move on board
     public void move(int srcRow, int srcCol, int dstRow, int dstCol) {
+        if(whiteKingPos.getKey() == srcRow && whiteKingPos.getValue() == srcCol){
+            whiteKingPos = new Pair<>(dstRow, dstCol);
+        }else if(blackKingPos.getKey() == srcRow && blackKingPos.getValue() == srcCol){
+            blackKingPos = new Pair<>(dstRow, dstCol);
+        }
+
         board.get(srcRow).get(srcCol).getPiece().hasMoved();
         board.get(dstRow).get(dstCol).putPiece(board.get(srcRow).get(srcCol).getPiece());
         board.get(srcRow).get(srcCol).removePiece();

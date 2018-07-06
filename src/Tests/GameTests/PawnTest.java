@@ -273,7 +273,7 @@ class PawnTest {
     @Test
     void testPossibleMoves4(){
         // board with just pawn on coordinate 0,2
-        // king at 0,0 and opponent's bishop on 1,1
+        // king at 0,0 and opponent's piece on 1,1
         Vector<Vector<Cell>> state = createEmptyState();
         state.get(0).get(2).putPiece(white);
         state.get(1).get(1).putPiece(black);
@@ -286,6 +286,35 @@ class PawnTest {
 
         Vector<Pair<Integer, Integer>> result = white.possibleMoves(0, 2,
                 state, new Pair<>(0, 0));
+
+        // Checking that result is correct
+        System.out.println(result.size());
+        assertEquals(actualResult.size(), result.size());
+        for(int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i).getKey(), actualResult.get(i).getKey());
+            assertEquals(result.get(i).getValue(), actualResult.get(i).getValue());
+        }
+    }
+
+    @Test
+    void testPossibleMoves5(){
+        // board with just pawn on coordinate 1,3
+        // king at 2,2 and opponent's bishop on 4,4
+        Vector<Vector<Cell>> state = createEmptyState();
+        white.setHasMoved(false);
+        state.get(1).get(3).putPiece(white);
+        state.get(4).get(4).putPiece(Piece.createPiece(Constants.pieceType.Bishop,
+                Constants.pieceColor.black));
+        state.get(2).get(2).putPiece(Piece.createPiece(Constants.pieceType.King,
+                Constants.pieceColor.white));
+
+        // result should be 3,3 when pawn saves king
+        // otherwise it's check
+        Vector<Pair<Integer, Integer>> actualResult = new Vector<>();
+        actualResult.add(new Pair<>(3, 3));
+
+        Vector<Pair<Integer, Integer>> result = white.possibleMoves(1, 3,
+                state, new Pair<>(2, 2));
 
         // Checking that result is correct
         System.out.println(result.size());
