@@ -1,9 +1,3 @@
-var Blacks_Bottom_Positions = {
-    "00": "B_etli", "01": "B_mxedari", "02": "B_ku", "03": "B_mepe", "04": "B_dedopali", "05": "B_ku", "06": "B_mxedari", "07": "B_etli",
-    "10": "B_paiki", "11": "B_paiki", "12": "B_paiki", "13": "B_paiki", "14": "B_paiki", "15": "B_paiki", "16": "B_paiki", "17": "B_paiki",
-    "60": "W_paiki", "61": "W_paiki", "62": "W_paiki", "63": "W_paiki", "64": "W_paiki", "65": "W_paiki", "66": "W_paiki", "67": "W_paiki",
-    "70": "W_etli", "71": "W_mxedari", "72": "W_ku", "73": "W_mepe", "74": "W_dedopali", "75": "W_ku", "76": "W_mxedari", "77": "W_etli",
-}
 
 var Pieces_Ascii = {
     "mepe": ["King", "&#9813;", "&#9819;"],
@@ -13,10 +7,27 @@ var Pieces_Ascii = {
     "etli": ["Rook", "&#9814;", "&#9820;"],
     "paiki": ["Pawn", "&#9817;", "&#9823;"]
 }
+
+var socked_Piece = {
+    "WK":"&#9813;",
+    "BK":"&#9819;",
+    "WQ":"&#9812",
+    "BQ":"&#9818;",
+    "WB":"&#9815;",
+    "BB":"&#9821;",
+    "WN":"&#9816;",
+    "BN":"&#9822;",
+    "WP":"&#9817;",
+    "BP":"&#9823;",
+    "WR":"&#9814;",
+    "BR":"&#9820;",
+    "00":"",
+}
+
 var Player;
 var markColor='yellow';
 var validMoveColor='green';
-var BoardState='';
+var MovesState='';
 var gameStarted=false;
 
 var gameWebSocket = null;
@@ -25,7 +36,7 @@ var chatWebSocket = null;
 $(document).ready(function(){
     connectGame();
     connectChat();
-    BoardStateChanged("B60506040615161416252624263536343645464446555654566566646675767477150715276557657");
+    //BoardStateChanged("B60506040615161416252624263536343645464446555654566566646675767477150715276557657");
 });
 
 //GAME SOCKET
@@ -34,14 +45,16 @@ function connectGame() {
     try {
         this.gameWebSocket = new WebSocket("ws://localhost:8080/game");
         this.gameWebSocket.onopen = function(event) {
-            console.log('onopen::' + JSON.stringify(event, null, 4));
+            var msg = event.data;
+            console.log( msg);
+            //  BoardStateChanged(msg);
         }
 
         this.gameWebSocket.onmessage = function(event) {
             var msg = event.data;
-            console.log(msg)
+            console.log( msg)
             // console.log('onmessage::' + JSON.stringify(msg, null, 4));
-            // BoardStateChanged(msg);
+            BoardStateChanged(msg);
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -56,24 +69,40 @@ function connectGame() {
 
 function getValidMovesForPiece(pos){
     var moves=[];
-    for (var i=0;i<BoardState.length;i+=4){
-        var x=BoardState.substring(i,i+2);
-        var y=BoardState.substring(i+2,i+4);
-       // console.log(x+' '+y);
+
+    for (var i=0;i<MovesState.length;i+=4){
+        var x=MovesState.substring(i,i+2);
+        var y=MovesState.substring(i+2,i+4);
+        // console.log(x+' '+y);
         if (x==pos) moves.push(y);
+
     }
     return moves;
 }
 
 
-function BoardStateChanged(json){
-    Player=json[0];
-    if (Player=='B') {
-        for (var i = 1; i < json.length; i++) {
-            BoardState+= 7-json[i];
+function BoardStateChanged(msg){
+    Player=msg[128];
+    var ind=0;
+    for (var i=0;i<8;i++) {
+        for (var j=0;j<8;j++) {
+            var piece = msg[ind] + msg[ind + 1];
+            var cell=i+''+j;
+            if (Player=='B') cell=(7-i)+''+(7-j);
+            //   console.log(cell+" "+piece);
+            placePieceInCell(cell,socked_Piece[piece]);
+            ind+=2;
         }
     }
-    console.log(BoardState);
+
+    MovesState="";
+    console.log(Player);
+    for (var i = 129; i < msg.length; i++){
+        if (Player=='B') MovesState+= 7-msg[i];
+        else MovesState+=msg[i];
+    }
+
+     console.log(MovesState);
 
     if (!gameStarted) {
         startGame();
@@ -81,21 +110,9 @@ function BoardStateChanged(json){
     }
 }
 
-function fill_Chessboard(BottomColor){
-    for(var position in Blacks_Bottom_Positions ){
-        // Split the string up to find out color and piece name of the current position
-        var piece = Blacks_Bottom_Positions[position].substring(2);
-        var color = Blacks_Bottom_Positions[position][0];
-        var ascii;
+function placePieceInCell(cell,piece){
+    document.getElementById(cell).innerHTML = "<a href='#'>" +piece + "</a>";
 
-        if (color==BottomColor){
-            ascii=Pieces_Ascii[piece][1];
-        } else {
-            ascii=Pieces_Ascii[piece][2];
-        }
-        document.getElementById(position).innerHTML = "<a href='#'>" +ascii + "</a>";
-
-    }
 }
 function clearChessboard(){
     for (var i=0;i<8;i++){
@@ -106,7 +123,7 @@ function clearChessboard(){
 }
 var lastCell=null;
 function changeCellColor(cell,color){
-   // console.log(2+document.getElementById(cell).style.backgroundColor);
+    // console.log(2+document.getElementById(cell).style.backgroundColor);
     document.getElementById(cell).style.backgroundColor = color;
 }
 function resetCellColors(){
@@ -120,8 +137,13 @@ function movePiece(cell1,cell2){
     document.getElementById(cell1).innerHTML=document.getElementById(cell2).innerHTML;
     document.getElementById(cell2).innerHTML=saveHtml;
     //send to socket
-    this.gameWebSocket.send(cell1+cell2);
-    BoardState='';
+    response=cell1+cell2;
+    if (Player=='B'){
+        var response=(7-cell1[0])+''+(7-cell1[1])+''+(7-cell2[0])+''+(7-cell2[1]);
+    }
+    this.gameWebSocket.send(response);
+    console.log(response);
+    MovesState='';
 }
 function clickOnCell(cell){
     if (lastCell==null) {
@@ -130,7 +152,7 @@ function clickOnCell(cell){
         if (validMoves.length==0) return;
         for (var i=0;i<validMoves.length;i++) {
             changeCellColor(validMoves[i], validMoveColor)
-          //  console.log(validMoves[i]);
+            //  console.log(validMoves[i]);
         }
         lastCell = cell;
         changeCellColor(cell,markColor);
@@ -148,17 +170,17 @@ function clickOnCell(cell){
         clickOnCell(cell);
     }
 
-  //  document.getElementById(cell).parentNode.style.backgroundColor='red';
-  //  document.getElementById(cell).parentNode.parentNode.style.backgroundColor='red';
-  //  document.getElementById(cell).parentNode.parentNode.parentNode.style.backgroundColor='red';
+    //  document.getElementById(cell).parentNode.style.backgroundColor='red';
+    //  document.getElementById(cell).parentNode.parentNode.style.backgroundColor='red';
+    //  document.getElementById(cell).parentNode.parentNode.parentNode.style.backgroundColor='red';
 }
 
 function startGame(){
-    fill_Chessboard(Player);
+
     $(document).click(function(event) {
         var text = event.target.parentNode.id;
         if (text.length!=2) text=event.target.id;
-        console.log(text);
+       // console.log(text);
         clickOnCell(text);
 
     });

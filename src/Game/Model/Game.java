@@ -99,16 +99,22 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
+        System.out.println("lasha1");
+
         if(curPlayer.getAccount() != acc){
             if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
                     || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
                 return "B";
             return "W";
         }
+        System.out.println(curPlayer.getColor());
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
+        System.out.println("lasha3");
         if(noMoveIsPossible(result)){
+            System.out.println("lasha4");
             return gameOver(true);
         }
+        System.out.println("lasha5");
         return Stringify(result);
     }
 
@@ -264,16 +270,31 @@ public class Game {
 
     // Returns copy of board
     public String getBoardState(){
-        Vector<Vector<Constants.pieceType>> result = new Vector<Vector<Constants.pieceType>>();
+        String result="";
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
-            result.add(new Vector<Constants.pieceType>(Constants.NUMBER_OF_COLUMNS));
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
-                result.get(row).add(board.getCell(row,col).getPieceType());
+
+
+                if (board.getCell(row,col).getPieceType()==Constants.pieceType.emptyCell){
+                    result+="00";
+                } else {
+                    if (board.getCell(row,col).getPieceColor()==Constants.pieceColor.white) {
+                        result += 'W';
+                    } else {
+                        result += 'B';
+                    }
+                    if (board.getCell(row,col).getPieceType()==Constants.pieceType.Knight) {
+                        result += 'N';
+                    } else {
+                        result += board.getCell(row, col).getPieceType().toString().charAt(0);
+                    }
+
+                }
             }
         }
 
-        return new Gson().toJson(result);
+        return result;
     }
 
     public Player getCurPlayer() {

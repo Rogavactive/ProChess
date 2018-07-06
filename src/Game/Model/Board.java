@@ -26,8 +26,8 @@ public class Board {
         // Placing pieces
         placePieces();
 
-        whiteKingPos = new Pair<>(0, 3);
-        blackKingPos = new Pair<>(7, 3);
+        whiteKingPos = new Pair<>(0, 4);
+        blackKingPos = new Pair<>(7, 4);
     }
 
     // Constructor for tests
@@ -87,9 +87,10 @@ public class Board {
     public ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > getAllPossibleMoves
     (Constants.pieceColor color) {
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = new ConcurrentHashMap<>();
-
+    try {
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
+                System.out.println(row+" "+col);
                 Cell curCell = board.get(row).get(col);
                 if (curCell.hasPiece() && curCell.getPieceColor() == color) {
                     if (color == Constants.pieceColor.white) {
@@ -98,11 +99,13 @@ public class Board {
                         result.put(new Pair<>(row, col), curCell.getMoves(this.getStateClone(), blackKingPos));
                     }
                 } else {
-                    result.put(new Pair<>(row, col), new Vector< Pair<Integer, Integer> >());
+                    result.put(new Pair<>(row, col), new Vector<Pair<Integer, Integer>>());
                 }
             }
         }
-
+    } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
         return result;
     }
 

@@ -29,7 +29,8 @@ public class GameSocket {
         sessions.put(acc.getID(),session);
         Game game = manager.getGameByID(ID);
         try {
-            session.getBasicRemote().sendText(game.getBoardState() + " " + game.getCurrentPossibleMoves(acc));
+
+            session.getBasicRemote().sendText(game.getBoardState() +game.getCurrentPossibleMoves(acc));
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +57,7 @@ public class GameSocket {
                 e.printStackTrace();
             }
         }
+        System.out.println(message);
         Game game = manager.getGameByID(ID);
         Account Opponent;
         if(game.getPlayer1().getAccount() == acc)
@@ -65,12 +67,14 @@ public class GameSocket {
         //if it is not players turn to play
         if(acc != game.getCurPlayer().getAccount())
             return;
+        System.out.println("Asd");
         executeMessage(message,session,ID,manager,Opponent,acc);
 //        System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
 
     }
 
     private void executeMessage(String message, Session session,String GameID, GameManager manager, Account Opponent, Account acc) {
+
         Game game = manager.getGameByID(GameID);
         int srcRow = Character.getNumericValue(message.charAt(0));
         int srcCol = Character.getNumericValue(message.charAt(1));
@@ -89,21 +93,23 @@ public class GameSocket {
                 System.out.println("dis is truuu");
             }
             System.out.println(OpponentSession.getId());
+
             String CurrentMoves = game.getCurrentPossibleMoves(Opponent);
+
             System.out.println("11");
             String boardState = game.getBoardState();
             System.out.println("12");
             System.out.println(OpponentSession.toString());
             if(OpponentSession.isOpen()) {
                 System.out.println("13");
-                OpponentSession.getBasicRemote().sendText(boardState + " " + CurrentMoves);
+                OpponentSession.getBasicRemote().sendText(boardState  + CurrentMoves);
             }
             //the player already used his move so the opponent becomes the currentPlayer and these moves are
             //for him
             System.out.println("14");
             if(CurrentMoves == "Winner1" || CurrentMoves == "Winner2" || CurrentMoves == "Draw"){
                 System.out.println("15");
-                session.getBasicRemote().sendText(boardState + " " + CurrentMoves);
+                session.getBasicRemote().sendText(boardState   + CurrentMoves);
                 HttpSession httpSession = (HttpSession) session.getUserProperties().get("HttpSession");
                 httpSession.removeAttribute("gameID");
                 if(OpponentSession.isOpen()) {
@@ -112,9 +118,10 @@ public class GameSocket {
                 }
                 manager.endGame(GameID);
             } else
-                session.getBasicRemote().sendText(boardState + " " + game.getCurrentPossibleMoves(acc));
+                session.getBasicRemote().sendText(boardState  + game.getCurrentPossibleMoves(acc));
             System.out.println("16");
         } catch (CloneNotSupportedException | SQLException | IOException e) {
+
             e.printStackTrace();
         }
     }
