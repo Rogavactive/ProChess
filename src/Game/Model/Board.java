@@ -26,7 +26,7 @@ public class Board {
         // Placing pieces
         placePieces();
 
-        whiteKingPos = new Pair<>(0, 3);
+        whiteKingPos = new Pair<>(0, 4);
         blackKingPos = new Pair<>(7, 4);
     }
 
