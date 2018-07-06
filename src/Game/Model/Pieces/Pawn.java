@@ -25,7 +25,8 @@ public class Pawn extends Piece {
     // This method checks if pawns move is valid
     // and if it is adds move into possible moves vector
     private void Step(int curRow, int curCol, Vector<Vector<Cell>> state,
-                      Vector< Pair<Integer, Integer> > result, int step, Constants.pieceColor color){
+                      Vector< Pair<Integer, Integer> > result, int step,
+                      Constants.pieceColor color, Pair<Integer,Integer> allieKingPos){
         // If pawn is white, it moves throw positive direction on board
         if(color == Constants.pieceColor.white){
             // Checks if board has enough rows to make move
@@ -33,7 +34,9 @@ public class Pawn extends Piece {
                 return;
 
             // Checks if cell is empty, to make move
-            if( !(state.get(curRow + step).get(curCol).hasPiece()) ){
+            if( !(state.get(curRow + step).get(curCol).hasPiece()) &&
+                    noCheckCaused(curRow, curCol, curRow + step, curCol,
+                            state, allieKingPos)){
                 result.add(new Pair<>(curRow + step, curCol));
             }
         }else{
@@ -44,7 +47,9 @@ public class Pawn extends Piece {
                 return;
 
             // Checks if cell is empty, to make move
-            if( !(state.get(curRow - step).get(curCol).hasPiece()) ){
+            if( !(state.get(curRow - step).get(curCol).hasPiece()) &&
+                    noCheckCaused(curRow, curCol, curRow - step, curCol,
+                            state, allieKingPos) ){
                 result.add(new Pair<>(curRow - step, curCol));
             }
         }
@@ -61,44 +66,50 @@ public class Pawn extends Piece {
 
     // This method checks if there is opponent's piece
     // which can be killed by pawn
-    private void checkKill(int curRow, int curCol,
-                                  Vector<Vector<Cell>> state,
-                                  Vector< Pair<Integer, Integer> > result){
+    private void checkKill(int curRow, int curCol, int step,
+                           Vector<Vector<Cell>> state,
+                           Vector< Pair<Integer, Integer> > result,
+                           Pair<Integer,Integer> allieKingPos){
         // Checks if pawn can make move to right
         if(curCol + 1 < Constants.NUMBER_OF_COLUMNS){
-            Cell cellToKill = state.get(curRow).get(curCol + 1);
+            Cell cellToKill = state.get(curRow + step).get(curCol + 1);
 
             // if cellToKill contains opponent's piece, pawn can kill it
-            if(hasPieceToKill(cellToKill))
-                result.add(new Pair<>(curRow, curCol + 1));
+            if(hasPieceToKill(cellToKill) &&
+                    noCheckCaused(curRow, curCol, curRow + step, curCol + 1,
+                            state, allieKingPos))
+                result.add(new Pair<>(curRow + step, curCol + 1));
         }
 
         // Checks if pawn can move left
         if(curCol - 1 >= 0){
-            Cell cellToKill = state.get(curRow).get(curCol - 1);
+            Cell cellToKill = state.get(curRow + step).get(curCol - 1);
 
             // if opponent's piece is there, pawn can kill it
-            if(hasPieceToKill(cellToKill))
-                result.add(new Pair<>(curRow, curCol - 1));
+            if(hasPieceToKill(cellToKill) &&
+                    noCheckCaused(curRow, curCol, curRow + step, curCol - 1,
+                            state, allieKingPos))
+                result.add(new Pair<>(curRow + step, curCol - 1));
         }
     }
 
     // This method checks if pawn can kill opponent's piece
     private void pawnCanKill(int curRow, int curCol, Vector<Vector<Cell>> state,
-                             Vector< Pair<Integer, Integer> > result, Constants.pieceColor color){
+                             Vector< Pair<Integer, Integer> > result,
+                             Constants.pieceColor color, Pair<Integer,Integer> allieKingPos){
 
         if(color == Constants.pieceColor.white){
             // Checks if there is space in front of pawn
             if(curRow + 1 >= Constants.NUMBER_OF_ROWS)
                 return;
 
-            checkKill(curRow + 1, curCol, state, result);
+            checkKill(curRow, curCol, 1, state, result, allieKingPos);
         }else{
             // Checks if there is space in front of pawn
             if(curRow - 1 < 0)
                 return;
 
-            checkKill(curRow - 1, curCol, state, result);
+            checkKill(curRow, curCol, -1, state, result, allieKingPos);
         }
     }
 
@@ -117,17 +128,17 @@ public class Pawn extends Piece {
 
         if(hasMoved){
             // if pawn has moved, it can only make one step forward
-            Step(curRow, curCol, state, result, 1, this.color);
+            Step(curRow, curCol, state, result, 1, this.color, allieKingPos);
         }else{
             // if pawn hasn't moved, it can make either one or two steps forward
-            Step(curRow, curCol, state, result, 1, this.color);
+            Step(curRow, curCol, state, result, 1, this.color, allieKingPos);
             // two step only can be made, when one step is possible
             if(result.size() != 0)
-                Step(curRow, curCol, state, result, 2, this.color);
+                Step(curRow, curCol, state, result, 2, this.color, allieKingPos);
         }
 
         // pawn can kill opponent's pieces which are one diagonal step away from it
-        pawnCanKill(curRow, curCol, state, result, this.color);
+        pawnCanKill(curRow, curCol, state, result, this.color, allieKingPos);
 
         return result;
     }
