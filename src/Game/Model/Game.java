@@ -98,22 +98,19 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
-        System.out.println("lasha1");
-
         if(curPlayer.getAccount() != acc){
             if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
                     || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
                 return "B";
             return "W";
         }
-        System.out.println(curPlayer.getColor());
+
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
-        System.out.println("lasha3");
+
         if(noMoveIsPossible(result)){
-            System.out.println("lasha4");
             return gameOver(true);
         }
-        System.out.println("lasha5");
+
         return Stringify(result);
     }
 

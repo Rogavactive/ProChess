@@ -90,7 +90,6 @@ public class Board {
     try {
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
             for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
-                System.out.println(row+" "+col);
                 Cell curCell = board.get(row).get(col);
                 if (curCell.hasPiece() && curCell.getPieceColor() == color) {
                     if (color == Constants.pieceColor.white) {
