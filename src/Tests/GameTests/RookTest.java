@@ -31,7 +31,7 @@ class RookTest {
     }
 
     @BeforeAll
-    static void createRookss(){
+    static void createRooks(){
         white = new Rook(Constants.pieceColor.white);
         black = new Rook(Constants.pieceColor.black);
     }
@@ -107,7 +107,7 @@ class RookTest {
 
     @Test
     void testPossibleMoves2(){
-        // board with just bishop on coordinate 0, 0
+        // board with just rook on coordinate 0, 0
         // king at 0,3 and opponent's piece on 5,0
         Vector<Vector<Cell>> state = createEmptyState();
         state.get(0).get(0).putPiece(white);
@@ -138,7 +138,7 @@ class RookTest {
     @Test
     void testPossibleMoves3(){
         // board with just bishop on coordinate 1,1
-        // king at 0,1 and opponent's bishop on 7,1
+        // king at 0,1 and opponent's rook on 7,1
         Vector<Vector<Cell>> state = createEmptyState();
         state.get(1).get(1).putPiece(white);
         state.get(7).get(1).putPiece(black);
