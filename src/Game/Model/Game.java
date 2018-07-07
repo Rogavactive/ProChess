@@ -229,11 +229,12 @@ public class Game {
 
         String findStm = findGameStatement(winner);
         ResultSet result = manager.executeQuerry(findStm, con);
+        result.first();
         gameID = result.getInt(1);
 
         // Saves every move
         for(int i = 0; i < history.size(); i++){
-            String stm = addMovesStatement(gameID, history.get(i));
+            String stm = addMovesStatement(gameID, history.get(i), i);
 
             manager.executeUpdate(stm, con);
         }
@@ -242,26 +243,38 @@ public class Game {
     }
 
     // Statement for adding moves in database
-    private String addMovesStatement(int gameID, Move curMove){
-        return "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor) " +
+    private String addMovesStatement(int gameID, Move curMove, int order){
+        return "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor, numberOfMove) " +
                 "values (" + gameID + ", " + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", "
-                + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getType()
-                + ", " + curMove.getColor() + ")";
+                + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getTypeAsInt()
+                + ", " + curMove.getColorAsBool() + ", " + order + ")";
+    }
+
+    // Returns current date and time
+    private String getCurrentTime(){
+        java.util.Date date = new java.util.Date();
+
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String currentTime = dateFormat.format(date);
+
+        return currentTime;
     }
 
     // Statement for finding game in database
     private String findGameStatement(int winner){
         return "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
                 "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " +
-                player1.getColor() + " and " + "ColorOfPlayer2 = " + player2.getColor() +
-                " and winner = " + winner + ")";
+                player1.getColorAsBool() + " and " + "ColorOfPlayer2 = " + player2.getColorAsBool() +
+                " and winner = " + winner + " order by time DESC";
     }
 
     // Statement for creating new game in database
     private String insertGameStatement(int winner){
-        return "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner) " +
+        return "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner, time) " +
                 "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() +
-                ", " + player1.getColor() + ", " + player2.getColor() + ", " + winner + ")";
+                ", " + player1.getColorAsBool() + ", " + player2.getColorAsBool() + ", " + winner +
+                ", '" + getCurrentTime() + "')";
     }
 
     // Returns copy of board

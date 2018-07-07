@@ -59,6 +59,7 @@ CREATE TABLE games (
   colorOfPlayer1 boolean,
   colorOfPlayer2 boolean,
   winner int,
+  time datetime,
 
   primary key (ID),
   foreign key (player1ID) references accounts(ID),
@@ -76,6 +77,7 @@ CREATE TABLE moves(
   dstCol  int,
   pieceType   int,
   pieceColor boolean,
+  numberOfMove int,
 
   primary key	(ID),
   foreign key (gameID) references games(ID)

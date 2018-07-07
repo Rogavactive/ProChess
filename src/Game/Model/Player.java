@@ -21,4 +21,13 @@ public class Player {
     public Constants.pieceColor getColor() {
         return color;
     }
+
+    // Returns false if player has white pieces
+    // true if player has black pieces
+    public boolean getColorAsBool(){
+        if(this.color == Constants.pieceColor.white)
+            return false;
+
+        return true;
+    }
 }

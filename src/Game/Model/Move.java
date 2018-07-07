@@ -36,4 +36,28 @@ public class Move {
     public Constants.pieceType getType(){
         return this.pieceType;
     }
+
+    // Returns false if white piece was moved, true otherwise
+    public boolean getColorAsBool(){
+        if(this.pieceColor == Constants.pieceColor.white)
+            return false;
+
+        return true;
+    }
+
+    // Each type of piece has it's number
+    public int getTypeAsInt(){
+        if(this.pieceType == Constants.pieceType.King)
+            return 0;
+        else if(this.pieceType == Constants.pieceType.Pawn)
+            return 1;
+        else if(this.pieceType == Constants.pieceType.Bishop)
+            return 2;
+        else if(this.pieceType == Constants.pieceType.Knight)
+            return 3;
+        else if(this.pieceType == Constants.pieceType.Rook)
+            return 4;
+        else
+            return 5;
+    }
 }
