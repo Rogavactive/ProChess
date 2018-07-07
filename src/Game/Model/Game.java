@@ -22,6 +22,8 @@ public class Game {
     private Vector<Move> history;
     private Player curPlayer;
     private DataBaseManager manager;
+    private boolean playerLeftGame;
+    private int winnerByGameLeft;
 
     // Constructor
     public Game(Player player1, Player player2){
@@ -31,6 +33,7 @@ public class Game {
         board = new Board();
         history = new Vector<>();
         manager = DataBaseMainManager.getInstance();
+        playerLeftGame = false;
     }
 
     // for mocking and testing
@@ -41,6 +44,7 @@ public class Game {
         board = new Board();
         history = new Vector<>();
         this.manager = manager;
+        playerLeftGame = false;
     }
 
     // Returns first player
@@ -96,6 +100,11 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
+        // if player left game, it's over
+        if(playerLeftGame){
+            return gameOver(winnerByGameLeft);
+        }
+
         if(curPlayer.getAccount() != acc){
             if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
                     || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
@@ -200,18 +209,42 @@ public class Game {
         }
     }
 
+    // Called when one of players leaves the game
+    public synchronized void leaveGame(int userID) throws SQLException {
+        // Check if opponent already left earlier
+        if(this.playerLeftGame){
+            gameOver(winnerByGameLeft);
+            return;
+        }
+
+        this.playerLeftGame = true;
+
+        // found out who won
+        if(player1.getAccount().getID() == userID)
+            winnerByGameLeft = 2;
+        else
+            winnerByGameLeft = 1;
+    }
+
     // This method is called when game is over
     public String gameOver(int winner) throws SQLException {
         saveGame(winner);
-        // Return winner of game, or draw
-        if(winner == 0)
-            return "Draw";
-        else if(winner == 1)
-            return "Winner1";
-        else if(winner == 2)
-            return "Winner2";
-        else
-            return "illegal winner";
+        // Return whether player has won, lose or it's draw
+        if(curPlayer == player1){
+            if(winner == 0)
+                return "Draw";
+            else if(winner == 1)
+                return "You Win";
+            else
+                return "You Lose";
+        }else{
+            if(winner == 0)
+                return "Draw";
+            else if(winner == 2)
+                return "You Win";
+            else
+            return "You Lose";
+        }
     }
 
     // This method saves game in database

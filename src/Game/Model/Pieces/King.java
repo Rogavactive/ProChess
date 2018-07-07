@@ -50,11 +50,19 @@ public class King extends Piece {
     private void castling(Vector<Pair<Integer, Integer>> result, int row, int col, Vector<Vector<Cell>> state){
         if(this.hasMoved) return;
 
-        if(!state.get(row).get(col+1).hasPiece() && !state.get(row).get(col+2).hasPiece() &&
-                (state.get(row).get(col+3).hasPiece() && !state.get(row).get(col+3).getPiece().getHasMoved()))
+        if(inBounds(row, col+1)&& inBounds(row, col+2) && inBounds(row, col+3) &&
+                !state.get(row).get(col+1).hasPiece() &&
+                !state.get(row).get(col+2).hasPiece() &&
+                (state.get(row).get(col+3).hasPiece() &&
+                        !state.get(row).get(col+3).getPiece().getHasMoved()))
             result.add(new Pair<>(row, col + 2));
-        if(!state.get(row).get(col-1).hasPiece() && !state.get(row).get(col-2).hasPiece() && !state.get(row).get(col-3).hasPiece() &&
-                (state.get(row).get(col-4).hasPiece() && !state.get(row).get(col-4).getPiece().getHasMoved()))
+        if(inBounds(row, col-1)&& inBounds(row, col-2) &&
+                inBounds(row, col-3) && inBounds(row, col - 4) &&
+                !state.get(row).get(col-1).hasPiece() &&
+                !state.get(row).get(col-2).hasPiece() &&
+                !state.get(row).get(col-3).hasPiece() &&
+                (state.get(row).get(col-4).hasPiece() &&
+                        !state.get(row).get(col-4).getPiece().getHasMoved()))
             result.add(new Pair<>(row, col - 3));
     }
 
