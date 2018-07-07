@@ -108,7 +108,10 @@ public class Game {
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
 
         if(noMoveIsPossible(result)){
-            return gameOver(true);
+            if(curPlayer == player1)
+                return gameOver(2);
+            else
+                return gameOver(1);
         }
 
         return Stringify(result);
@@ -200,20 +203,17 @@ public class Game {
     }
 
     // This method is called when game is over
-    public String gameOver(boolean winnerExists) throws SQLException {
-        // if game ended as draw
-        if(!winnerExists){
-            saveGame(0);
+    public String gameOver(int winner) throws SQLException {
+        saveGame(winner);
+        // Return winner of game, or draw
+        if(winner == 0)
             return "Draw";
-        }else{
-            if(curPlayer.equals(player1)){
-                saveGame(2);
-                return "Winner2";
-            }else{
-                saveGame(1);
-                return "Winner1";
-            }
-        }
+        else if(winner == 1)
+            return "Winner1";
+        else if(winner == 2)
+            return "Winner2";
+        else
+            return "illegal winner";
     }
 
     // This method saves game in database
