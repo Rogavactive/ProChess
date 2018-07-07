@@ -28,7 +28,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     public void contextInitialized(ServletContextEvent sce) {
         DataBaseMainManager manager = DataBaseMainManager.getInstance();
         sce.getServletContext().setAttribute("AccManager", new AccountManager(manager));
-        sce.getServletContext().setAttribute("GameManager", new GameManager(manager));
+        sce.getServletContext().setAttribute("GameManager", GameManager.getInstance());
         sce.getServletContext().setAttribute("GameSearchManager", new GameSearchManager(manager));
       /* This method is called when the servlet context is
          initialized(when the Web application is deployed). 

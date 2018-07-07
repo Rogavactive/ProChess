@@ -13,13 +13,23 @@ public class GameManager {
 
     private DataBaseManager manager;
     private ConcurrentHashMap<String,Game> games;
+    private static GameManager testInstance = new GameManager(DataBaseTestManager.getInstance());
+    private static GameManager mainInstance = new GameManager(DataBaseMainManager.getInstance());
 
-    public GameManager(DataBaseMainManager manager){
+    private GameManager(DataBaseMainManager manager){
         this.manager = manager;
         games = new ConcurrentHashMap<>();
     }
 
-    public GameManager(DataBaseTestManager manager){
+    public static GameManager getInstance(){
+        return mainInstance;
+    }
+
+    public static GameManager getTestInstance(){
+        return testInstance;
+    }
+
+    private GameManager(DataBaseTestManager manager){
         this.manager = manager;
         games = new ConcurrentHashMap<>();
     }
@@ -27,7 +37,7 @@ public class GameManager {
     public String registerGame(Player player1, Player player2) {
         //id damtxvevis shansebi imdenad mcirea, rom ugulvebelvyoft;
         String id = generateRandomCode();
-        Game game = new Game(player1,player2);
+        Game game = new Game(player1,player2,id);
         games.put(id,game);
         return id;
         //register a game, store it and return an id

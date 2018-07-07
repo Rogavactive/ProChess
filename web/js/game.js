@@ -223,7 +223,7 @@ function disconnectFromGame() {
 
 function connectChat(){
     try {
-        this.chatWebSocket = new WebSocket("ws://localhost:8080/gamechat");
+        this.chatWebSocket = new WebSocket("ws://localhost:8080/gamechat/"+game_id);
         this.chatWebSocket.onmessage = function(event) {
             var chatserverdata = JSON.parse(event.data);
             $('#chatBox').append("<p class='chat-username-p'>"+chatserverdata.username+"</p><p class='chat-message-p'>"+":"+ chatserverdata.message+"</p><br/>")

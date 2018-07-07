@@ -1,5 +1,8 @@
 <%@ page import="Game.Model.GameManager" %>
-<%@ page import="Accounting.Model.Account" %><%--
+<%@ page import="Accounting.Model.Account" %>
+<%@ page import="Game.Model.Game" %>
+<%@ page import="java.sql.SQLException" %>
+<%--
   Created by IntelliJ IDEA.
   User: dimit
   Date: 06/20/18
@@ -19,7 +22,12 @@
         if(request.getSession().getAttribute("gameID")!=null){
             String gameID = (String) request.getSession().getAttribute("gameID");
             GameManager manager = (GameManager) request.getServletContext().getAttribute("GameManager");
-            //Remove the game too here
+            Game game = manager.getGameByID(gameID);
+            try {
+                game.leaveGame(acc.getID());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             request.getSession().removeAttribute("gameID");
         }
         request.getSession().removeAttribute("Account");

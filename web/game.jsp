@@ -40,6 +40,9 @@
             return;
         }
     %>
+    <script>
+        var game_id = "<%=link_id%>"
+    </script>
 </head>
 <body>
 

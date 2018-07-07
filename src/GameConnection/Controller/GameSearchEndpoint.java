@@ -41,6 +41,14 @@ public class GameSearchEndpoint {
     public void onMessage(String message, Session session) throws IOException {
 //        System.out.println("chat onMessage::From=" + session.getId() + " Message=" + message);
         HttpSession httpSession = (HttpSession)session.getUserProperties().get("HttpSession");
+        String gameid = (String)httpSession.getAttribute("gameID");
+        if(gameid!=null){
+            JSONObject response_json = new JSONObject();
+            response_json.put("type", -1);
+            String response_text = response_json.toString();
+            session.getBasicRemote().sendText(response_text);
+            return;
+        }
         Account acc = (Account) httpSession.getAttribute("Account");
         GameManager gameManager = (GameManager) httpSession.getServletContext().getAttribute("GameManager");
         GameSearchManager searchManager = (GameSearchManager) httpSession.getServletContext().getAttribute("GameSearchManager");

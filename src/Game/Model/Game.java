@@ -24,9 +24,11 @@ public class Game {
     private DataBaseManager manager;
     private boolean playerLeftGame;
     private int winnerByGameLeft;
+    private String game_ID;
 
     // Constructor
-    public Game(Player player1, Player player2){
+    public Game(Player player1, Player player2,String id){
+        game_ID=id;
         this.player1 = player1;
         this.player2 = player2;
         this.curPlayer = player1;
@@ -37,7 +39,8 @@ public class Game {
     }
 
     // for mocking and testing
-    public Game(Player player1, Player player2, DataBaseTestManager manager){
+    public Game(Player player1, Player player2, DataBaseTestManager manager,String id){
+        game_ID=id;
         this.player1 = player1;
         this.player2 = player2;
         this.curPlayer = player1;
@@ -214,6 +217,7 @@ public class Game {
         // Check if opponent already left earlier
         if(this.playerLeftGame){
             gameOver(winnerByGameLeft);
+            GameManager.getInstance().endGame(game_ID);
             return;
         }
 
@@ -230,20 +234,19 @@ public class Game {
     public String gameOver(int winner) throws SQLException {
         saveGame(winner);
         // Return whether player has won, lose or it's draw
+        if(winner==0){
+            return "Draw";
+        }
         if(curPlayer == player1){
-            if(winner == 0)
-                return "Draw";
-            else if(winner == 1)
+            if(winner == 1)
                 return "You Win";
             else
                 return "You Lose";
         }else{
-            if(winner == 0)
-                return "Draw";
-            else if(winner == 2)
+            if(winner == 2)
                 return "You Win";
             else
-            return "You Lose";
+                return "You Lose";
         }
     }
 
@@ -271,6 +274,8 @@ public class Game {
         }
 
         manager.closeConnection(con);
+
+
     }
 
     // Statement for adding moves in database

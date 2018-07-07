@@ -75,6 +75,11 @@ function getTimeString(time){
 
 function callback(data) {
     console.log(data);
+    if(data.type===-1){
+        //You are already in game!
+        console.log("ingame you bastard!")
+        return;
+    }
     var url = "http://localhost:8080/game.jsp?id=" + data.id;
     if(data.type===1){//0-random, 1-friendly, 2-bot
         setLink(url)
