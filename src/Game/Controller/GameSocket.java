@@ -107,7 +107,7 @@ public class GameSocket {
             //the player already used his move so the opponent becomes the currentPlayer and these moves are
             //for him
             System.out.println("14");
-            if(CurrentMoves == "Winner1" || CurrentMoves == "Winner2" || CurrentMoves == "Draw"){
+            if(CurrentMoves.equals("Winner1") || CurrentMoves.equals("Winner2") || CurrentMoves.equals("Draw")){
                 System.out.println("15");
                 session.getBasicRemote().sendText(boardState   + CurrentMoves);
                 HttpSession httpSession = (HttpSession) session.getUserProperties().get("HttpSession");

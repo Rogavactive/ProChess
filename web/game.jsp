@@ -58,7 +58,6 @@
                 if(id==null||!id.equals(link_id)){
                     //spectator here. before it just redirect.
                     response.sendRedirect("main.jsp");
-
                     return;
                 }
                 %>">

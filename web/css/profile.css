@@ -1,0 +1,41 @@
+.profile-outer-container{
+    margin: 3%;
+    background-color: #cccccc;
+    border-radius: 10px;
+}
+
+h1, h2{
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+
+hr{
+    margin:5px 100px;
+    border-width: 1px;
+    border-color:#333333;
+}
+
+.profile-top-inner-coontainer{
+}
+
+.profile-stat-table{
+    font-size: 130%;
+    text-align: center;
+    border: 2px;
+}
+
+.material-icons-custom{
+
+}
+
+.profile-info-custom{
+    display: inline-block;
+    margin: 5px auto;
+}
+
+.change-btn{
+    width:70%;
+    margin:1%;
+    border-width:1px;
+    padding:1% 0;
+    vertical-align:middle;
+}
