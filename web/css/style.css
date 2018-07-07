@@ -6,6 +6,10 @@ html, body {
     margin:0;
 }
 
+p{
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+}
+
 input {
     margin-bottom: 5px;
     width: 85%;

@@ -91,31 +91,94 @@
 </nav>
 
 
-<div class="ratings" align="left">
-    <h1>User Ratings</h1>
+<div class="profile-outer-container" align="left">
 
-    <div class="bullet" title="Very fast games: less than 3 minutes">
-        <h3>Bullet</h3>
-        <strong> <h2> <%= bulletRating %> </h2> </strong>
-        <h5> <%= bulletMatches%> games</h5>
+    <div class="profile-top-inner-coontainer">
+        <h1 align="center">Hello, dear <%=username%>!</h1>
     </div>
 
-    <div class="blitz" title="Fast games: 3 to 8 minutes">
-        <h3>Blitz</h3>
-        <strong> <h2> <%= blitzRating %> </h2> </strong>
-        <h5> <%= blitzMatches%> games</h5>
+    <hr>
+
+    <div class="ratings-container" >
+        <h2 align="center">Your game statistics</h2>
     </div>
 
-    <div class="classical" title="Long games: more than 8 minutes">
-        <h3>Classical</h3>
-        <strong> <h2> <%= classicalRating %> </h2> </strong>
-        <h5> <%= classicalMatches%> games</h5>
-    </div>
-</div>
+    <table width="99%" align="center" class="profile-stat-table">
+        <tr>
+            <td>
+                <p>Type</p>
+            </td>
+            <td>
+                <p>Rating</p>
+            </td>
+            <td>
+                <p>Games</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Bullet</p>
+            </td>
+            <td>
+                <p><%=bulletRating%></p>
+            </td>
+            <td>
+                <p><%=blitzMatches%></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Blitz</p>
+            </td>
+            <td>
+                <p><%=blitzRating%></p>
+            </td>
+            <td>
+                <p><%=blitzMatches%></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Classical</p>
+            </td>
+            <td>
+                <p><%=classicalRating%></p>
+            </td>
+            <td>
+                <p><%=classicalMatches%></p>
+            </td>
+        </tr>
+    </table>
 
-<div class="information" align="center">
-    <h3> <%= username %> </h3>
-    <h3> <%= email %> </h3>
+    <div class="profile-information-container">
+        <i class="material-icons material-icons-custom">account_circle</i>
+        <p class="profile-info-custom">Username: <%= username %> </p>
+        <br>
+        <i class="material-icons material-icons-custom">email</i>
+        <p class="profile-info-custom">Email: <%= email %> </p>
+        <br>
+        <div align="center">
+            <button onclick="Change()" class="change-btn" id="change-btn">
+                <i class="material-icons copy-icon-custom">build</i> Change
+            </button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div>
+        <h2 align="center">Last 10 games</h2>
+        <ul>
+            <li>
+                <p>Game 1 here</p>
+            </li>
+            <li>
+                <p>Game 2 here</p>
+            </li>
+        </ul>
+        </ul>
+    </div>
+
 </div>
 
 </body>
