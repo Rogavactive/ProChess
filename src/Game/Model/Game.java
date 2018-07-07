@@ -1,7 +1,6 @@
 package Game.Model;
 
 import Accounting.Model.Account;
-import com.google.gson.Gson;
 import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
 import dbConnection.DataBaseTestManager;
@@ -79,9 +78,8 @@ public class Game {
 
     // Special move where two pieces change their position
     private void castling(int srcRow, int srcCol, int dstRow, int dstCol){
-        assert (srcCol - dstCol == 2 || dstCol - srcCol == 3);
-
-        if(srcCol-dstCol == 2){
+        assert (srcCol - dstCol == 3 || dstCol - srcCol == 2);
+        if(srcCol - dstCol == 3){
             history.add(new Move(srcRow, srcCol - 4, dstRow, dstCol + 1,
                     board.getCell(srcRow, srcCol - 4).getPieceType(),
                     board.getCell(srcRow, srcCol - 4).getPieceColor()));
