@@ -77,6 +77,9 @@ public class Account {
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {
+        if(newpass==null)
+            return false;
+        System.out.println(oldpass + " - " + newpass);
         if(manager.setPassword(oldpass, newpass, id)){
             type = true;
             return true;
@@ -85,6 +88,28 @@ public class Account {
     }
 
     public synchronized boolean change(String username, String email) {
+        boolean username_similar = username.equals(this.username);
+        boolean email_similar = email.equals(this.email);
+        if(username_similar&&email_similar)
+            return true;
+        if(username_similar){
+            if(manager.change(this.email,email,"email")){
+                this.email = email;
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        if(email_similar){
+            if(manager.change(this.username,username,"username")){
+                this.username = username;
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         if (manager.change(this.username, this.email, username, email)) {
             this.email = email;
             this.username = username;

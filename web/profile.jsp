@@ -157,8 +157,16 @@
         <i class="material-icons material-icons-custom">email</i>
         <p class="profile-info-custom">Email: <%= email %> </p>
         <br>
+        <i class="material-icons material-icons-custom">account_circle</i>
+        <p class="profile-info-custom">Account type: <%
+            if(acc.type())
+                out.print("Native.");
+            else
+                out.print("Google.");
+        %> </p>
+        <br>
         <div align="center">
-            <button onclick="Change()" class="change-btn" id="change-btn">
+            <button onclick="ChangeRedirect()" class="change-btn" id="change-btn">
                 <i class="material-icons copy-icon-custom">build</i> Change
             </button>
         </div>

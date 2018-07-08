@@ -294,8 +294,7 @@ function checkAvailable() {
                 if(res[2]==="true"){
                     window.location.href = '/validate_warning.html';
                 }
-            },
-            async: false
+            }
         });
     } catch (err) {
         console.log(err.message)

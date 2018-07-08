@@ -195,6 +195,19 @@ public class AccountManager {
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
+    public boolean change(String oldOne,  String newOne, String attribute) {
+        if(newOne==null||attribute==null)
+            return false;
+        String sqlQueryStatement = "select * from accounts where "+attribute+"=\""+oldOne+"\";";
+        if(!checkAvaliability(sqlQueryStatement))
+            return false;
+        if((attribute.equals("username")&&existsUsername(newOne))||(attribute.equals("email")&&existsEmail(newOne)))
+            return false;
+        sqlQueryStatement = "update accounts set "+attribute+"=\""+newOne+"\"" +
+                "where "+attribute+"=\""+oldOne+"\";";
+        return simpleExecuteUpdate(sqlQueryStatement);
+    }
+
     private boolean checkAvaliability(String sqlQueryStatement){
         Connection conn = null;
         ResultSet rslt = null;

@@ -23,6 +23,11 @@ hr{
     border: 2px;
 }
 
+input{
+    width:50% !important;
+    min-width: 150px;
+}
+
 .material-icons-custom{
 
 }

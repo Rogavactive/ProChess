@@ -23,17 +23,17 @@ public class GameSearchEndpoint {
     public void onOpen(Session session,EndpointConfig config) {
 //        System.out.println("chat onOpen::" + session.getId());
         HttpSession currSession = ((HttpSession)config.getUserProperties().get("HttpSession"));
+        Account acc = (Account) currSession.getAttribute("Account");
+        session.getUserProperties().put("userID",acc.getID());
+
         session.getUserProperties().put("HttpSession",currSession);
     }
 
     @OnClose
     public void onClose(Session session) {
-        HttpSession httpSession = (HttpSession)session.getUserProperties().get("HttpSession");
-        Account acc = (Account) httpSession.getAttribute("Account");
-        GameSearchManager searchManager = (GameSearchManager) httpSession.getServletContext().getAttribute("GameSearchManager");
-        if(users_in_queue.containsKey(acc.getID())) {
-            searchManager.removeFromQueue(acc.getID());
-            users_in_queue.remove(acc.getID());
+        int accID = (Integer)session.getUserProperties().get("userID");
+        if(users_in_queue.containsKey(accID)) {
+            users_in_queue.remove(accID);
         }
     }
 

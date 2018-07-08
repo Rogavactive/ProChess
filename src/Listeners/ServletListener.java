@@ -1,5 +1,6 @@
 package Listeners;
 
+import Accounting.Model.Account;
 import Accounting.Model.AccountManager;
 import Game.Model.GameManager;
 import GameConnection.Model.GameSearchManager;
@@ -15,11 +16,11 @@ import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 @WebListener()
-public class ServletContextLifecycleListener implements ServletContextListener,
+public class ServletListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
     // Public constructor is required by servlet spec
-    public ServletContextLifecycleListener() {
+    public ServletListener() {
     }
 
     // -------------------------------------------------------
@@ -48,6 +49,9 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     // HttpSessionListener implementation
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
+        Account acc = (Account) se.getSession().getAttribute("Account");
+        GameSearchManager searchManager = (GameSearchManager) se.getSession().getServletContext().getAttribute("GameSearchManager");
+        searchManager.removeFromQueue(acc.getID());
         /* Session is created. */
     }
 
@@ -60,7 +64,7 @@ public class ServletContextLifecycleListener implements ServletContextListener,
     // -------------------------------------------------------
 
     public void attributeAdded(HttpSessionBindingEvent sbe) {
-      /* This method is called when an attribute 
+      /* This method is called when an attribute
          is added to a session.
       */
     }
