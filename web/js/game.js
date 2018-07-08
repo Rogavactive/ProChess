@@ -46,15 +46,18 @@ function connectGame() {
         this.gameWebSocket = new WebSocket("ws://localhost:8080/game");
         this.gameWebSocket.onopen = function(event) {
             var msg = event.data;
-            console.log( msg);
+            // console.log( msg);
             //  BoardStateChanged(msg);
         }
 
         this.gameWebSocket.onmessage = function(event) {
-            var msg = event.data;
-            console.log( msg)
+            var gamemessage = JSON.parse(event.data);
+            console.log( gamemessage);
             // console.log('onmessage::' + JSON.stringify(msg, null, 4));
-            BoardStateChanged(msg);
+            if(gamemessage.type==="board_state")
+                BoardStateChanged(gamemessage);
+            if(gamemessage.type==="endgame")
+                endGame(gamemessage.status);
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -65,6 +68,10 @@ function connectGame() {
     } catch (exception) {
         console.error(exception);
     }
+}
+
+function endGame(status) {//status = "You win" or "You lose" or "Draw"
+
 }
 
 function getValidMovesForPiece(pos){
@@ -82,11 +89,14 @@ function getValidMovesForPiece(pos){
 
 
 function BoardStateChanged(msg){
-    Player=msg[128];
+    Player=msg.player;
+    console.log("player: "+Player);
+    var board = msg.board;
+    console.log(board);
     var ind=0;
     for (var i=0;i<8;i++) {
         for (var j=0;j<8;j++) {
-            var piece = msg[ind] + msg[ind + 1];
+            var piece = board[ind] + board[ind + 1];
             var cell=i+''+j;
             if (Player=='B') cell=(7-i)+''+(7-j);
             //   console.log(cell+" "+piece);
@@ -96,10 +106,11 @@ function BoardStateChanged(msg){
     }
 
     MovesState="";
-    console.log(Player);
-    for (var i = 129; i < msg.length; i++){
-        if (Player=='B') MovesState+= 7-msg[i];
-        else MovesState+=msg[i];
+    var movesStateToParse = msg.moves;
+    console.log(movesStateToParse);
+    for (var i = 0; i < movesStateToParse.length; i++){
+        if (Player==='B') MovesState+= 7-movesStateToParse[i];
+        else MovesState+=movesStateToParse[i];
     }
 
      console.log(MovesState);

@@ -108,12 +108,12 @@ public class Game {
             return gameOver(winnerByGameLeft);
         }
 
-        if(curPlayer.getAccount() != acc){
-            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
-                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
-                return "B";
-            return "W";
-        }
+//        if(curPlayer.getAccount() != acc){
+//            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
+//                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
+//                return "B";
+//            return "W";
+//        }
 
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
 
@@ -127,13 +127,32 @@ public class Game {
         return Stringify(result);
     }
 
+    public String getPlayerColor(Account acc){
+        String color;
+        if(acc==player1.getAccount()) {
+            if (player1.getColor() == Constants.pieceColor.white) {
+                color = "W";
+            } else {
+                color = "B";
+            }
+        }
+        else{
+            if (player2.getColor() == Constants.pieceColor.white) {
+                color = "W";
+            } else {
+                color = "B";
+            }
+        }
+        return color;
+    }
+
     // Making string of possible moves
     private String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
-        String res;
-        if(curPlayer.getColor()== Constants.pieceColor.black)
-            res = "B";
-        else
-            res = "W";
+        String res="";
+//        if(curPlayer.getColor()== Constants.pieceColor.black)
+//            res = "B";
+//        else
+//            res = "W";
 
         for(Pair<Integer,Integer> key : result.keySet()){
             Vector<Pair<Integer,Integer>> val = result.get(key);

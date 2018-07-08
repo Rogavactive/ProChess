@@ -3,6 +3,8 @@ package Game.Controller;
 import Accounting.Model.Account;
 import Game.Model.Game;
 import Game.Model.GameManager;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -30,8 +32,11 @@ public class GameSocket {
         sessions.put(acc.getID(),session);
         Game game = manager.getGameByID(ID);
         try {
-
-            session.getBasicRemote().sendText(game.getBoardState() +game.getCurrentPossibleMoves(acc));
+            String boardState = game.getBoardState();
+            String color = game.getPlayerColor(acc);
+            String possibleMoves = game.getCurrentPossibleMoves(acc);
+            JSONObject json_message = GenerateBoardJSON(boardState,possibleMoves,color);
+            session.getBasicRemote().sendText(json_message.toString());
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -57,7 +62,6 @@ public class GameSocket {
                 e.printStackTrace();
             }
         }
-        System.out.println(message);
         Game game = manager.getGameByID(ID);
         Account Opponent;
         if(game.getPlayer1().getAccount() == acc)
@@ -79,33 +83,66 @@ public class GameSocket {
         int srcCol = Character.getNumericValue(message.charAt(1));
         int dstRow = Character.getNumericValue(message.charAt(2));
         int dstCol = Character.getNumericValue(message.charAt(3));
-//        System.out.println(srcRow);
-//        System.out.println(srcCol);
-//        System.out.println(dstRow);
-//        System.out.println(dstCol);
+
         try {
+            JSONObject opponent_json;
+            JSONObject curr_json;
+
             game.pieceMoved(srcRow,srcCol,dstRow,dstCol);
             Session OpponentSession = sessions.get(Opponent.getID());
-            String CurrentMoves = game.getCurrentPossibleMoves(Opponent);
+            String opponentMoves = game.getCurrentPossibleMoves(Opponent);
+            String currMoves = game.getCurrentPossibleMoves(acc);
+            String currColor = game.getPlayerColor(acc);
+            String opponentColor = game.getPlayerColor(Opponent);
             String boardState = game.getBoardState();
-            if(OpponentSession.isOpen()) {
-                OpponentSession.getBasicRemote().sendText(boardState  + CurrentMoves);
-            }
-            //the player already used his move so the opponent becomes the currentPlayer and these moves are
-            //for him
-            if(CurrentMoves.equals("You win") || CurrentMoves.equals("You lose") || CurrentMoves.equals("Draw")){
-                session.getBasicRemote().sendText(boardState   + CurrentMoves);
+
+            if(opponentMoves.equals("You Win") || opponentMoves.equals("You Lose") || opponentMoves.equals("Draw")){
+                opponent_json = GenerateWinnerJSON(opponentMoves);
+                curr_json = GenerateWinnerJSON(currMoves);
                 HttpSession httpSession = (HttpSession) session.getUserProperties().get("HttpSession");
                 httpSession.removeAttribute("gameID");
                 if(OpponentSession.isOpen()) {
                     HttpSession opponentHttpSession = (HttpSession) OpponentSession.getUserProperties().get("HttpSession");
                     opponentHttpSession.removeAttribute("gameID");
                 }
-            } else
-                session.getBasicRemote().sendText(boardState  + game.getCurrentPossibleMoves(acc));
+            }else{
+                opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor);
+                curr_json = GenerateBoardJSON(boardState,currMoves,currColor);
+            }
+
+            if(OpponentSession.isOpen()) {
+                OpponentSession.getBasicRemote().sendText(opponent_json.toString());
+            }
+            session.getBasicRemote().sendText(curr_json.toString());
         } catch (CloneNotSupportedException | SQLException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private JSONObject GenerateBoardJSON(String boardState, String currentMovesPossible, String playerColor){
+        JSONObject json = null;
+        try {
+            json = new JSONObject();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        json.put("type","board_state");
+        json.put("board",boardState);
+        json.put("player",playerColor);
+        json.put("moves",currentMovesPossible);
+        return json;
+    }
+
+    private JSONObject GenerateWinnerJSON(String status){
+        JSONObject json = null;
+        try {
+            json = new JSONObject();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        json.put("type","endgame");
+        json.put("status",status);
+        return json;
     }
 
     @OnError
