@@ -56,7 +56,15 @@ public class GameSocket {
         String ID = (String)httpSession.getAttribute("gameID");
         if(ID==null){
             try {
-                session.getBasicRemote().sendText("Error");
+                JSONObject json = null;
+                try {
+                    json = new JSONObject();
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                json.put("type","error");
+                json.put("message","no_game_id");
+                session.getBasicRemote().sendText(json.toString());
                 return;
             } catch (IOException e) {
                 e.printStackTrace();

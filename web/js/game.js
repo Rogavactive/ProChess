@@ -58,6 +58,8 @@ function connectGame() {
                 BoardStateChanged(gamemessage);
             if(gamemessage.type==="endgame")
                 endGame(gamemessage.status);
+            if(gamemessage.type==="error")
+                reportError(gamemessage.message)
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -72,6 +74,12 @@ function connectGame() {
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
 
+}
+
+function reportError(err) {
+    if(err==="no_game_id"){
+        console.log("You are not registered in a game.");
+    }
 }
 
 function getValidMovesForPiece(pos){
