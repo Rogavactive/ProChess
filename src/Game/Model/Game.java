@@ -1,13 +1,7 @@
 package Game.Model;
 
 import Accounting.Model.Account;
-import dbConnection.DataBaseMainManager;
-import dbConnection.DataBaseManager;
-import dbConnection.DataBaseTestManager;
 import javafx.util.Pair;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +15,7 @@ public class Game {
     private Player player2;
     private Vector<Move> history;
     private Player curPlayer;
-    private DataBaseManager manager;
+    private GameHistory dbconnection;
     private boolean playerLeftGame;
     private int winnerByGameLeft;
     private String game_ID;
@@ -34,20 +28,8 @@ public class Game {
         this.curPlayer = player1;
         board = new Board();
         history = new Vector<>();
-        manager = DataBaseMainManager.getInstance();
         playerLeftGame = false;
-    }
-
-    // for mocking and testing
-    public Game(Player player1, Player player2, DataBaseTestManager manager,String id){
-        game_ID=id;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.curPlayer = player1;
-        board = new Board();
-        history = new Vector<>();
-        this.manager = manager;
-        playerLeftGame = false;
+        dbconnection = GameHistory.getInstance();
     }
 
     // Returns first player
@@ -80,7 +62,16 @@ public class Game {
         }
 
         board.move(srcRow, srcCol, dstRow, dstCol);
-        switchPlayer();
+    }
+
+    // Special move when pawn reaches end of board
+    // it can change into another piece
+    public void promotion(int row, int col, Constants.pieceType type){
+        if(board.getCell(row,col).getPieceType() != Constants.pieceType.Pawn)
+            return;
+        Constants.pieceColor color = board.getCell(row, col).getPieceColor();
+        board.getCell(row,col).removePiece();
+        board.getCell(row, col).putPiece(Piece.createPiece(type, color));
     }
 
     // Special move where two pieces change their position
@@ -103,6 +94,10 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
+        // when player demands moves, it means another player
+        // has already done a move or leave a game
+        switchPlayer();
+
         // if player left game, it's over
         if(playerLeftGame){
             return gameOver(winnerByGameLeft);
@@ -231,27 +226,9 @@ public class Game {
         }
     }
 
-    // Called when one of players leaves the game
-    public synchronized void leaveGame(int userID) throws SQLException {
-        // Check if opponent already left earlier
-        if(this.playerLeftGame){
-            gameOver(winnerByGameLeft);
-            GameManager.getInstance().endGame(game_ID);
-            return;
-        }
-
-        this.playerLeftGame = true;
-
-        // found out who won
-        if(player1.getAccount().getID() == userID)
-            winnerByGameLeft = 2;
-        else
-            winnerByGameLeft = 1;
-    }
-
     // This method is called when game is over
     public String gameOver(int winner) throws SQLException {
-        saveGame(winner);
+        dbconnection.saveGame(history, winner, player1, player2);
         // Return whether player has won, lose or it's draw
         if(winner==0){
             return "Draw";
@@ -269,67 +246,22 @@ public class Game {
         }
     }
 
-    // This method saves game in database
-    private void saveGame(int winner) throws SQLException {
-        Connection con = manager.getConnection();
-
-        // Creates new game in database
-        String updStm = insertGameStatement(winner);
-        manager.executeUpdate(updStm, con);
-
-        // find current game's ID
-        int gameID = -1;
-
-        String findStm = findGameStatement(winner);
-        ResultSet result = manager.executeQuerry(findStm, con);
-        result.first();
-        gameID = result.getInt(1);
-
-        // Saves every move
-        for(int i = 0; i < history.size(); i++){
-            String stm = addMovesStatement(gameID, history.get(i), i);
-
-            manager.executeUpdate(stm, con);
+    // Called when one of players leaves the game
+    public synchronized void leaveGame(int userID) throws SQLException {
+        // Check if opponent already left earlier
+        if(this.playerLeftGame){
+            gameOver(winnerByGameLeft);
+            GameManager.getInstance().endGame(game_ID);
+            return;
         }
 
-        manager.closeConnection(con);
+        this.playerLeftGame = true;
 
-
-    }
-
-    // Statement for adding moves in database
-    private String addMovesStatement(int gameID, Move curMove, int order){
-        return "insert into moves (gameID, srcRow, srcCol, dstRow, dstCol, pieceType, pieceColor, numberOfMove) " +
-                "values (" + gameID + ", " + curMove.getFrom().getKey() + ", " + curMove.getFrom().getValue() + ", "
-                + curMove.getTo().getKey() + ", " + curMove.getTo().getValue() + ", " + curMove.getTypeAsInt()
-                + ", " + curMove.getColorAsBool() + ", " + order + ")";
-    }
-
-    // Returns current date and time
-    private String getCurrentTime(){
-        java.util.Date date = new java.util.Date();
-
-        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        String currentTime = dateFormat.format(date);
-
-        return currentTime;
-    }
-
-    // Statement for finding game in database
-    private String findGameStatement(int winner){
-        return "select ID from games where player1ID = " + player1.getAccount().getID() + " and " +
-                "player2ID = " + player2.getAccount().getID() + " and " + "ColorOfPlayer1 = " +
-                player1.getColorAsBool() + " and " + "ColorOfPlayer2 = " + player2.getColorAsBool() +
-                " and winner = " + winner + " order by time DESC";
-    }
-
-    // Statement for creating new game in database
-    private String insertGameStatement(int winner){
-        return "insert into games (player1ID, player2ID, colorOfPlayer1, colorOfPlayer2, winner, time) " +
-                "values (" + player1.getAccount().getID() + ", " + player2.getAccount().getID() +
-                ", " + player1.getColorAsBool() + ", " + player2.getColorAsBool() + ", " + winner +
-                ", '" + getCurrentTime() + "')";
+        // found out who won
+        if(player1.getAccount().getID() == userID)
+            winnerByGameLeft = 2;
+        else
+            winnerByGameLeft = 1;
     }
 
     // Returns copy of board
