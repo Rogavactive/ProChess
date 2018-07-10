@@ -35,7 +35,11 @@ public class GameSocket {
             String boardState = game.getBoardState();
             String color = game.getPlayerColor(acc);
             String possibleMoves = game.getCurrentPossibleMoves(acc);
-            JSONObject json_message = GenerateBoardJSON(boardState,possibleMoves,color);
+            JSONObject json_message;
+            if(possibleMoves.equals("You Win")||possibleMoves.equals("You Lose")||possibleMoves.equals("Draw")){
+                json_message = GenerateWinnerJSON(possibleMoves);
+            }else
+                json_message = GenerateBoardJSON(boardState,possibleMoves,color);
             session.getBasicRemote().sendText(json_message.toString());
         } catch (IOException | SQLException e) {
             e.printStackTrace();

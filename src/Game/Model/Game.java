@@ -62,6 +62,8 @@ public class Game {
         }
 
         board.move(srcRow, srcCol, dstRow, dstCol);
+
+        switchPlayer();
     }
 
     // Special move when pawn reaches end of board
@@ -96,19 +98,18 @@ public class Game {
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
         // when player demands moves, it means another player
         // has already done a move or leave a game
-        switchPlayer();
 
         // if player left game, it's over
         if(playerLeftGame){
             return gameOver(winnerByGameLeft);
         }
 
-//        if(curPlayer.getAccount() != acc){
-//            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
-//                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
-//                return "B";
-//            return "W";
-//        }
+        if(curPlayer.getAccount() != acc){
+            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
+                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
+                return "";
+            return "";
+        }
 
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
 

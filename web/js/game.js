@@ -73,7 +73,7 @@ function connectGame() {
 }
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
-
+    console.log("endgame: " + status);
 }
 
 function reportError(err) {
