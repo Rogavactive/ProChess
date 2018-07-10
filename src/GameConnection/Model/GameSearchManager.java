@@ -14,14 +14,19 @@ public class GameSearchManager {
 
     private DataBaseManager manager;
     private ReentrantLock lock = new ReentrantLock();
+    private static GameSearchManager instance = new GameSearchManager(DataBaseMainManager.getInstance());
 
-    public GameSearchManager(DataBaseMainManager manager){
+    private GameSearchManager(DataBaseMainManager manager){
         this.manager = manager;
     }
 
-    public GameSearchManager(DataBaseTestManager manager){
-        this.manager = manager;
+    public static GameSearchManager getInstance() {
+        return instance;
     }
+
+    //    public GameSearchManager(DataBaseTestManager manager){
+//        this.manager = manager;
+//    }
 
     public int findOpponent(Account player,String timePrimary, String timeBonus){
         //ranks roca daamateb accountshi iqneba eg rank da martivad amoigeb.
@@ -99,7 +104,7 @@ public class GameSearchManager {
         return true;
     }
 
-    public boolean removeFromQueue(int username_ID, Connection conn){
+    private boolean removeFromQueue(int username_ID, Connection conn){
         String sqlQueryStatement = "DELETE FROM search_queue WHERE username_ID="+ username_ID +";";
         return manager.executeUpdate(sqlQueryStatement,conn);
     }

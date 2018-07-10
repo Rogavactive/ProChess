@@ -36,9 +36,14 @@
         if(request.getSession().getAttribute("Account") == null){
             response.sendRedirect("index.html");
             return;//this is to redirect immediately and not execute code bellow (which causes an error)
-        }else{
         }
+        String id = request.getParameter("id");
+        if(id==null)
+            id = "0";
     %>
+    <script>
+        var opponentID = <%=id%>;
+    </script>
 </head>
 <body>
 <nav class="top-navbar-container">
@@ -50,9 +55,9 @@
             </td>
             <td colspan="2">
                 <a class="top-navbar-anchors" href="game.jsp<%
-                String id = (String) request.getSession().getAttribute("gameID");
-                if(id!=null)
-                    out.print("?id="+id);
+                String gameid = (String) request.getSession().getAttribute("gameID");
+                if(gameid!=null)
+                    out.print("?id="+gameid);
                 %>">
                     <span class="top-navbar-elem">Game</span>
                 </a>
@@ -108,7 +113,7 @@
                     <i class="material-icons copy-icon-custom">file_copy</i>
                 </button>
                 <button id="search-btn" onclick="SearchRequest()">Search</button>
-                <p class="find-game">Finding opponent...</p>
+                <p class="find-game">Waiting for opponent...</p>
                 <p class="find-game" id = "find-game-timer">00:00</p>
             </div>
         </div>

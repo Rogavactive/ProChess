@@ -6,6 +6,7 @@ $(document).ready(function(){
         $(this).select();
     });
     initWebsocket();
+
     //write here ajax async call to server, it will look for player n2 and callback function should handle response
 });
 
@@ -13,7 +14,10 @@ function initWebsocket() {
     try {
         this.searchWebSocket = new WebSocket("ws://localhost:8080/gamesearch");
         this.searchWebSocket.onopen = function(event) {
-            //nothing
+            if(opponentID!==0){
+                SearchRequest();
+                $('#search-btn').prop("disabled",true);
+            }
         }
         this.searchWebSocket.onmessage = function(event) {
             callback(JSON.parse(event.data))
@@ -33,12 +37,22 @@ function SearchRequest(){
     var gameType = $( "#choose-type option:selected" ).val();
     var primaryTime = $( "#main-time option:selected" ).val();
     var bonusTime = $( "#bonus-time option:selected" ).val();
-    if(gameType===""||primaryTime===""||bonusTime==="")
+    if(opponentID===0&&(gameType===""||primaryTime===""||bonusTime===""))
         return;
 
+    if(opponentID!==0)
+        gameType="1";
+
+    // message = '{"game_type" : "3",' +
+    //     '"opponent_link" : "' + opponentLink +'",' +
+    //     '"time_primary" : "' + primaryTime +'",' +
+    //     '"time_bonus" : "'+bonusTime+'"}';
     var message = '{"game_type" : "' + gameType+ '",' +
-        '"time_primary" : "' + primaryTime +'",' +
-        '"time_bonus" : "'+bonusTime+'"}';
+            '"opponent_id" : "' + opponentID +'",' +
+            '"time_primary" : "' + primaryTime +'",' +
+            '"time_bonus" : "'+bonusTime+'"}';
+
+
 
     console.log(message);
     if (this.searchWebSocket.readyState == searchWebSocket.OPEN) {
@@ -47,7 +61,7 @@ function SearchRequest(){
         console.error('webSocket is not open. readyState=' + this.searchWebSocket.readyState);
     }
 
-    if(gameType==='0')
+    if(gameType==='0'||gameType==='1')
         createFindGameTimer();
     $('#search-btn').prop("disabled",true);
 }
@@ -80,13 +94,12 @@ function callback(data) {
         console.log("ingame you bastard!")
         return;
     }
-    var url = "http://localhost:8080/game.jsp?id=" + data.id;
-    if(data.type===1){//0-random, 1-friendly, 2-bot
-        setLink(url)
-    }else{
+    if(data.type===3){//0-random, 1-friendly, 2-bot, 3-friendly link
+        setLink(data.link)
+    }else {
+        var url = "http://localhost:8080/game.jsp?id=" + data.id;
         window.location.href = url;
     }
-
 }
 
 function setLink(link){
