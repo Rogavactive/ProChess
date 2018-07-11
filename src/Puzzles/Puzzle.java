@@ -22,23 +22,28 @@ public class Puzzle {
         currentUserMove = 0;
     }
 
-    public Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > getComputersMove(){
-        if(currentComputerMove >= computerMoves.size())
-            return null;
+    public boolean pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol){
+        Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > correctMove = getCorrectMove();
 
-        int rowFrom = computerMoves.get(currentComputerMove).getKey();
-        int colFrom = computerMoves.get(currentComputerMove).getValue();
-        Pair<Integer, Integer> from = new Pair<>(rowFrom, colFrom);
+        if(correctMove.getKey().getKey() == srcRow && correctMove.getKey().getValue() == srcCol &&
+                correctMove.getValue().getKey() == dstRow && correctMove.getValue().getValue() == dstCol)
+            return true;
 
-        currentComputerMove++;
-        int rowTo = computerMoves.get(currentComputerMove).getKey();
-        int colTo = computerMoves.get(currentComputerMove).getValue();
-        Pair<Integer, Integer> to = new Pair<>(rowTo, colTo);
-
-        return new Pair<>(from, to);
+        return false;
     }
 
-    public Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > getCorrectMove(){
+    public String doComputerMove(){
+        Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > move = getComputersMove();
+
+        if(move == null)
+            return "Success";
+
+        board.move(move.getKey().getKey(), move.getKey().getValue(), move.getValue().getKey(), move.getValue().getValue());
+
+        return getBoardState();
+    }
+
+    private Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > getCorrectMove(){
         if(currentUserMove >= correctMoves.size())
             return null;
 
@@ -54,6 +59,22 @@ public class Puzzle {
         return new Pair<>(from, to);
     }
 
+    private Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > getComputersMove(){
+        if(currentComputerMove >= computerMoves.size())
+            return null;
+
+        int rowFrom = computerMoves.get(currentComputerMove).getKey();
+        int colFrom = computerMoves.get(currentComputerMove).getValue();
+        Pair<Integer, Integer> from = new Pair<>(rowFrom, colFrom);
+
+        currentComputerMove++;
+        int rowTo = computerMoves.get(currentComputerMove).getKey();
+        int colTo = computerMoves.get(currentComputerMove).getValue();
+        Pair<Integer, Integer> to = new Pair<>(rowTo, colTo);
+
+        return new Pair<>(from, to);
+    }
+
     private Vector<Pair<Integer, Integer>> stringToVector(String moves){
         Vector<Pair<Integer, Integer>> result = new Vector<>();
 
@@ -64,6 +85,34 @@ public class Puzzle {
             result.add(new Pair<>(moves.charAt(i + 2) - '0', moves.charAt(i + 3) - '0'));
 
             i += 4;
+        }
+
+        return result;
+    }
+
+    private String getBoardState(){
+        String result="";
+
+        for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
+            for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
+
+
+                if (board.getCell(row,col).getPieceType()==Constants.pieceType.emptyCell){
+                    result+="00";
+                } else {
+                    if (board.getCell(row,col).getPieceColor()==Constants.pieceColor.white) {
+                        result += 'W';
+                    } else {
+                        result += 'B';
+                    }
+                    if (board.getCell(row,col).getPieceType()==Constants.pieceType.Knight) {
+                        result += 'N';
+                    } else {
+                        result += board.getCell(row, col).getPieceType().toString().charAt(0);
+                    }
+
+                }
+            }
         }
 
         return result;

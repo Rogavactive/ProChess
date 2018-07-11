@@ -30,7 +30,7 @@ public class databaseConnection {
     public Puzzle getPuzzle(int puzzleNumber) throws SQLException {
         Connection con = manager.getConnection();
 
-        if(puzzleNumber > puzzlesCount())
+        if(puzzleNumber > puzzlesCount() || puzzleNumber <= 0)
             return null;
 
         String stm = "select * from puzzles where ID = " + puzzleNumber;
@@ -38,6 +38,8 @@ public class databaseConnection {
 
         result.first();
         Puzzle p = new Puzzle(result.getString(1), result.getString(2), result.getString(3));
+
+        con.close();
 
         return p;
     }

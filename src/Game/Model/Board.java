@@ -76,6 +76,13 @@ public class Board {
             i += 5;
 
             board.get(row).get(col).putPiece(Piece.createPiece(type, color, hasMoved));
+
+            if(type == Constants.pieceType.King){
+                if(color == Constants.pieceColor.white)
+                    whiteKingPos = new Pair<>(row, col);
+                else
+                    blackKingPos = new Pair<>(row, col);
+            }
         }
     }
 
