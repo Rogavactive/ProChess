@@ -1,4 +1,4 @@
-package Puzzles;
+package Puzzles.Model;
 
 import Game.Model.Board;
 import Game.Model.Constants;

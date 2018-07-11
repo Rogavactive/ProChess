@@ -2,6 +2,7 @@ package Listeners;
 
 import Accounting.Model.Account;
 import Accounting.Model.AccountManager;
+import Game.Model.Game;
 import Game.Model.GameManager;
 import GameConnection.Model.GameSearchManager;
 import dbConnection.DataBaseMainManager;
@@ -10,10 +11,8 @@ import dbConnection.DataBaseManager;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.*;
+import java.sql.SQLException;
 
 @WebListener()
 public class ServletListener implements ServletContextListener,
@@ -56,7 +55,19 @@ public class ServletListener implements ServletContextListener,
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
-        /* Session is destroyed. */
+        HttpSession session = se.getSession();
+        String ID = (String) session.getAttribute("gameID");
+        if(ID != null){
+            Account acc = (Account) session.getAttribute("Account");
+            GameManager manager = GameManager.getInstance();
+            Game game = manager.getGameByID(ID);
+            try {
+                game.leaveGame(acc.getID());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            manager.endGame(ID);
+        }
     }
 
     // -------------------------------------------------------

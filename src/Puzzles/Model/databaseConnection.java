@@ -1,8 +1,7 @@
-package Puzzles;
+package Puzzles.Model;
 
 import dbConnection.DataBaseMainManager;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
