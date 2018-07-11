@@ -6,6 +6,7 @@ import Game.Model.Move;
 import javafx.util.Pair;
 
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Puzzle {
     private Board board;
@@ -25,6 +26,8 @@ public class Puzzle {
     public boolean pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol){
         Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > correctMove = getCorrectMove();
 
+        board.move(srcRow, srcCol, dstRow, dstCol);
+
         if(correctMove.getKey().getKey() == srcRow && correctMove.getKey().getValue() == srcCol &&
                 correctMove.getValue().getKey() == dstRow && correctMove.getValue().getValue() == dstCol)
             return true;
@@ -36,7 +39,7 @@ public class Puzzle {
         Pair< Pair<Integer, Integer>, Pair<Integer, Integer> > move = getComputersMove();
 
         if(move == null)
-            return "Success";
+            return "success";
 
         board.move(move.getKey().getKey(), move.getKey().getValue(), move.getValue().getKey(), move.getValue().getValue());
 
@@ -56,6 +59,8 @@ public class Puzzle {
         int colTo = correctMoves.get(currentUserMove).getValue();
         Pair<Integer, Integer> to = new Pair<>(rowTo, colTo);
 
+        currentUserMove++;
+
         return new Pair<>(from, to);
     }
 
@@ -71,6 +76,8 @@ public class Puzzle {
         int rowTo = computerMoves.get(currentComputerMove).getKey();
         int colTo = computerMoves.get(currentComputerMove).getValue();
         Pair<Integer, Integer> to = new Pair<>(rowTo, colTo);
+
+        currentComputerMove++;
 
         return new Pair<>(from, to);
     }
@@ -90,7 +97,31 @@ public class Puzzle {
         return result;
     }
 
-    private String getBoardState(){
+    public String getPossibleMoves(){
+        ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(Constants.pieceColor.white);
+
+        return Stringify(result);
+    }
+
+    private String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
+        String res="";
+//        if(curPlayer.getColor()== Constants.pieceColor.black)
+//            res = "B";
+//        else
+//            res = "W";
+
+        for(Pair<Integer,Integer> key : result.keySet()){
+            Vector<Pair<Integer,Integer>> val = result.get(key);
+
+            for(int i  = 0; i < val.size(); i++){
+                res += key.getKey() + "" + key.getValue() + "" + val.get(i).getKey() + "" + val.get(i).getValue();
+            }
+        }
+
+        return res;
+    }
+
+    public String getBoardState(){
         String result="";
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {

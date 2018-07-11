@@ -68,7 +68,7 @@
                 </a>
             </td>
             <td colspan="2">
-                <a class="top-navbar-anchors" href="main.jsp"><span class="top-navbar-elem">Puzzles</span></a>
+                <a class="top-navbar-anchors" href="puzzles.jsp"><span class="top-navbar-elem">Puzzles</span></a>
             </td>
             <td colspan="2">
                 <a class="top-navbar-anchors" href="profile.jsp"><span class="top-navbar-elem">Profile</span></a>

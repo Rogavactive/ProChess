@@ -104,13 +104,6 @@ public class Game {
             return gameOver(winnerByGameLeft);
         }
 
-        if(curPlayer.getAccount() != acc){
-            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
-                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
-                return "";
-            return "";
-        }
-
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
 
         if(noMoveIsPossible(result)){
@@ -118,6 +111,13 @@ public class Game {
                 return gameOver(2);
             else
                 return gameOver(1);
+        }
+
+        if(curPlayer.getAccount() != acc){
+            if(player2.getAccount()==acc && player2.getColor()==Constants.pieceColor.black
+                    || player1.getAccount()==acc && player1.getColor()==Constants.pieceColor.black)
+                return "";
+            return "";
         }
 
         return Stringify(result);

@@ -17,11 +17,11 @@ public class databaseConnection {
     public int puzzlesCount() throws SQLException {
         Connection con = manager.getConnection();
 
-        String stm = "select count(*) from puzzles";
+        String stm = "select count(*) as puzzle_num from puzzles";
         ResultSet result = manager.executeQuerry(stm, con);
         result.first();
 
-        int c = result.getInt(1);
+        int c = result.getInt("puzzle_num");
         con.close();
 
         return c;
@@ -37,7 +37,7 @@ public class databaseConnection {
         ResultSet result = manager.executeQuerry(stm, con);
 
         result.first();
-        Puzzle p = new Puzzle(result.getString(1), result.getString(2), result.getString(3));
+        Puzzle p = new Puzzle(result.getString(2), result.getString(3), result.getString(4));
 
         con.close();
 
