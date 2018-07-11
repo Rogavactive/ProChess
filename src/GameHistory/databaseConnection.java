@@ -1,26 +1,26 @@
-package Game.Model;
+package GameHistory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
+import Game.Model.Constants;
+import Game.Model.Move;
+import Game.Model.Player;
 import dbConnection.DataBaseMainManager;
 import dbConnection.DataBaseManager;
-import dbConnection.DataBaseTestManager;
+import javafx.util.Pair;
 
-import javax.xml.crypto.Data;
-import java.sql.Connection;
-import java.sql.ResultSet;
-
-public class GameHistory {
-    private static GameHistory instance = new GameHistory();
+public class databaseConnection {
+    private static databaseConnection instance = new databaseConnection();
     private static DataBaseManager manager;
 
-    private GameHistory(){
+    private databaseConnection(){
         manager = DataBaseMainManager.getInstance();
     }
 
-    public static GameHistory getInstance(){ return instance; }
+    public static databaseConnection getInstance(){ return instance; }
 
     // This method saves game in database
     public void saveGame(Vector<Move> history, int winner,
@@ -47,6 +47,69 @@ public class GameHistory {
         }
 
         manager.closeConnection(con);
+    }
+
+    public Vector<Pair<Integer, Integer>> getLastTenGame(int playerID) throws SQLException {
+        Connection con = manager.getConnection();
+
+        String stm = "Select ID, player1ID, player2ID from games where " +
+                "player1ID = " + playerID + " or Player2ID = " + playerID +
+                " order by time limit 10";
+        ResultSet res = manager.executeQuerry(stm, con);
+
+        Vector<Pair<Integer, Integer>> result = new Vector<>();
+
+        while(res.next()){
+            if(res.getInt(2) == playerID)
+                result.add(new Pair<>(res.getInt(1), res.getInt(3)));
+            else
+                result.add(new Pair<>(res.getInt(1), res.getInt(2)));
+        }
+
+        con.close();
+
+        return result;
+    }
+
+    public Vector<Move> findMoves(int gameID) throws SQLException {
+        Connection con = manager.getConnection();
+
+        String stm = "Select * from moves where gameID = " + gameID + " order by numberOfMove";
+        ResultSet res = manager.executeQuerry(stm, con);
+
+        Vector<Move> result = new Vector<>();
+
+        while(res.next()){
+            Constants.pieceColor color;
+            Constants.pieceType type;
+
+            if(res.getBoolean(8))
+                color = Constants.pieceColor.black;
+            else
+                color = Constants.pieceColor.white;
+
+            if(res.getInt(7) == 0)
+                type = Constants.pieceType.King;
+            else if(res.getInt(7) == 0)
+                type = Constants.pieceType.Pawn;
+            else if(res.getInt(7) == 0)
+                type = Constants.pieceType.Bishop;
+            else if(res.getInt(7) == 0)
+                type = Constants.pieceType.Knight;
+            else if(res.getInt(7) == 0)
+                type = Constants.pieceType.Rook;
+            else
+                type = Constants.pieceType.Queen;
+
+            Move curMove = new Move(res.getInt(3), res.getInt(4), res.getInt(5), res.getInt(6),
+                    type, color);
+
+            result.add(curMove);
+        }
+
+        con.close();
+
+        return result;
     }
 
     // Statement for adding moves in database

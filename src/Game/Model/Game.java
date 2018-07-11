@@ -1,6 +1,7 @@
 package Game.Model;
 
 import Accounting.Model.Account;
+import GameHistory.databaseConnection;
 import javafx.util.Pair;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -15,7 +16,7 @@ public class Game {
     private Player player2;
     private Vector<Move> history;
     private Player curPlayer;
-    private GameHistory dbconnection;
+    private databaseConnection dbconnection;
     private boolean playerLeftGame;
     private int winnerByGameLeft;
     private String game_ID;
@@ -29,7 +30,7 @@ public class Game {
         board = new Board();
         history = new Vector<>();
         playerLeftGame = false;
-        dbconnection = GameHistory.getInstance();
+        dbconnection = databaseConnection.getInstance();
     }
 
     // Returns first player
@@ -145,10 +146,6 @@ public class Game {
     // Making string of possible moves
     private String Stringify( ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result){
         String res="";
-//        if(curPlayer.getColor()== Constants.pieceColor.black)
-//            res = "B";
-//        else
-//            res = "W";
 
         for(Pair<Integer,Integer> key : result.keySet()){
             Vector<Pair<Integer,Integer>> val = result.get(key);
