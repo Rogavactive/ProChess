@@ -105,6 +105,21 @@ CREATE TABLE search_queue(
   unique key (username_ID)
 );
 
+DROP table if exists puzzles;
+
+create table puzzles(
+  ID int auto_increment,
+  boardstate varchar(1000),
+  computerMoves varchar(1000),
+  correctMoves varchar(1000),
+
+  primary key (ID)
+);
+
+insert into puzzles (boardstate, computerMoves, correctMoves) values
+  ("wR00f wR05t wK06t wP11f wP12f wP15f wP16f wP17f wP20t wP32t wP34t wQ43t wN57t bB46t bP51t bP60f bB61t bP62f bP63f bP66f bP67f bQ73f bR74t bK77t",
+  "7476", "4376 5765");
+
 -- VARIABLES FOR TESTING (DELETE BEFORE FINAL RELEASE)
 
 insert into accounts (username, pass_hash, email) values

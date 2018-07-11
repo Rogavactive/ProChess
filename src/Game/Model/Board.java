@@ -30,6 +30,55 @@ public class Board {
         blackKingPos = new Pair<>(7, 4);
     }
 
+    public Board(String boardState){
+        board = new Vector<>(Constants.NUMBER_OF_ROWS);
+        for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {
+            board.add(new Vector<Cell>(Constants.NUMBER_OF_COLUMNS));
+            for (int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++) {
+                board.get(row).add(new Cell(row, col));
+            }
+        }
+
+        // place pieces according to board state
+        for(int i = 0; i < boardState.length(); i++){
+            Constants.pieceColor color;
+            Constants.pieceType type;
+            int row;
+            int col;
+            boolean hasMoved;
+
+            if(boardState.charAt(i) == 'w')
+                color = Constants.pieceColor.white;
+            else
+                color = Constants.pieceColor.black;
+
+            if(boardState.charAt(i + 1) == 'P')
+                type = Constants.pieceType.Pawn;
+            else if(boardState.charAt(i + 1) == 'B')
+                type = Constants.pieceType.Bishop;
+            else if(boardState.charAt(i + 1) == 'K')
+                type = Constants.pieceType.King;
+            else if(boardState.charAt(i + 1) == 'Q')
+                type = Constants.pieceType.Queen;
+            else if(boardState.charAt(i + 1) == 'R')
+                type = Constants.pieceType.Rook;
+            else
+                type = Constants.pieceType.Knight;
+
+            row = boardState.charAt(i + 2) - '0';
+            col = boardState.charAt(i + 3) - '0';
+
+            if(boardState.charAt(i + 4) == 't')
+                hasMoved = true;
+            else
+                hasMoved = false;
+
+            i += 5;
+
+            board.get(row).get(col).putPiece(Piece.createPiece(type, color, hasMoved));
+        }
+    }
+
     // Constructor for tests
     public Board(HashMap<Piece, Pair<Integer, Integer>> state){
         board = new Vector<>(Constants.NUMBER_OF_ROWS);
@@ -145,5 +194,26 @@ public class Board {
     // This method adds given piece on given cell
     public void addPiece(int srcRow, int srcCol, Piece piece){
         board.get(srcRow).get(srcCol).putPiece(piece);
+    }
+
+    @Override
+    public String toString(){
+        String result = new String();
+
+        for(int row = 0; row < Constants.NUMBER_OF_ROWS; row++){
+            for(int col = 0; col < Constants.NUMBER_OF_COLUMNS; col++){
+                result += row;
+                result += col + ": ";
+
+                if(board.get(row).get(col).hasPiece())
+                    result += board.get(row).get(col).getPiece().toString();
+                else
+                    result += "empty";
+
+                result += '\n';
+            }
+        }
+
+        return result;
     }
 }

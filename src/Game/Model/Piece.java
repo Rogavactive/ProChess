@@ -19,6 +19,18 @@ public abstract class Piece implements Cloneable{
         }
     }
 
+    public static Piece createPiece(Constants.pieceType t, Constants.pieceColor col, boolean hasMoved){
+        switch (t){
+            case King: return new King(col, hasMoved);
+            case Pawn: return new Pawn(col, hasMoved);
+            case Rook: return new Rook(col, hasMoved);
+            case Queen: return new Queen(col, hasMoved);
+            case Bishop: return new Bishop(col, hasMoved);
+            case Knight: return new Knight(col, hasMoved);
+            default: return null;
+        }
+    }
+
     // This method is called when piece has done a move
     public abstract void hasMoved();
 

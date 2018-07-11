@@ -16,7 +16,7 @@ public class GameHistory {
     private static GameHistory instance = new GameHistory();
     private static DataBaseManager manager;
 
-    public GameHistory(){
+    private GameHistory(){
         manager = DataBaseMainManager.getInstance();
     }
 
