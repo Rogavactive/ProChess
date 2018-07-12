@@ -39,6 +39,7 @@ public class GameHistory {
 
             board.move(curMove.getFrom().getKey(), curMove.getFrom().getValue(),
                     curMove.getTo().getKey(), curMove.getTo().getValue());
+            currentMove++;
         }
 
         return getBoardState();

@@ -49,7 +49,7 @@ public class databaseConnection {
         manager.closeConnection(con);
     }
 
-    public Vector<Pair<Integer, Integer>> getLastTenGame(int playerID) throws SQLException {
+    public Vector<Pair<Integer, Integer>> getLastTenGames(int playerID) throws SQLException {
         Connection con = manager.getConnection();
 
         String stm = "Select ID, player1ID, player2ID from games where " +
@@ -90,13 +90,13 @@ public class databaseConnection {
 
             if(res.getInt(7) == 0)
                 type = Constants.pieceType.King;
-            else if(res.getInt(7) == 0)
+            else if(res.getInt(7) == 1)
                 type = Constants.pieceType.Pawn;
-            else if(res.getInt(7) == 0)
+            else if(res.getInt(7) == 2)
                 type = Constants.pieceType.Bishop;
-            else if(res.getInt(7) == 0)
+            else if(res.getInt(7) == 3)
                 type = Constants.pieceType.Knight;
-            else if(res.getInt(7) == 0)
+            else if(res.getInt(7) == 4)
                 type = Constants.pieceType.Rook;
             else
                 type = Constants.pieceType.Queen;
