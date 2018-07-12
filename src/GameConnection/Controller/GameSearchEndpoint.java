@@ -9,10 +9,8 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
-import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(value = "/gamesearch", configurator = SearchServletConfig.class)
