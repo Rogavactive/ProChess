@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public abstract class DataBaseManager {
 
-    public ResultSet executeQuerry(String statement, Connection conn){
+    public ResultSet executeQuerry(String statement, Connection conn) {
         try {
             PreparedStatement stmt = conn.prepareStatement(statement);
             return stmt.executeQuery();
@@ -20,43 +20,37 @@ public abstract class DataBaseManager {
     }
 
 
-    public boolean executeUpdate(String statement,Connection conn){
+    public boolean executeUpdate(String statement, Connection conn) {
         try {
             PreparedStatement stmt = conn.prepareStatement(statement);
             stmt.executeUpdate();
             return true;
-        } catch (SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public void closeConnections(Connection conn, ResultSet rslt){
+    public void closeConnections(Connection conn, ResultSet rslt) {
         try {
-            if (rslt != null) {
-                rslt.close();
-            }
+            if (rslt != null) rslt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         closeConnection(conn);
     }
 
-    public void closeConnection(Connection conn){
+    public void closeConnection(Connection conn) {
         try {
-            if (conn != null) {
-                conn.close();
-            }
+            if (conn != null) conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void closeResultset(ResultSet rslt){
+    public void closeResultset(ResultSet rslt) {
         try {
-            if (rslt != null) {
-                rslt.close();
-            }
+            if (rslt != null) rslt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
