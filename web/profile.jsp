@@ -183,7 +183,7 @@
         <h2 align="center">Last 10 games</h2>
         <%
             AccountManager accountManager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-            Vector<Pair<Integer, Integer>> games;
+            Vector<Pair< Pair<Integer, Integer>, Integer>> games;
             try {
                 databaseConnection dbCon = databaseConnection.getInstance();
                 games = dbCon.getLastTenGames(acc.getID());
@@ -196,15 +196,24 @@
         <ul>
             <%
                 for(int i = 0; i<games.size(); i++){
-                    Pair<Integer,Integer> currPair = games.get(i);
-                    int currGameID = currPair.getKey();
+                    Pair< Pair<Integer, Integer>, Integer> currPairPair = games.get(i);
+                    int winnerState = currPairPair.getValue();
+                    Pair<Integer, Integer> currPair = currPairPair.getKey();
                     int opponentID = currPair.getValue();
+                    int currGameID = currPair.getKey();
                     out.println("<li>");
                     out.println("<a href=\"history.jsp?id="+currGameID+"\" class=\"histoty-elem-a\">");
                     out.println("<div class=\"histoty-elem-container\">");
                     out.println("<p class=\"history-elem-p\">Game ID : "+currGameID+"</p>");
-                    String opponnentName = accountManager.getUsernameById(opponentID);
-                    out.println("<p class=\"history-elem-p\">Opponent : "+opponnentName+"</p>");
+                    String oponnentName = accountManager.getUsernameById(opponentID);
+                    out.println("<p class=\"history-elem-p\">Opponent : "+oponnentName+"</p>");
+                    if(winnerState==-1){
+                        out.println("<p class=\"history-elem-p\" style=\"color:#E82323;\"> Defeat </p>");
+                    }else if(winnerState==1){
+                        out.println("<p class=\"history-elem-p\" style=\"color:#30e822;\"> Victory </p>");
+                    }else if(winnerState==0){
+                        out.println("<p class=\"history-elem-p\" style=\"color:#E8E330;\"> Draw </p>");
+                    }
                     out.println("</div>");
                     out.println("</a>");
                     out.println("</li>");

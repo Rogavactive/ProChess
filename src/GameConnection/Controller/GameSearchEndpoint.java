@@ -79,13 +79,12 @@ public class GameSearchEndpoint {
                     return;
                 }
                 HttpSession opponentHttpSession = (HttpSession) opponentSession.getUserProperties().get("HttpSession");
+                //////////////
+                String time_primary = (String) opponentSession.getUserProperties().get("time_primary");
+                String time_bonus = (String) opponentSession.getUserProperties().get("time_bonus");
+                /////////////
                 Account opponentAcc = (Account) opponentHttpSession.getAttribute("Account");
                 GameManager gameManager = GameManager.getInstance();
-                //////////////
-                String time_primary = (String) jsonObject.get("time_primary");
-                String time_bonus = (String) jsonObject.get("time_bonus");
-                /////////////
-
                 String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black),
                         new GameType(time_primary,time_bonus));
                 if(id==null)
