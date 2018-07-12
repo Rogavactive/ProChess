@@ -30,43 +30,50 @@ public class ModifyAccServlet extends HttpServlet {
         String oldPass = request.getParameter("old_pass");
         String newPass = request.getParameter("new_pass");
         Account acc = (Account) request.getSession().getAttribute("Account");
-        if(oldPass==null||newPass==null||acc==null){
+
+        if (oldPass == null || newPass == null || acc == null) {
             response.getWriter().write("failure: one or two parameter(s) is(are) null.");
             return;
         }
-        if(acc.changePassword(oldPass,newPass))
+
+        if (acc.changePassword(oldPass,newPass)) {
             response.getWriter().write("success");
-        else
+        } else {
             response.getWriter().write("failure: could not change the password.");
+        }
     }
 
     private void processPassSet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String newPass = request.getParameter("new_pass");
         Account acc = (Account) request.getSession().getAttribute("Account");
-        if(newPass==null||acc==null){
+
+        if (newPass == null || acc == null) {
             response.getWriter().write("failure: one or two parameter(s) is(are) null.");
             return;
         }
-        if(acc.changePassword(null,newPass))
+
+        if (acc.changePassword(null, newPass)) {
             response.getWriter().write("success");
-        else
+        } else {
             response.getWriter().write("failure: could not set the password.");
+        }
     }
 
     private void processEssential(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         Account acc = (Account) request.getSession().getAttribute("Account");
-        if(email==null||username==null||acc==null){
+
+        if (email == null || username == null || acc == null) {
             response.getWriter().write("failure: one or two parameter(s) is(are) null.");
             return;
         }
-        if(acc.change(username,email)){
+
+        if (acc.change(username,email)) {
             response.getWriter().write("success");
-        }else{
+        } else {
             response.getWriter().write("failure: could not change the info.");
         }
     }
-
 
 }

@@ -36,13 +36,14 @@ public class LoginServlet extends HttpServlet {
 
     private void processGoogleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = retrieveEmail(request.getParameter("token"));
-        if(email==null)
-            return;
+        if (email == null) return;
+
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
         Account acc = manager.googleAccountExists(email);
-        if(acc==null) {
+        if (acc == null) {
             acc = manager.register(generateUsername(email,manager), email, null);
         }
+
         request.getSession().setAttribute("Account", acc);
         response.sendRedirect("main.jsp");
     }
@@ -53,9 +54,10 @@ public class LoginServlet extends HttpServlet {
             verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
                     .setAudience(Collections.singletonList(CLIENT_ID))
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         GoogleIdToken idToken = null;
         try {
             idToken = verifier.verify(id_token_string);
@@ -64,21 +66,25 @@ public class LoginServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if (idToken != null) {
             GoogleIdToken.Payload payload = idToken.getPayload();
             String email = payload.getEmail();
             return email;
         }
+
         return null;
     }
 
-    private String generateUsername(String email,AccountManager manager){
+    private String generateUsername(String email, AccountManager manager) {
         int index = email.indexOf('@');
-        String email_prefix = email.substring(0,index);
+        String email_prefix = email.substring(0, index);
         String prefix_addition = "";
-        while(manager.existsUsername(email_prefix+prefix_addition)) {
+
+        while (manager.existsUsername(email_prefix + prefix_addition)) {
             prefix_addition = new Integer((int) (Math.random() * 1000)).toString();
         }
+
         return email_prefix+prefix_addition;
     }
 
@@ -86,6 +92,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         AccountManager manager = (AccountManager) request.getServletContext().getAttribute("AccManager");
+
         Account acc = manager.accountExists(username, password);
         //security check again
         if (acc != null) {

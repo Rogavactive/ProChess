@@ -10,11 +10,11 @@ import java.util.Vector;
 public class BestMove {
 
     private String username;
-    private Vector< String > moves;
+    private Vector < String > moves;
 
-    public BestMove(String username, Vector<Move> history) {
+    public BestMove(String username, Vector < Move > history) {
         this.username = username;
-        moves = new Vector<>();
+        moves = new Vector < > ();
         for(int i = 0; i < history.size(); i++){
             moves.add(moveToString(history.get(i)));
         }
