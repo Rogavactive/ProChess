@@ -1,24 +1,52 @@
 package Analys;
 
+import Game.Model.Move;
+
 import java.io.*;
 import java.lang.Process;
 import java.io.BufferedReader;
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class BestMove {
 
-    static String username = "gjiki";
-    static ArrayList < String > moves = new ArrayList < String > ();
+    private String username;
+    private Vector< String > moves;
 
-    public static void main(String[] args) {
+    public BestMove(String username, Vector<Move> history) {
+        this.username = username;
+        moves = new Vector<>();
+        for(int i = 0; i < history.size(); i++){
+            moves.add(moveToString(history.get(i)));
+        }
+    }
 
-        moves.add("e2e4");
-        moves.add("e7e5");
-        moves.add("f1c4");
-        moves.add("a7a6");
-        moves.add("d1f3");
-        moves.add("a6a5");
+    public void addMove(Move mv) {
+        moves.add(moveToString(mv));
+    }
 
+    public void deleteMove() {
+        moves.remove(moves.size() - 1);
+    }
+
+    private String moveToString(Move mv) {
+        String str = "";
+        str += (char)(mv.getFrom().getKey() + 'a');
+        str += (char)('0' + mv.getFrom().getValue() + 1);
+        str += (char)(mv.getTo().getKey() + 'a');
+        str += (char)('0' + mv.getTo().getValue() + 1);
+        return str;
+    }
+
+    private String stringToMove(String str) {
+        String mv = "";
+        mv += (char)(str.charAt(0) - 'a' + '0');
+        mv += (char)(str.charAt(1) - 1);
+        mv += (char)(str.charAt(2) - 'a' + '0');
+        mv += (char)(str.charAt(3) - 1);
+        return mv;
+    }
+
+    public String getBestMove() {
         String execString = "python3 Bot/generateMove.py";
         execString += (" " + username);
         for (int i = 0; i < moves.size(); i++) {
@@ -34,13 +62,6 @@ public class BestMove {
             e.printStackTrace();
         }
 
-        String bestMove = getBestMove();
-        deleteFile();
-
-        System.out.println(bestMove);
-    }
-
-    private static String getBestMove() {
         String move = "";
         try {
             File file = new File(username + ".txt");
@@ -51,10 +72,11 @@ public class BestMove {
             e.printStackTrace();
         }
 
-        return move.substring(33, 37);
+        deleteFile();
+        return stringToMove( move.substring(33, 37) );
     }
 
-    private static void deleteFile() {
+    private void deleteFile() {
         try {
             File file = new File(username + ".txt");
             file.delete();
