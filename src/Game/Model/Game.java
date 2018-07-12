@@ -81,13 +81,15 @@ public class Game {
 
     // Special move when pawn reaches end of board
     // it can change into another piece
-    public void promotion(int row, int col, Constants.pieceType type){
+    public String promotion(int row, int col, Constants.pieceType type){
         if(board.getCell(row,col).getPieceType() != Constants.pieceType.Pawn)
-            return;
+            return getBoardState();
 
         Constants.pieceColor color = board.getCell(row, col).getPieceColor();
         board.getCell(row,col).removePiece();
         board.getCell(row, col).putPiece(Piece.createPiece(type, color));
+
+        return getBoardState();
     }
 
     // Special move where two pieces change their position
@@ -199,7 +201,7 @@ public class Game {
     }
 
     // This method undoes last move
-    public void undo(){
+    public String undo(){
         if(!history.isEmpty()){
             // if last move killed any of pieces
             // return killed piece to it's place
@@ -240,6 +242,8 @@ public class Game {
 
             history.remove(history.size() - 1);
         }
+
+        return getBoardState();
     }
 
     // This method is called when game is over
