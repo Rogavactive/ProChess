@@ -24,7 +24,8 @@
             GameManager manager = (GameManager) request.getServletContext().getAttribute("GameManager");
             Game game = manager.getGameByID(gameID);
             try {
-                game.leaveGame(acc.getID());
+                if(game!=null)
+                    game.leaveGame(acc);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

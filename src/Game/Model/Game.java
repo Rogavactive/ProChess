@@ -18,21 +18,22 @@ public class Game {
     private Vector<Move> history;
     private Player curPlayer;
     private databaseConnection dbConnection;
-    private boolean playerLeftGame;
-    private int winnerByGameLeft;
     private String game_ID;
     private GameType gameType;
+    private Player winner;
+    private boolean gameAlreadyOver;
     // Constructor
     public Game(Player player1, Player player2,GameType  type, String id){
         game_ID=id;
+        gameAlreadyOver = false;
         this.player1 = player1;
         this.player2 = player2;
         this.curPlayer = player1;
         board = new Board();
         history = new Vector<>();
-        playerLeftGame = false;
         dbConnection = databaseConnection.getInstance();
         gameType = type;
+        winner = null;
         this.player1.setType(type);
         this.player2.setType(type);
         this.player1.setGame(this);
@@ -52,7 +53,7 @@ public class Game {
     }
 
     public void timePassedFor(Account acc){
-        GameSocket.sendMessage(acc);
+        GameSocket.sendMessage(acc,this,"timeUp");
     }
     // Makes move on board
     public void pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
@@ -109,9 +110,15 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
-        // if player left game, it's over
-        if(playerLeftGame){
-            return gameOver(winnerByGameLeft);
+        if(gameAlreadyOver){
+            if(winner==null)
+                return "Draw";
+            else
+                if(winner.getAccount() == acc)
+                    return "You Win";
+                else
+                    return "You Lose";
+
         }
 
         ConcurrentHashMap< Pair<Integer, Integer>, Vector< Pair<Integer, Integer> > > result = board.getAllPossibleMoves(curPlayer.getColor());
@@ -237,6 +244,15 @@ public class Game {
 
     // This method is called when game is over
     public String gameOver(int winner) throws SQLException {
+        if(winner==1)
+            this.winner =player1;
+        if(winner ==2)
+            this.winner = player2;
+        gameAlreadyOver=true;
+
+        player1.endTurn();
+        player2.endTurn();
+        System.out.println(winner + " won the game");
         dbConnection.saveGame(history, winner, player1, player2);
         changeRatings(winner);
         // Return whether player has won, lose or it's draw
@@ -270,21 +286,16 @@ public class Game {
     }
 
     // Called when one of players leaves the game
-    public synchronized void leaveGame(int userID) throws SQLException {
+    public synchronized void leaveGame(Account acc) throws SQLException {
+        System.out.println(acc.getID() + " left the game)");
         // Check if opponent already left earlier
-        if(this.playerLeftGame){
-            gameOver(winnerByGameLeft);
-            GameManager.getInstance().endGame(game_ID);
-            return;
-        }
-
-        this.playerLeftGame = true;
-
         // found out who won
-        if(player1.getAccount().getID() == userID)
-            winnerByGameLeft = 2;
+
+        if(player1.getAccount() == acc)
+            gameOver(2);
         else
-            winnerByGameLeft = 1;
+            gameOver(1);
+        GameSocket.sendMessage(getOpponent(acc).getAccount(),this,"OpponentLeft");
     }
 
     // Returns copy of board
@@ -318,5 +329,9 @@ public class Game {
 
     public Player getCurPlayer() {
         return curPlayer;
+    }
+
+    public String getId() {
+        return game_ID;
     }
 }
