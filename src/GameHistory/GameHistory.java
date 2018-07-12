@@ -79,7 +79,7 @@ public class GameHistory {
         return getBoardState();
     }
 
-    public String getBoardState(){
+    private String getBoardState(){
         String result="";
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {

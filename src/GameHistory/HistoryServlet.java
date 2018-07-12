@@ -1,0 +1,71 @@
+package GameHistory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+
+@WebServlet("/HistoryServlet")
+public class HistoryServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String msg = (String) request.getParameter("msg");
+        if(msg==null)
+            return;
+        switch (msg){
+            case "first":
+                try {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    GameHistory history_first = new GameHistory(id);
+                    request.getSession().setAttribute("History",history_first);
+                    String board_first = history_first.previousMove();
+                    JSONObject json_first = GenerateBoardJSON(board_first,"");
+                    response.getWriter().write(json_first.toString());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "prev":
+                GameHistory history_prev = (GameHistory) request.getSession().getAttribute("History");
+                String board_first = history_prev.previousMove();
+                JSONObject json_first = GenerateBoardJSON(board_first,"");
+                response.getWriter().write(json_first.toString());
+                break;
+            case "next":
+                System.out.println("1");
+                GameHistory history_next = (GameHistory) request.getSession().getAttribute("History");
+                System.out.println("2");
+                String board_next = history_next.nextMove();
+                System.out.println("3");
+                JSONObject json_next = GenerateBoardJSON(board_next,"");
+                System.out.println("4");
+                response.getWriter().write(json_next.toString());
+                System.out.println("5");
+                break;
+            case "end_game":
+                request.getSession().removeAttribute("History");
+                break;
+        }
+    }
+
+    private JSONObject GenerateBoardJSON(String board,String bestMove){
+        JSONObject json = null;
+        try {
+            json = new JSONObject();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        json.put("board",board);
+        json.put("best_move",bestMove);
+        return json;
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+}
