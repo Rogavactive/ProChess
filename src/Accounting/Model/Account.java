@@ -23,14 +23,15 @@ public class Account {
         this.type = type;
         this.id = id;
         int[] ranks = manager.getRanks(id);
-        if(ranks==null)
-            throw new IllegalArgumentException();
+        if (ranks == null) throw new IllegalArgumentException();
+
         bulletRaiting = ranks[0];
         blitzRaiting = ranks[1];
         classicalRaiting = ranks[2];
+
         int[] matches = manager.getMatches(id);
-        if(matches==null)
-            throw new IllegalArgumentException();
+        if (matches == null) throw new IllegalArgumentException();
+
         bulletMatches = matches[0];
         blitzMatches = matches[1];
         classicalMatches = matches[2];
@@ -44,11 +45,11 @@ public class Account {
         return email;
     }
 
-    public synchronized boolean type(){
+    public synchronized boolean type() {
         return type;
     }
 
-    public synchronized int getID(){
+    public synchronized int getID() {
         return id;
     }
 
@@ -77,35 +78,36 @@ public class Account {
     }
 
     public synchronized boolean changePassword(String oldpass, String newpass) {
-        if(newpass==null)
-            return false;
+        if (newpass == null) return false;
         System.out.println(oldpass + " - " + newpass);
-        if(manager.setPassword(oldpass, newpass, id)){
+
+        if (manager.setPassword(oldpass, newpass, id)) {
             type = true;
             return true;
         }
+
         return false;
     }
 
     public synchronized boolean change(String username, String email) {
         boolean username_similar = username.equals(this.username);
         boolean email_similar = email.equals(this.email);
-        if(username_similar&&email_similar)
-            return true;
-        if(username_similar){
-            if(manager.change(this.email,email,"email")){
+        if (username_similar&&email_similar) return true;
+
+        if (username_similar) {
+            if (manager.change(this.email,email,"email")) {
                 this.email = email;
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
 
-        if(email_similar){
-            if(manager.change(this.username,username,"username")){
+        if (email_similar) {
+            if (manager.change(this.username,username,"username")) {
                 this.username = username;
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
@@ -119,31 +121,28 @@ public class Account {
         }
     }
 
-    public synchronized boolean changeRating(int change,int gameType){
+    public synchronized boolean changeRating(int change,int gameType) {
         switch (gameType) {
             case 0:
                 bulletMatches++;
-                if(!manager.setMatches(id,gameType,bulletMatches))
-                    return false;
-                bulletRaiting+=change;
-                if(manager.setRating(id,gameType,bulletRaiting))
-                    return false;
+                if (!manager.setMatches(id,gameType,bulletMatches)) return false;
+
+                bulletRaiting += change;
+                if (manager.setRating(id,gameType,bulletRaiting)) return false;
                 break;
             case 1:
                 blitzMatches++;
-                if(manager.setMatches(id,gameType,blitzMatches))
-                    return false;
-                blitzRaiting+=change;
-                if(manager.setRating(id,gameType,blitzRaiting))
-                    return false;
+                if (manager.setMatches(id,gameType,blitzMatches)) return false;
+
+                blitzRaiting += change;
+                if (manager.setRating(id,gameType,blitzRaiting)) return false;
                 break;
             case 2:
                 classicalMatches++;
-                if(!manager.setMatches(id,gameType,classicalMatches))
-                    return false;
-                classicalRaiting+=change;
-                if(!manager.setRating(id,gameType,classicalRaiting))
-                    return false;
+                if (!manager.setMatches(id,gameType,classicalMatches)) return false;
+
+                classicalRaiting += change;
+                if (!manager.setRating(id,gameType,classicalRaiting)) return false;
                 break;
         }
         return true;
