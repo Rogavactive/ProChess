@@ -15,6 +15,16 @@ public class GameType {
     public long getTotalTimeSeconds() {
         return totalTimeSeconds;
     }
+
+    public int getGameTypeAsInt(){
+        if(totalTimeSeconds < (3 * 60) && totalTimeSeconds > 0)
+            return 0;
+        else if(totalTimeSeconds >= (3 * 60) && totalTimeSeconds < (8 * 60) )
+            return 1;
+        else
+            return 2;
+    }
+
     public static String getGameType(int totalTimeMinutes){
         if(totalTimeMinutes < 3 && totalTimeMinutes > 0)
             return "Bullet";
