@@ -445,20 +445,20 @@ public class AccountManager {
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
-    public String getUsernameById(int id){
-        String sqlQueryStatement = "SELECT username from accounts where id = "+id+";";
+    public String getUsernameById(int id) {
+        String sqlQueryStatement = "SELECT username from accounts where id = " + id + ";";
         Connection conn = null;
         ResultSet rslt = null;
         String result = null;
-        try{
+
+        try {
             conn = manager.getConnection();
             rslt = manager.executeQuerry(sqlQueryStatement,conn);
-            if(rslt!=null&&rslt.next())
-                result = rslt.getString("username");
+            if (rslt != null && rslt.next()) result = rslt.getString("username");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            manager.closeConnections(conn,rslt);
+        } finally {
+            manager.closeConnections(conn, rslt);
             return result;
         }
     }
