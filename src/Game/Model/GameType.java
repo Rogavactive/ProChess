@@ -1,18 +1,18 @@
 package Game.Model;
 
 public class GameType {
-    private int totalTimeSeconds;
-    private int bonusTimeSeconds;
+    private long totalTimeSeconds;
+    private long bonusTimeSeconds;
     public GameType(String totalTimeMinutes, String bonusTimeSecconds){
-        this.bonusTimeSeconds =Integer.parseInt(bonusTimeSecconds);
-        this.totalTimeSeconds = Integer.parseInt(totalTimeMinutes)*60;
+        this.bonusTimeSeconds =Long.parseLong(bonusTimeSecconds);
+        this.totalTimeSeconds = Long.parseLong(totalTimeMinutes)*60;
     }
 
-    public int getBonusTime(){
+    public long getBonusTime(){
         return bonusTimeSeconds;
     }
 
-    public int getTotalTimeSeconds() {
+    public long getTotalTimeSeconds() {
         return totalTimeSeconds;
     }
     public static String getGameType(int totalTimeMinutes){
