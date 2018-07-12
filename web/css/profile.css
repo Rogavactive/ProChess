@@ -46,7 +46,6 @@ input{
 }
 
 .histoty-elem-container{
-    width:50%;
     background-color: #333333;
     border-radius: 13px;
     color:white;
@@ -56,12 +55,18 @@ input{
     opacity: .8;
 }
 
-li {
+ul {
+    padding:0;
     list-style-type: none;
+    width:50%;
 }
 
 .history-elem-p{
     margin:3px;
+}
+
+.histoty-elem-a{
+    /*width:50%;*/
 }
 
 .histoty-elem-a:hover{

@@ -127,7 +127,7 @@ public class GameSocket {
         }
     }
 
-    private JSONObject GenerateBoardJSON(String boardState, String currentMovesPossible, String playerColor){
+    private static JSONObject GenerateBoardJSON(String boardState, String currentMovesPossible, String playerColor){
         JSONObject json = null;
         try {
             json = new JSONObject();
@@ -141,7 +141,7 @@ public class GameSocket {
         return json;
     }
 
-    private JSONObject GenerateWinnerJSON(String status){
+    private static JSONObject GenerateWinnerJSON(String status){
         JSONObject json = null;
         try {
             json = new JSONObject();
@@ -158,8 +158,31 @@ public class GameSocket {
         System.out.println("onError(game)::" + t.getMessage());
     }
 
-    public static void sendMessage(Account acc){
+    public static void sendMessage(Account acc, Game game, String status){
         //to do time passed feature
+        if(status == "timeUp"){
+            Session myS = sessions.get(acc.getID());
+            Session opS = sessions.get(game.getOpponent(acc).getAccount().getID());
+            try {
+                myS.getBasicRemote().sendText(GenerateWinnerJSON("Time Is Up, You Lose").toString());
+                opS.getBasicRemote().sendText(GenerateWinnerJSON("Opponents Time Is Up, You Win").toString());
+                ((HttpSession)myS.getUserProperties().get("HttpSession")).removeAttribute("gameID");
+                ((HttpSession)opS.getUserProperties().get("HttpSession")).removeAttribute("gameID");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            GameManager.getInstance().endGame(game.getId());
+        }
+        if(status == "OpponentLeft"){
+            Session myS = sessions.get(acc.getID());
+            try {
+                myS.getBasicRemote().sendText(GenerateWinnerJSON("Opponent Left, You Won").toString());
+                ((HttpSession)myS.getUserProperties().get("HttpSession")).removeAttribute("gameID");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            GameManager.getInstance().endGame(game.getId());
+        }
         System.out.println("Time up for " + acc.getUsername() );
     }
 }
