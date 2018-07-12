@@ -48,25 +48,25 @@ public class ServletListener implements ServletContextListener,
     // HttpSessionListener implementation
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
-        Account acc = (Account) se.getSession().getAttribute("Account");
-        GameSearchManager searchManager = (GameSearchManager) se.getSession().getServletContext().getAttribute("GameSearchManager");
-        searchManager.removeFromQueue(acc.getID());
+//        Account acc = (Account) se.getSession().getAttribute("Account");
         /* Session is created. */
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
         HttpSession session = se.getSession();
         String ID = (String) session.getAttribute("gameID");
+        Account acc = (Account) session.getAttribute("Account");
         if(ID != null){
-            Account acc = (Account) session.getAttribute("Account");
             GameManager manager = GameManager.getInstance();
             Game game = manager.getGameByID(ID);
             try {
                 game.leaveGame(acc.getID());
-            } catch (SQLException e) {
+                manager.endGame(ID);
+                GameSearchManager searchManager = (GameSearchManager) se.getSession().getServletContext().getAttribute("GameSearchManager");
+                searchManager.removeFromQueue(acc.getID());
+            } catch (SQLException | NullPointerException e) {
                 e.printStackTrace();
             }
-            manager.endGame(ID);
         }
     }
 

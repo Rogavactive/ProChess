@@ -45,7 +45,7 @@ public class GameHistory {
         return getBoardState();
     }
 
-    public String prewiousMove(){
+    public String previousMove(){
         if(currentMove - 1 >= 0){
             currentMove--;
             Move curMove = history.get(currentMove);

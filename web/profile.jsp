@@ -38,6 +38,11 @@
 
 
     <%@ page import="Accounting.Model.Account" %>
+    <%@ page import="GameHistory.GameHistory" %>
+    <%@ page import="GameHistory.databaseConnection" %>
+    <%@ page import="javafx.util.Pair" %>
+    <%@ page import="java.util.Vector" %>
+    <%@ page import="Accounting.Model.AccountManager" %>
     <%
         Account acc = (Account)request.getSession().getAttribute("Account");
         if (acc == null) {
@@ -176,9 +181,23 @@
 
     <div>
         <h2 align="center">Last 10 games</h2>
+        <p> games count :
+            <%
+                try {
+                    databaseConnection dbCon = databaseConnection.getInstance();
+                    Vector<Pair<Integer, Integer>> games = dbCon.getLastTenGames(acc.getID());
+                    out.print(games.size());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            %>
+            .</p>
         <ul>
             <li>
-                <p>Game 1 here</p>
+                <p>Game <%
+                    AccountManager accountManager = (AccountManager) request.getServletContext().getAttribute("AccManager");
+                    out.print(accountManager.getUsernameById(acc.getID()))  ;
+                %> here</p>
             </li>
             <li>
                 <p>Game 2 here</p>
@@ -186,7 +205,6 @@
             <li>
                 <p>Game 3 here</p>
             </li>
-        </ul>
         </ul>
     </div>
 

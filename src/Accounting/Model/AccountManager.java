@@ -445,6 +445,24 @@ public class AccountManager {
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
+    public String getUsernameById(int id){
+        String sqlQueryStatement = "SELECT username from accounts where id = "+id+";";
+        Connection conn = null;
+        ResultSet rslt = null;
+        String result = null;
+        try{
+            conn = manager.getConnection();
+            rslt = manager.executeQuerry(sqlQueryStatement,conn);
+            if(rslt!=null&&rslt.next())
+                result = rslt.getString("username");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            manager.closeConnections(conn,rslt);
+            return result;
+        }
+    }
+
     private class GoogleServices{
 
         private final String CLIENT_ID = "690644503931-dtn1qj0me45ovni28qbsa12g8d6c2ccf.apps.googleusercontent.com";
