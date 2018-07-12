@@ -1,7 +1,6 @@
 package Game.Model;
 
 import Accounting.Model.Account;
-import Game.Controller.GameSocket;
 import GameHistory.databaseConnection;
 import javafx.util.Pair;
 import java.sql.SQLException;
@@ -21,9 +20,9 @@ public class Game {
     private boolean playerLeftGame;
     private int winnerByGameLeft;
     private String game_ID;
-    private GameType gameType;
+
     // Constructor
-    public Game(Player player1, Player player2,GameType  type, String id){
+    public Game(Player player1, Player player2,String id){
         game_ID=id;
         this.player1 = player1;
         this.player2 = player2;
@@ -32,28 +31,18 @@ public class Game {
         history = new Vector<>();
         playerLeftGame = false;
         dbConnection = databaseConnection.getInstance();
-        gameType = type;
-        this.player1.setType(type);
-        this.player2.setType(type);
-        this.player1.setGame(this);
-        this.player2.setGame(this);
-        this.curPlayer.startTurn();
     }
 
-    public Player getPlayer(Account acc){
-        if(acc == player1.getAccount())
-            return player1;
-        return player2;
+    // Returns first player
+    public Player getPlayer1(){
+        return player1;
     }
-    public Player getOpponent(Account acc){
-        if(acc == player2.getAccount())
-            return player1;
+
+    // Returns second player
+    public Player getPlayer2(){
         return player2;
     }
 
-    public void timePassedFor(Account acc){
-        GameSocket.sendMessage(acc);
-    }
     // Makes move on board
     public void pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
             throws CloneNotSupportedException {
@@ -182,13 +171,10 @@ public class Game {
     private void switchPlayer() {
         if(curPlayer == player1) {
             curPlayer = player2;
-            player1.endTurn();
-            player2.startTurn();
             return;
         }
+
         curPlayer = player1;
-        player2.endTurn();
-        player1.startTurn();
     }
 
     // This method undoes last move
