@@ -49,21 +49,32 @@ public class databaseConnection {
         manager.closeConnection(con);
     }
 
-    public Vector<Pair<Integer, Integer>> getLastTenGames(int playerID) throws SQLException {
+    public Vector<Pair< Pair<Integer, Integer>, Integer>> getLastTenGames(int playerID) throws SQLException {
         Connection con = manager.getConnection();
 
-        String stm = "Select ID, player1ID, player2ID from games where " +
+        String stm = "Select ID, player1ID, player2ID, winner from games where " +
                 "player1ID = " + playerID + " or Player2ID = " + playerID +
                 " order by time limit 10";
         ResultSet res = manager.executeQuerry(stm, con);
 
-        Vector<Pair<Integer, Integer>> result = new Vector<>();
+        Vector<Pair< Pair<Integer, Integer>, Integer>> result = new Vector<>();
 
         while(res.next()){
-            if(res.getInt(2) == playerID)
-                result.add(new Pair<>(res.getInt(1), res.getInt(3)));
-            else
-                result.add(new Pair<>(res.getInt(1), res.getInt(2)));
+            if(res.getInt(2) == playerID) {
+                if(res.getInt(4) == 1)
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 1 ));
+                else if(res.getInt(4) == 0)
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 0 ));
+                else
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), -1 ));
+            }else{
+                if(res.getInt(4) == 1)
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), -1 ));
+                else if(res.getInt(4) == 0)
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 0 ));
+                else
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 1 ));
+            }
         }
 
         con.close();

@@ -16,7 +16,7 @@ public class Game {
     private Player player2;
     private Vector<Move> history;
     private Player curPlayer;
-    private databaseConnection dbconnection;
+    private databaseConnection dbConnection;
     private boolean playerLeftGame;
     private int winnerByGameLeft;
     private String game_ID;
@@ -30,7 +30,7 @@ public class Game {
         board = new Board();
         history = new Vector<>();
         playerLeftGame = false;
-        dbconnection = databaseConnection.getInstance();
+        dbConnection = databaseConnection.getInstance();
     }
 
     // Returns first player
@@ -72,6 +72,7 @@ public class Game {
     public void promotion(int row, int col, Constants.pieceType type){
         if(board.getCell(row,col).getPieceType() != Constants.pieceType.Pawn)
             return;
+
         Constants.pieceColor color = board.getCell(row, col).getPieceColor();
         board.getCell(row,col).removePiece();
         board.getCell(row, col).putPiece(Piece.createPiece(type, color));
@@ -97,9 +98,6 @@ public class Game {
 
     // Possible moves for given player in current state of the board
     public String getCurrentPossibleMoves(Account acc) throws SQLException {
-        // when player demands moves, it means another player
-        // has already done a move or leave a game
-
         // if player left game, it's over
         if(playerLeftGame){
             return gameOver(winnerByGameLeft);
@@ -132,8 +130,7 @@ public class Game {
             } else {
                 color = "B";
             }
-        }
-        else{
+        }else{
             if (player2.getColor() == Constants.pieceColor.white) {
                 color = "W";
             } else {
@@ -226,7 +223,7 @@ public class Game {
 
     // This method is called when game is over
     public String gameOver(int winner) throws SQLException {
-        dbconnection.saveGame(history, winner, player1, player2);
+        dbConnection.saveGame(history, winner, player1, player2);
         // Return whether player has won, lose or it's draw
         if(winner==0){
             return "Draw";
