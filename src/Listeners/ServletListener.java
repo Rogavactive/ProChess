@@ -60,7 +60,7 @@ public class ServletListener implements ServletContextListener,
             GameManager manager = GameManager.getInstance();
             Game game = manager.getGameByID(ID);
             try {
-                game.leaveGame(acc.getID());
+                game.leaveGame(acc);
                 manager.endGame(ID);
                 GameSearchManager searchManager = (GameSearchManager) se.getSession().getServletContext().getAttribute("GameSearchManager");
                 searchManager.removeFromQueue(acc.getID());
