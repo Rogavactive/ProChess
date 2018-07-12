@@ -238,6 +238,7 @@ public class Game {
     // This method is called when game is over
     public String gameOver(int winner) throws SQLException {
         dbConnection.saveGame(history, winner, player1, player2);
+        changeRatings(winner);
         // Return whether player has won, lose or it's draw
         if(winner==0){
             return "Draw";
@@ -252,6 +253,19 @@ public class Game {
                 return "You Win";
             else
                 return "You Lose";
+        }
+    }
+
+    private void changeRatings(int winner) {
+        if(winner == 0)
+            return;
+        int type = gameType.getGameTypeAsInt();
+        if(winner == 1){
+            player1.getAccount().changeRating(25, type);
+            player2.getAccount().changeRating(-25, type);
+        }else{
+            player2.getAccount().changeRating(25, type);
+            player1.getAccount().changeRating(-25, type);
         }
     }
 
