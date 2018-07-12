@@ -4,10 +4,29 @@
     width:100%;
     height:95%;
 }
+.grid-container {
+    display: grid;
+    grid-template-columns: 20% 17% 46% 17%;
 
+}
+.playersWindow{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+.opponentsWindow{
+    position: relative;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.grid-item {
+    background-color: grey;
+}
 .chat-div{
     float:left;
-    width:25%;
+    width:100%;
 
     background-color: white;
     border-radius: 15px;
@@ -17,8 +36,8 @@
 
 .chess-board-container-div{
     display: block;
-    float:right;
-    width:75%;
+
+    width:AUTO;
     margin:auto;
     height:100%;
    background-color: grey;
@@ -90,26 +109,28 @@
 }
 
 #chess_board a {
+
     color:#000;
     display:block;
-    font-size:60px;
-    height:80px;
+    font-size:70px;
+    height:100px;
     position:relative;
     text-decoration:none;
     text-shadow:0 1px #fff;
-    width:80px;
+    width:100px;
 }
 #chess_board { border:5px solid #333; }
 #chess_board td {
+    font-family: Megen;
     background:#fff;
     cursor: pointer;
     box-shadow:inset 0 0 0 1px #fff;
     -moz-box-shadow:inset 0 0 0 1px #fff;
     -webkit-box-shadow:inset 0 0 0 1px #fff;
-    height:80px;
+    height:100px;
     text-align:center;
     vertical-align:middle;
-    width:80px;
+    width:100px;
 }
 #chess_board tr:nth-child(odd) td:nth-child(even),
 #chess_board tr:nth-child(even) td:nth-child(odd) {

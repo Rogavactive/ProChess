@@ -25,8 +25,7 @@ var socked_Piece = {
 }
 
 var Player;
-var markColor='yellow';
-var validMoveColor='green';
+
 var MovesState='';
 var gameStarted=false;
 
@@ -95,12 +94,12 @@ function getValidMovesForPiece(pos){
     return moves;
 }
 
-
+var board;
 function BoardStateChanged(msg){
     Player=msg.player;
     console.log("player: "+Player);
-    var board = msg.board;
-    console.log(board);
+    board = msg.board;
+    console.log("Board: "+board);
     var ind=0;
     for (var i=0;i<8;i++) {
         for (var j=0;j<8;j++) {
@@ -128,7 +127,19 @@ function BoardStateChanged(msg){
         gameStarted=true;
     }
 }
+function getPieceFromCell(cell2){
+    var ind=0;
+    for (var i=0;i<8;i++) {
+        for (var j=0;j<8;j++) {
+            var piece = board[ind] + board[ind + 1];
+            var cell=i+''+j;
+            if (Player=='B') cell=(7-i)+''+(7-j);
+            if ( cell==cell2) return  piece ;
 
+            ind+=2;
+        }
+    }
+}
 function placePieceInCell(cell,piece){
     document.getElementById(cell).innerHTML = "<a href='#'>" +piece + "</a>";
 
@@ -137,18 +148,50 @@ function clearChessboard(){
     for (var i=0;i<8;i++){
         for (var j=0;j<8;j++){
             document.getElementById(i+''+j).innerHTML = "";
+            document.getElementById(cell).innerHTML ="";
         }
     }
 }
 var lastCell=null;
-function changeCellColor(cell,color){
+function changePossibleMoveColors(cell) {
     // console.log(2+document.getElementById(cell).style.backgroundColor);
-    document.getElementById(cell).style.backgroundColor = color;
+    //document.getElementById(cell).style.color='yellow';
+    console.log(getPieceFromCell(cell));
+    if (getPieceFromCell(cell)=='00'){
+        document.getElementById(cell).innerHTML = "<a href='#'    style=\"color:green\">" + '&#x25C9;' + "</a> ";
+
+    }
+    else {
+        document.getElementById(cell).style.backgroundColor="orange";
+
+    }
+
+
 }
+    function changeMarkCellColor(cell){
+        // console.log(2+document.getElementById(cell).style.backgroundColor);
+        //document.getElementById(cell).style.color='yellow';
+        document.getElementById(cell).style.backgroundColor="yellow";
+
+    }
 function resetCellColors(){
     for (var i=0;i<8;i++)
-        for (var j=0;j<8;j++)
-            changeCellColor(i+''+j,'');
+        for (var j=0;j<8;j++) {
+        var cell=i + '' + j;
+         document.getElementById(cell).style.backgroundColor='';
+            document.getElementById(cell).style.opacity="1";
+     }
+    var ind=0;
+    for (var i=0;i<8;i++) {
+        for (var j=0;j<8;j++) {
+            var piece = board[ind] + board[ind + 1];
+            var cell=i+''+j;
+            if (Player=='B') cell=(7-i)+''+(7-j);
+            //   console.log(cell+" "+piece);
+            placePieceInCell(cell,socked_Piece[piece]);
+            ind+=2;
+        }
+    }
 }
 function movePiece(cell1,cell2){
     var saveHtml=  document.getElementById(cell1).innerHTML;
@@ -170,11 +213,11 @@ function clickOnCell(cell){
 
         if (validMoves.length==0) return;
         for (var i=0;i<validMoves.length;i++) {
-            changeCellColor(validMoves[i], validMoveColor)
+            changePossibleMoveColors(validMoves[i])
             //  console.log(validMoves[i]);
         }
         lastCell = cell;
-        changeCellColor(cell,markColor);
+        changeMarkCellColor(cell );
     } else {
         var validMoves=getValidMovesForPiece(lastCell);
         for (var i=0;i<validMoves.length;i++)
