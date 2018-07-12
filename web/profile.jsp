@@ -183,6 +183,9 @@
             <li>
                 <p>Game 2 here</p>
             </li>
+            <li>
+                <p>Game 3 here</p>
+            </li>
         </ul>
         </ul>
     </div>
