@@ -90,52 +90,45 @@ public class GameSocket {
 
 
             if (message.equals("drawRequested")) {
-
                 json.put("type", "drawRequested");
-                sendToOpponent(json.toString(),Opponent);
+                sendToUser(json.toString(),Opponent);
                 return;
             }
             if (message.equals("undoRequested")) {
+                if (game.getCurPlayer().getAccount()==acc) return;
                 json.put("type", "undoRequested");
-                sendToOpponent(json.toString(),Opponent);
+                sendToUser(json.toString(),Opponent);
                 return;
             }
 
             if (message.equals("drawAccepted")) {
-                json.put("type", "drawAccepted");
-                sendToOpponent(json.toString(),Opponent);
+                //draw both side agreement
+                drawAccepted(game,Opponent,acc);
                 return;
             }
 
             if (message.equals("undoAccepted")) {
-                json.put("type", "undoAccepted");
-                sendToOpponent(json.toString(),Opponent);
                 //undo both side agreement
-
-               game.undo();
-                System.out.println("Undo in Game.");
+                undoAccepted(game,session,Opponent,acc);
                 return;
             }
 
             if (message.equals("drawDeclined")) {
                 json.put("type", "drawDeclined");
-                sendToOpponent(json.toString(),Opponent);
-                //draw both side agreement
-
-                try {
-                    game.gameOver(0);
-                    System.out.println("Game Ended: Draw");
-                } catch (SQLException e){
-
-                }
-                return;
+                sendToUser(json.toString(),Opponent);
             }
 
             if (message.equals("undoDeclined")) {
                 json.put("type", "undoDeclined");
-                sendToOpponent(json.toString(),Opponent);
+                sendToUser(json.toString(),Opponent);
                 return;
             }
+
+        if (message.equals("resignRequested")) {
+            playerResigned(game,Opponent,acc);
+            return;
+        }
+
         if(acc != game.getCurPlayer().getAccount())
             return;
 
@@ -143,9 +136,98 @@ public class GameSocket {
 //        System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
 
     }
-    private void sendToOpponent(String msg,Account Opponent){
+    private void playerResigned(Game game,Account Opponent, Account acc){
         try {
+            ////////////////////send winner message//////////////////
+            JSONObject json = null;
+            try {
+                json = new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            game.gameOver(0);
+
+            json.put("type","endgame");
+            json.put("status","Win");
+            sendToUser(json.toString(),Opponent);
+            ////////////////////send loser message//////////////////
+            JSONObject json2 = null;
+            try {
+                json2 = new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            game.gameOver(0);
+
+            json2.put("type","endgame");
+            json2.put("status","Win");
+            sendToUser(json2.toString(),acc);
+
+        } catch (SQLException e){
+
+        }
+    }
+    private void drawAccepted(Game game,Account Opponent, Account acc){
+
+        try {
+            JSONObject json = null;
+            try {
+                json = new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            game.gameOver(0);
+
+            json.put("type","endgame");
+            json.put("status","Draw");
+            sendToUser(json.toString(),Opponent);
+            sendToUser(json.toString(),acc);
+
+        } catch (SQLException e){
+
+        }
+    }
+
+    private void undoAccepted(Game game,Session session, Account Opponent, Account acc){
+        game.undo();
+
+        try {
+            JSONObject opponent_json;
+            JSONObject curr_json;
+
             Session OpponentSession = sessions.get(Opponent.getID());
+            String opponentMoves = game.getCurrentPossibleMoves(Opponent);
+            String currMoves = game.getCurrentPossibleMoves(acc);
+            String currColor = game.getPlayerColor(acc);
+            String opponentColor = game.getPlayerColor(Opponent);
+            String boardState = game.getBoardState();
+
+            opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor);
+            curr_json = GenerateBoardJSON(boardState,currMoves,currColor);
+            try {
+                OpponentSession.getBasicRemote().sendText(opponent_json.toString());
+                session.getBasicRemote().sendText(curr_json.toString());
+            } catch (IOException e){
+
+            }
+            JSONObject json = null;
+            try {
+                json = new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            json.put("type", "undoAccepted");
+            sendToUser(json.toString(), Opponent);
+
+            System.out.println("Undo in Game.");
+        } catch (SQLException e){
+
+        }
+    }
+    private void sendToUser(String msg,Account User){
+        try {
+            Session OpponentSession = sessions.get(User.getID());
             OpponentSession.getBasicRemote().sendText(msg);
         } catch (IOException e){
             e.printStackTrace();

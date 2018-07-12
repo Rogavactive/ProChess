@@ -41,6 +41,7 @@ $(document).ready(function(){
 //GAME SOCKET
 var drawIsInRequest;
 var undoIsInRequest;
+var resignIsInRequest;
 
 function connectGame() {
     try {
@@ -70,6 +71,9 @@ function connectGame() {
                 undoIsInRequest=true;
                 showYesNoButtons();
             }
+            if(gamemessage.type==="resignRequested") {
+
+            }
 
             if(gamemessage.type==="drawAccepted") {
                 opponentAccepted();
@@ -77,6 +81,7 @@ function connectGame() {
             if(gamemessage.type==="drawDeclined") {
                 opponentDeclined();
             }
+
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -91,6 +96,7 @@ function connectGame() {
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
     console.log("endgame: " + status);
+
 }
 
 function reportError(err) {
@@ -323,7 +329,8 @@ function requestDraw(){
     document.getElementById("draw").disabled=true;
 }
 function resign(){
-
+    this.gameWebSocket.send("resignRequested");
+    sendToChat(Player.name+ " requested resign. You can Accept or Decline offer.");
 }
 
 function clickAccept(){
