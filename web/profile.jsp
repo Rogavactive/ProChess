@@ -186,7 +186,7 @@
                 try {
                     databaseConnection dbCon = databaseConnection.getInstance();
                     Vector<Pair<Integer, Integer>> games = dbCon.getLastTenGames(acc.getID());
-                    out.print(games.size());
+                    out.print(games.size()-1);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
