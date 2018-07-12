@@ -179,32 +179,37 @@
 
     <hr>
 
-    <div>
+    <div align="center" style="padding-bottom: 20px;">
         <h2 align="center">Last 10 games</h2>
-        <p> games count :
+        <%
+            AccountManager accountManager = (AccountManager) request.getServletContext().getAttribute("AccManager");
+            Vector<Pair<Integer, Integer>> games;
+            try {
+                databaseConnection dbCon = databaseConnection.getInstance();
+                games = dbCon.getLastTenGames(acc.getID());
+            }catch(Exception e){
+                e.printStackTrace();
+                response.sendRedirect("main.jsp");
+                return;
+            }
+        %>
+        <ul>
             <%
-                try {
-                    databaseConnection dbCon = databaseConnection.getInstance();
-                    Vector<Pair<Integer, Integer>> games = dbCon.getLastTenGames(acc.getID());
-                    out.print(games.size());
-                }catch(Exception e){
-                    e.printStackTrace();
+                for(int i = 0; i<games.size(); i++){
+                    Pair<Integer,Integer> currPair = games.get(i);
+                    int currGameID = currPair.getKey();
+                    int opponentID = currPair.getValue();
+                    out.println("<li>");
+                    out.println("<a href=\"history.jsp?id="+currGameID+"\" class=\"histoty-elem-a\">");
+                    out.println("<div class=\"histoty-elem-container\">");
+                    out.println("<p class=\"history-elem-p\">Game ID : "+currGameID+"</p>");
+                    String opponnentName = accountManager.getUsernameById(opponentID);
+                    out.println("<p class=\"history-elem-p\">Opponent : "+opponnentName+"</p>");
+                    out.println("</div>");
+                    out.println("</a>");
+                    out.println("</li>");
                 }
             %>
-            .</p>
-        <ul>
-            <li>
-                <p>Game <%
-                    AccountManager accountManager = (AccountManager) request.getServletContext().getAttribute("AccManager");
-                    out.print(accountManager.getUsernameById(acc.getID()))  ;
-                %> here</p>
-            </li>
-            <li>
-                <p>Game 2 here</p>
-            </li>
-            <li>
-                <p>Game 3 here</p>
-            </li>
         </ul>
     </div>
 

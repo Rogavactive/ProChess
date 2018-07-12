@@ -44,3 +44,26 @@ input{
     padding:1% 0;
     vertical-align:middle;
 }
+
+.histoty-elem-container{
+    width:50%;
+    background-color: #333333;
+    border-radius: 13px;
+    color:white;
+}
+
+.histoty-elem-container:hover{
+    opacity: .8;
+}
+
+li {
+    list-style-type: none;
+}
+
+.history-elem-p{
+    margin:3px;
+}
+
+.histoty-elem-a:hover{
+    text-decoration: none;
+}
