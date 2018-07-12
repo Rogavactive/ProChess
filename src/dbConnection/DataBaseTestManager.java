@@ -5,14 +5,16 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class DataBaseTestManager extends DataBaseManager{
+public class DataBaseTestManager extends DataBaseManager {
 
     private static DataBaseTestManager managerInstance = new DataBaseTestManager();
     private MysqlDataSource dataSource = new MysqlDataSource();
 
-    public static DataBaseTestManager getInstance() {return managerInstance;}
+    public static DataBaseTestManager getInstance() {
+        return managerInstance;
+    }
 
-    private DataBaseTestManager(){
+    private DataBaseTestManager() {
         connectDB();
     }
 

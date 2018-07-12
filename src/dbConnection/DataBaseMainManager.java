@@ -12,7 +12,7 @@ public class DataBaseMainManager extends DataBaseManager {
 
     public static DataBaseMainManager getInstance() {return managerInstance;}
 
-    private DataBaseMainManager(){
+    private DataBaseMainManager() {
         connectDB();
     }
 

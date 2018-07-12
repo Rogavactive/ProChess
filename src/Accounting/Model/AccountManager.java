@@ -423,7 +423,7 @@ public class AccountManager {
                 break;
                 default: return false;
         }
-        String sqlQueryStatement = "update account_stats set \""+gameType_str+"\"="+matches+" where acc_ID="+id+";";
+        String sqlQueryStatement = "update account_stats set " + gameType_str + " = "+ matches +" where acc_ID = " +id+";";
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
@@ -431,34 +431,34 @@ public class AccountManager {
         String gameType_str = "";
         switch (gameType){
             case 0:
-                gameType_str="bulletRank";
+                gameType_str = "bulletRank";
                 break;
             case 1:
-                gameType_str="blitzRank";
+                gameType_str = "blitzRank";
                 break;
             case 2:
-                gameType_str="classicalRank";
+                gameType_str = "classicalRank";
                 break;
             default: return false;
         }
-        String sqlQueryStatement = "update account_stats set \""+gameType_str+"\"="+rating+" where acc_ID="+id+";";
+        String sqlQueryStatement = "update account_stats set " + gameType_str + " = " + rating + " where acc_ID = "+ id +";";
         return simpleExecuteUpdate(sqlQueryStatement);
     }
 
-    public String getUsernameById(int id){
-        String sqlQueryStatement = "SELECT username from accounts where id = "+id+";";
+    public String getUsernameById(int id) {
+        String sqlQueryStatement = "SELECT username from accounts where id = " + id + ";";
         Connection conn = null;
         ResultSet rslt = null;
         String result = null;
-        try{
+
+        try {
             conn = manager.getConnection();
             rslt = manager.executeQuerry(sqlQueryStatement,conn);
-            if(rslt!=null&&rslt.next())
-                result = rslt.getString("username");
+            if (rslt != null && rslt.next()) result = rslt.getString("username");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            manager.closeConnections(conn,rslt);
+        } finally {
+            manager.closeConnections(conn, rslt);
             return result;
         }
     }

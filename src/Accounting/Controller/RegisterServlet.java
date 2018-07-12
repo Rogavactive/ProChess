@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processMessage(request, response);
     }
@@ -21,12 +22,14 @@ public class RegisterServlet extends HttpServlet {
 
         boolean registerIsValid = true;
         String response_string = "";
+
         if (manager.existsUsername(username)) {
             registerIsValid = false;
             response_string += "false ";
         } else {
             response_string += "true ";
         }
+
         if (manager.existsEmail(email)) {
             registerIsValid = false;
             response_string += "false ";
@@ -34,22 +37,23 @@ public class RegisterServlet extends HttpServlet {
             response_string += "true ";
         }
 
-        if(!registerIsValid){
-            response.getWriter().write(response_string+"false");
+        if (!registerIsValid) {
+            response.getWriter().write(response_string + "false");
             return;
         }
 
         String password = request.getParameter("password");
-        if(password==null)
-            password="";
+        if (password == null) password = "";
+
         // security check
         if (validate(password, username)) {
-            if (!manager.sendValidate(username,email,password))
-                response.getWriter().write(response_string+"false");
-            else
-                response.getWriter().write(response_string+"true");
+            if (!manager.sendValidate(username, email, password)) {
+                response.getWriter().write(response_string + "false");
+            } else {
+                response.getWriter().write(response_string + "true");
+            }
         } else {
-            response.getWriter().write(response_string+"false");
+            response.getWriter().write(response_string + "false");
         }
     }
 
