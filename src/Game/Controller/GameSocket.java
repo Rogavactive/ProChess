@@ -76,14 +76,81 @@ public class GameSocket {
         }
         Game game = manager.getGameByID(ID);
         Account Opponent = game.getOpponent(acc).getAccount();
+
         //if it is not players turn to play
+
+
+
+            JSONObject json = null;
+            try {
+                json = new JSONObject();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            if (message.equals("drawRequested")) {
+
+                json.put("type", "drawRequested");
+                sendToOpponent(json.toString(),Opponent);
+                return;
+            }
+            if (message.equals("undoRequested")) {
+                json.put("type", "undoRequested");
+                sendToOpponent(json.toString(),Opponent);
+                return;
+            }
+
+            if (message.equals("drawAccepted")) {
+                json.put("type", "drawAccepted");
+                sendToOpponent(json.toString(),Opponent);
+                return;
+            }
+
+            if (message.equals("undoAccepted")) {
+                json.put("type", "undoAccepted");
+                sendToOpponent(json.toString(),Opponent);
+                //undo both side agreement
+
+               game.undo();
+                System.out.println("Undo in Game.");
+                return;
+            }
+
+            if (message.equals("drawDeclined")) {
+                json.put("type", "drawDeclined");
+                sendToOpponent(json.toString(),Opponent);
+                //draw both side agreement
+
+                try {
+                    game.gameOver(0);
+                    System.out.println("Game Ended: Draw");
+                } catch (SQLException e){
+
+                }
+                return;
+            }
+
+            if (message.equals("undoDeclined")) {
+                json.put("type", "undoDeclined");
+                sendToOpponent(json.toString(),Opponent);
+                return;
+            }
         if(acc != game.getCurPlayer().getAccount())
             return;
+
         executeMessage(message,session,ID,manager,Opponent,acc);
 //        System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
 
     }
-
+    private void sendToOpponent(String msg,Account Opponent){
+        try {
+            Session OpponentSession = sessions.get(Opponent.getID());
+            OpponentSession.getBasicRemote().sendText(msg);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     private void executeMessage(String message, Session session,String GameID, GameManager manager, Account Opponent, Account acc) {
 
         Game game = manager.getGameByID(GameID);

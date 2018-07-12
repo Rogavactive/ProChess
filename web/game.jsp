@@ -198,10 +198,14 @@
                     <div class="WindowsItem"> <span style="color:white">Player</span> <br/> <span style="color:black">Lasha</span> </div>
                     <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span style="color:black">21:00</span></div>
                     <div class="WindowsItem">
-                        <div class="buttons-container">
-                            <div class="buttons-container-item"> <button id="undo"> <img src="undo.png"   width="50" height="50"> </button> </div>
-                            <div class="buttons-container-item"> <button id="draw"><img src="draw.png"  width="50" height="50"> </button> </div>
-                            <div class="buttons-container-item"> <button id="resign"><img src="resign.png"   width="50" height="50"></button>  </div>
+                        <div class="buttons-container" id="buttons-container">
+                            <div class="buttons-container-item"> <button id="undo"  onclick="requestUndo();"> <img src="undo.png"   width="50" height="50"> </button> </div>
+                            <div class="buttons-container-item"> <button id="draw" onclick="requestDraw();"><img src="draw.png"  width="50" height="50"> </button> </div>
+                            <div class="buttons-container-item"> <button id="resign" onclick="resign();"><img src="resign.png"   width="50" height="50"></button>  </div>
+                        </div>
+                        <div class="buttons-container-yes-no" id="buttons-container-yes-no">
+                            <div class="buttons-container-item"> <button id="yes"  onclick="clickAccept();"> <img src="accept.png"   width="50" height="50"> </button> </div>
+                            <div class="buttons-container-item"> <button id="no" onclick="clickDecline();"><img src="decline.png"  width="50" height="50"> </button> </div>
                         </div>
                     </div>
                     <div class="WindowsItem"> <span style="color:white" >Opponent</span> <br/> <span style="color:black">George</span> </div>

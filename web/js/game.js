@@ -39,6 +39,8 @@ $(document).ready(function(){
 });
 
 //GAME SOCKET
+var drawIsInRequest;
+var undoIsInRequest;
 
 function connectGame() {
     try {
@@ -59,6 +61,22 @@ function connectGame() {
                 endGame(gamemessage.status);
             if(gamemessage.type==="error")
                 reportError(gamemessage.message)
+            if(gamemessage.type==="drawRequested") {
+
+                drawIsInRequest=true;
+                showYesNoButtons();
+            }
+            if(gamemessage.type==="undoRequested") {
+                undoIsInRequest=true;
+                showYesNoButtons();
+            }
+
+            if(gamemessage.type==="drawAccepted") {
+                opponentAccepted();
+            }
+            if(gamemessage.type==="drawDeclined") {
+                opponentDeclined();
+            }
         }
         this.gameWebSocket.onclose = function(event) {
             console.log('onclose::' + JSON.stringify(event, null, 4));
@@ -280,7 +298,65 @@ function disconnectFromGame() {
     }
 
 }
+//GameOfferButtons
+function showYesNoButtons() {
 
+    var x=document.getElementById("buttons-container-yes-no");
+    x.style.display="grid";
+    var x=document.getElementById("buttons-container");
+    x.style.display="none";
+}
+function showOfferButtons() {
+    var x=document.getElementById("buttons-container-yes-no");
+    x.style.display="none";
+    var x=document.getElementById("buttons-container");
+    x.style.display="grid";
+}
+function requestUndo(){
+    this.gameWebSocket.send("undoRequested");
+    sendToChat(Player.name+ " requested undo. You can Accept or Decline offer.");
+    document.getElementById("undo").disabled=true;
+}
+function requestDraw(){
+     this.gameWebSocket.send("drawRequested");
+    sendToChat(Player.name+ " requested draw. You can Accept or Decline offer.");
+    document.getElementById("draw").disabled=true;
+}
+function resign(){
+
+}
+
+function clickAccept(){
+    if (undoIsInRequest)
+        this.gameWebSocket.send("undoAccepted");
+    else
+        this.gameWebSocket.send("drawAccepted");
+    showOfferButtons();
+
+}
+function clickDecline(){
+    if (undoIsInRequest)
+        this.gameWebSocket.send("undoDeclined");
+    else
+        this.gameWebSocket.send("drawDeclined");
+    showOfferButtons();
+}
+
+function opponentAccepted(){
+    console.log("offer accepted");
+
+    if (undoIsInRequest==true)
+    document.getElementById("undo").disabled=false;
+    if (drawIsInRequest==true)
+        document.getElementById("draw").disabled=false;
+    undoIsInRequest=false;
+    drawIsInRequest=false;
+}
+function opponentDeclined(){
+    console.log("offer declined");
+    undoIsInRequest=false;
+    drawIsInRequest=false;
+}
 //CHAT SOCKET
 
 function connectChat(){
