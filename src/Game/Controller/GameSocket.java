@@ -75,11 +75,7 @@ public class GameSocket {
             }
         }
         Game game = manager.getGameByID(ID);
-        Account Opponent;
-        if(game.getPlayer1().getAccount() == acc)
-            Opponent = game.getPlayer2().getAccount();
-        else
-            Opponent = game.getPlayer1().getAccount();
+        Account Opponent = game.getOpponent(acc).getAccount();
         //if it is not players turn to play
         if(acc != game.getCurPlayer().getAccount())
             return;
@@ -160,5 +156,10 @@ public class GameSocket {
     @OnError
     public void onError(Throwable t) {
         System.out.println("onError(game)::" + t.getMessage());
+    }
+
+    public static void sendMessage(Account acc){
+        //to do time passed feature
+        System.out.println("Time up for " + acc.getUsername() );
     }
 }

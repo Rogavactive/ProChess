@@ -3,6 +3,7 @@ package GameConnection.Controller;
 import Accounting.Model.Account;
 import Game.Model.Constants;
 import Game.Model.GameManager;
+import Game.Model.GameType;
 import Game.Model.Player;
 import GameConnection.Model.GameSearchManager;
 import org.json.JSONObject;
@@ -80,7 +81,13 @@ public class GameSearchEndpoint {
                 HttpSession opponentHttpSession = (HttpSession) opponentSession.getUserProperties().get("HttpSession");
                 Account opponentAcc = (Account) opponentHttpSession.getAttribute("Account");
                 GameManager gameManager = GameManager.getInstance();
-                String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black));
+                //////////////
+                String time_primary = (String) jsonObject.get("time_primary");
+                String time_bonus = (String) jsonObject.get("time_bonus");
+                /////////////
+
+                String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black),
+                        new GameType(time_primary,time_bonus));
                 if(id==null)
                     return;
                 JSONObject response_json = new JSONObject();
@@ -114,7 +121,8 @@ public class GameSearchEndpoint {
             Session opponentSession = users_in_queue.get(opponent);
             HttpSession opponentHttpSession = (HttpSession) opponentSession.getUserProperties().get("HttpSession");
             Account opponentAcc = (Account) opponentHttpSession.getAttribute("Account");
-            String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black));
+            String id = gameManager.registerGame(new Player(acc,Constants.pieceColor.white),new Player(opponentAcc,Constants.pieceColor.black),
+                    new GameType(time_primary,time_bonus));
             if(id==null)
                 return;
             //search for the game, store user's session and search for the game here. if found send them callbacks.

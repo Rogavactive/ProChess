@@ -34,10 +34,10 @@ public class GameManager {
         games = new ConcurrentHashMap<>();
     }
 
-    public String registerGame(Player player1, Player player2) {
+    public String registerGame(Player player1, Player player2, GameType type) {
         //id damtxvevis shansebi imdenad mcirea, rom ugulvebelvyoft;
         String id = generateRandomCode();
-        Game game = new Game(player1,player2,id);
+        Game game = new Game(player1,player2, type, id);
         games.put(id,game);
         return id;
         //register a game, store it and return an id
