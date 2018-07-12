@@ -94,18 +94,7 @@
                 </form>
             </div>
         </div>
-        <div class="grid-item" >
 
-            <div class="playersWindow" style="font-size:40px; font-family:monospace"  align="center">
-                <span style="color:yellow">Player</span>
-                <br />
-                <span style="color:black">Lasha</span>
-                <br />
-                <span style="color:yellow">Time Left</span>
-                <br />
-                <span style="color:black">21:00</span>
-            </div>
-        </div>
         <div class="grid-item">
             <div class="chess-board-container-div">
 
@@ -200,20 +189,27 @@
                     </div>
                 </div>
 
+            </div>
         </div>
-        </div>
-        <div class="grid-item">
-            <div class="opponentsWindow" style="font-size:40px; font-family:monospace"  align="left">
-                <span style="color:yellow">Opponent</span>
-                <br />
-                <span style="color:black">George</span>
-                <br />
-                <span style="color:yellow">Time Left</span>
-                <br />
-                <span style="color:black">21:00</span>
+
+            <div class="grid-item" >
+
+                <div class="playersWindow" style="font-size:40px; font-family:monospace"  align="center">
+                    <div class="WindowsItem"> <span style="color:white">Player</span> <br/> <span style="color:black">Lasha</span> </div>
+                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span style="color:black">21:00</span></div>
+                    <div class="WindowsItem">
+                        <div class="buttons-container">
+                            <div class="buttons-container-item"> <button id="undo"> <img src="undo.png"   width="50" height="50"> </button> </div>
+                            <div class="buttons-container-item"> <button id="draw"><img src="draw.png"  width="50" height="50"> </button> </div>
+                            <div class="buttons-container-item"> <button id="resign"><img src="resign.png"   width="50" height="50"></button>  </div>
+                        </div>
+                    </div>
+                    <div class="WindowsItem"> <span style="color:white" >Opponent</span> <br/> <span style="color:black">George</span> </div>
+                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span style="color:black">21:00</span></div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
