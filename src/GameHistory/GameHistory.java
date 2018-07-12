@@ -29,20 +29,39 @@ public class GameHistory {
             currentMove++;
 
             if(currentMove < history.size()){
-
-            }
-            Move nextMove = history.get(currentMove);
-            if(nextMove.getTo().getKey() == Constants.deadRow){
-                currentMove++;
-            }else if(nextMove.getType() == Constants.pieceType.King &&
-                    Math.abs(nextMove.getTo().getValue() - nextMove.getFrom().getValue()) > 1){
-                currentMove++;
-                board.move(nextMove.getFrom().getKey(), nextMove.getFrom().getValue(),
-                        nextMove.getTo().getKey(), nextMove.getTo().getValue());
+                Move nextMove = history.get(currentMove);
+                if(nextMove.getTo().getKey() == Constants.deadRow){
+                    currentMove++;
+                }else if(nextMove.getType() == Constants.pieceType.King &&
+                        Math.abs(nextMove.getTo().getValue() - nextMove.getFrom().getValue()) > 1){
+                    currentMove++;
+                    board.move(nextMove.getFrom().getKey(), nextMove.getFrom().getValue(),
+                            nextMove.getTo().getKey(), nextMove.getTo().getValue());
+                }
             }
 
             board.move(curMove.getFrom().getKey(), curMove.getFrom().getValue(),
                     curMove.getTo().getKey(), curMove.getTo().getValue());
+
+            if(curMove.getColor() == Constants.pieceColor.white)
+                move += 'W';
+            else
+                move += 'B';
+
+            if(curMove.getType() == Constants.pieceType.King)
+                move += 'K';
+            else if(curMove.getType() == Constants.pieceType.Pawn)
+                move += 'P';
+            else if(curMove.getType() == Constants.pieceType.Rook)
+                move += 'R';
+            else if(curMove.getType() == Constants.pieceType.Knight)
+                move += 'N';
+            else if(curMove.getType() == Constants.pieceType.Bishop)
+                move += 'B';
+            else
+                move += 'Q';
+
+
 
             move += curMove.getFrom().getKey();
             move += curMove.getFrom().getValue();

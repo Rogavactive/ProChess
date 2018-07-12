@@ -1,6 +1,7 @@
 window.onclose = function () {
     sendAjax("end_game");
 };
+var movescount=1;
 var intToACII = {
     0 : "a",
     1 : "b",
@@ -98,17 +99,37 @@ function BoardStateChanged(msg){
     }
 
     var currMove = msg.move;
-    if(currMove!==""){
-        var moveStr = "" + intToACII[currMove[1]] + (1 +parseInt(currMove[0])) + intToACII[currMove[3]] + (1 +parseInt(currMove[2]));
-        console.log(moveStr)
-    }
-    var bestMove = msg.best_move;
-    if(bestMove===""){
-        console.log("best_move_gadmoeca")
+    if(currMove==="prev"){
+        removePiece();
+    }else if(currMove!==""){
+        var moveStr = "" + intToACII[currMove[1]] + (1 +parseInt(currMove[0])) +"-"+ intToACII[currMove[3]] + (1 +parseInt(currMove[2]));
+        console.log(moveStr);
+        console.log(msg.piece);
+        addPiece(msg.piece,moveStr);
+        var bestMove = msg.best_move;
+        addBestMove(bestMove)
     }
 }
 
 function placePieceInCell(cell,piece){
     document.getElementById(cell).innerHTML = "<a href='#'>" +piece + "</a>";
+}
+
+function addPiece(piece,move) {
+    $('#movesBox').append("<p  class=\"moves-list-p\"> " + movescount+". "+ socked_Piece[piece]+"  " +move+"</p>");
+    movescount++;
+    $('#movesBox').scrollTop($('#movesBox')[0].scrollHeight);
+}
+
+function removePiece() {
+    $('#movesBox').children().last().remove();
+    $('#movesBox').scrollTop($('#movesBox')[0].scrollHeight);
+    if(movescount>1)
+        movescount--;
+    console.log("deleted")
+}
+
+function addBestMove(move) {
 
 }
+

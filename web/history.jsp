@@ -89,8 +89,13 @@
 
 <div class="main-container">
     <div class="order-container-div">
-        <button id="prev-btn" onclick="sendPrev()">Previous</button>
-        <button id="next-btn" onclick="sendNext()">Next</button>
+        <div class="moves-buttons">
+            <button id="prev-btn" onclick="sendPrev()">Previous</button>
+            <button id="next-btn" onclick="sendNext()">Next</button>
+        </div>
+        <div class="moves-div">
+            <div id = "movesBox" class="moves-box" ></div>
+        </div>
     </div>
 
     <div class="chess-board-container-div">

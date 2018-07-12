@@ -34,7 +34,7 @@ public class HistoryServlet extends HttpServlet {
             case "prev":
                 GameHistory history_prev = (GameHistory) request.getSession().getAttribute("History");
                 String board_first = history_prev.previousMove();
-                JSONObject json_first = GenerateBoardJSON(board_first,"","");
+                JSONObject json_first = GenerateBoardJSON(board_first,"","WBprev");
                 response.getWriter().write(json_first.toString());
                 break;
             case "next":
@@ -56,9 +56,16 @@ public class HistoryServlet extends HttpServlet {
         }catch (JSONException e){
             e.printStackTrace();
         }
+
+        String piece ="";
+        if(!move.equals("")){
+            piece = move.substring(0,2);
+            move = move.substring(2);
+        }
         json.put("board",board);
         json.put("best_move",bestMove);
         json.put("move",move);
+        json.put("piece",piece);
         return json;
     }
 

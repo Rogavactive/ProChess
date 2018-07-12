@@ -60,3 +60,35 @@
 .main-container{
     height:94%;
 }
+
+.moves-div{
+    float:left;
+    width:100%;
+
+    background-color: silver;
+    border-radius: 15px;
+    margin:0%;
+    height:80%;
+}
+
+.moves-box{
+    display: block;
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    margin-top: 4%;
+    margin-bottom: 2%;
+    overflow-y: scroll;
+    background-color: #4f4c4e;
+    text-align: center;
+    /*border-radius: 5px;*/
+}
+
+.moves-buttons{
+    height: 20%;
+}
+
+.moves-list-p{
+    font-size: 150%;
+    margin:0;
+}
