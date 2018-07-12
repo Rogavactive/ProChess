@@ -54,7 +54,7 @@ public class databaseConnection {
 
         String stm = "Select ID, player1ID, player2ID, winner from games where " +
                 "player1ID = " + playerID + " or Player2ID = " + playerID +
-                " order by time limit 10";
+                " order by time DESC limit 10";
         ResultSet res = manager.executeQuerry(stm, con);
 
         Vector<Pair< Pair<Integer, Integer>, Integer>> result = new Vector<>();

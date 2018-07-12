@@ -22,11 +22,15 @@ public class GameHistory {
         currentMove = 0;
     }
 
-    public String nextMove(){
+    public Pair<String, String> nextMove(){
+        String move = new String();
         if(currentMove < history.size()){
             Move curMove = history.get(currentMove);
             currentMove++;
 
+            if(currentMove < history.size()){
+
+            }
             Move nextMove = history.get(currentMove);
             if(nextMove.getTo().getKey() == Constants.deadRow){
                 currentMove++;
@@ -39,10 +43,14 @@ public class GameHistory {
 
             board.move(curMove.getFrom().getKey(), curMove.getFrom().getValue(),
                     curMove.getTo().getKey(), curMove.getTo().getValue());
-            currentMove++;
+
+            move += curMove.getFrom().getKey();
+            move += curMove.getFrom().getValue();
+            move += curMove.getTo().getKey();
+            move += curMove.getTo().getValue();
         }
 
-        return getBoardState();
+        return new Pair<>(getBoardState(), move);
     }
 
     public String previousMove(){

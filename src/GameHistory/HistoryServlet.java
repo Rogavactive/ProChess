@@ -1,5 +1,6 @@
 package GameHistory;
 
+import javafx.util.Pair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +25,7 @@ public class HistoryServlet extends HttpServlet {
                     GameHistory history_first = new GameHistory(id);
                     request.getSession().setAttribute("History",history_first);
                     String board_first = history_first.previousMove();
-                    JSONObject json_first = GenerateBoardJSON(board_first,"");
+                    JSONObject json_first = GenerateBoardJSON(board_first,"","");
                     response.getWriter().write(json_first.toString());
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -33,19 +34,14 @@ public class HistoryServlet extends HttpServlet {
             case "prev":
                 GameHistory history_prev = (GameHistory) request.getSession().getAttribute("History");
                 String board_first = history_prev.previousMove();
-                JSONObject json_first = GenerateBoardJSON(board_first,"");
+                JSONObject json_first = GenerateBoardJSON(board_first,"","");
                 response.getWriter().write(json_first.toString());
                 break;
             case "next":
-                System.out.println("1");
                 GameHistory history_next = (GameHistory) request.getSession().getAttribute("History");
-                System.out.println("2");
-                String board_next = history_next.nextMove();
-                System.out.println("3");
-                JSONObject json_next = GenerateBoardJSON(board_next,"");
-                System.out.println("4");
+                Pair<String,String> pair = history_next.nextMove();
+                JSONObject json_next = GenerateBoardJSON(pair.getKey(),"",pair.getValue());
                 response.getWriter().write(json_next.toString());
-                System.out.println("5");
                 break;
             case "end_game":
                 request.getSession().removeAttribute("History");
@@ -53,7 +49,7 @@ public class HistoryServlet extends HttpServlet {
         }
     }
 
-    private JSONObject GenerateBoardJSON(String board,String bestMove){
+    private JSONObject GenerateBoardJSON(String board,String bestMove,String move){
         JSONObject json = null;
         try {
             json = new JSONObject();
@@ -62,6 +58,7 @@ public class HistoryServlet extends HttpServlet {
         }
         json.put("board",board);
         json.put("best_move",bestMove);
+        json.put("move",move);
         return json;
     }
 

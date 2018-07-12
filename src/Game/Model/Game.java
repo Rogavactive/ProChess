@@ -71,7 +71,7 @@ public class Game {
         // if piece is killed
         if(board.getCell(dstRow, dstCol).hasPiece()){
             history.add(new Move(dstRow, dstCol, deadRow, deadCol,
-                    board.getCell(srcRow, srcCol).getPieceType(),board.getCell(srcRow, srcCol).getPieceColor()));
+                    board.getCell(dstRow, dstCol).getPieceType(),board.getCell(dstRow, dstCol).getPieceColor()));
         }
 
         board.move(srcRow, srcCol, dstRow, dstCol);
