@@ -97,7 +97,12 @@
                 databaseConnection con = new databaseConnection();
                 int puzzle_count = con.puzzlesCount();
                 for(int i = 1; i<=puzzle_count; i++){
-                    out.println("<a href=\"http://localhost:8080/puzzles.jsp?id="+i+"\">Puzzle "+i+"</a><br>");
+                    out.println("<a href=\"http://localhost:8080/puzzles.jsp?id="+i+"\" class=\"puzzle-elem-a\">");
+                    out.println("<div class=\"puzzle-elem-container\">");
+                    out.println("<p class=\"puzzle-elem-p\"> Puzzle "+i+"</p>");
+                    out.println("</div>");
+                    out.println("</a>");
+//                    out.println("<a href=\"http://localhost:8080/puzzles.jsp?id="+i+"\">Puzzle "+i+"</a><br>");
                 }
             %>
         </div>
