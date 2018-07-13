@@ -152,6 +152,7 @@ public class GameSocket {
             }
             game.leaveGame(acc);
 
+
             /*json.put("type","endgame");
             json.put("status","Win");
             sendToUser(json.toString(),Opponent);*/
@@ -166,6 +167,8 @@ public class GameSocket {
             json2.put("type","endgame");
             json2.put("status","Lose");
             sendToUser(json2.toString(),acc);
+            Session mySession = sessions.get(acc.getID());
+            ((HttpSession)mySession.getUserProperties().get("HttpSession")).removeAttribute("gameID");
 
         } catch (SQLException e){
 

@@ -131,6 +131,7 @@ function connectGame() {
 }
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
+    clearInterval(countDown);
     $('#chess_board').remove();
     $('#undo').attr('disabled','disabled');
     $('#draw').attr('disabled','disabled');
@@ -387,7 +388,7 @@ function requestDraw(){
 }
 function resign(){
     this.gameWebSocket.send("resignRequested");
-    sendToChat(Player.name+ " requested resign. You can Accept or Decline offer.");
+    sendToChat(Player.name+ " Resigned");
 }
 
 function clickAccept(){
