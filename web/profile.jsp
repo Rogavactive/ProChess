@@ -128,7 +128,7 @@
                 <p><%=bulletRating%></p>
             </td>
             <td>
-                <p><%=blitzMatches%></p>
+                <p><%=bulletMatches%></p>
             </td>
         </tr>
         <tr>

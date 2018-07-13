@@ -53,6 +53,19 @@ public class Game {
     }
 
     public void timePassedFor(Account acc){
+        if(acc==player1.getAccount()){
+            try {
+                gameOver(2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                gameOver(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         GameSocket.sendMessage(acc,this,"timeUp");
     }
     // Makes move on board

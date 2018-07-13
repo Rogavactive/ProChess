@@ -72,6 +72,7 @@ function callback(data){
         BoardStateChanged(data)
     }else if(data.type==="winner_state"){
         var winner = false;
+        clearTimeout(timeout);
         if(data.winner==="success"){
             winner = true;
         }
@@ -177,10 +178,10 @@ function resetCellColors(){
             changeCellColor(i+''+j,'');
 }
 function movePiece(cell1,cell2){
-    var saveHtml=  document.getElementById(cell1).innerHTML;
     console.log(cell1+' '+cell2);
-    document.getElementById(cell1).innerHTML=document.getElementById(cell2).innerHTML;
-    document.getElementById(cell2).innerHTML=saveHtml;
+    document.getElementById(cell2).innerHTML=document.getElementById(cell1).innerHTML;
+    document.getElementById(cell1).innerHTML="";
+
     //send to socket
     response=cell1+cell2;
     if (Player=='B'){
@@ -257,6 +258,7 @@ function askForCompMove(){
         console.log(err.message)
     }
 }
+var timeout = null;
 
 function sendToGame(message){
 
@@ -278,7 +280,7 @@ function sendToGame(message){
     } catch (err) {
         console.log(err.message)
     }
-    setTimeout(function () {
+    timeout = setTimeout(function () {
         askForCompMove();
     }, 1000);
 
