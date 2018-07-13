@@ -102,7 +102,7 @@
 
 
 
-                    <div class="contentPane">
+                    <div id="chess-board-container" class="contentPane">
 
                         <table id="chess_board" cellpadding="0" cellspacing="0">
                             <tr>

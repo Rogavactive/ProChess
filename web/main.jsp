@@ -88,7 +88,6 @@
                         <option value="" selected disabled hidden >Choose type</option>
                         <option value="0">Random Opponent</option>
                         <option value="1">Friend</option>
-                        <option value="2">Single Play</option>
                     </select>
                 </div>
                 <p>Choose time:</p>

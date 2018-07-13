@@ -131,6 +131,11 @@ function connectGame() {
 }
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
+    $('#chess_board').remove();
+    $('#undo').attr('disabled','disabled');
+    $('#draw').attr('disabled','disabled');
+    $('#resign').attr('disabled','disabled');
+    $('#chess-board-container').append('<p class=\"animated-text\">'+status+'</p>');
     console.log("endgame: " + status);
 }
 
