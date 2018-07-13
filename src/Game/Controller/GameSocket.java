@@ -189,7 +189,8 @@ public class GameSocket {
             json.put("status","Draw");
             sendToUser(json.toString(),Opponent);
             sendToUser(json.toString(),acc);
-
+            ((HttpSession)sessions.get(acc.getID()).getUserProperties().get("HttpSession")).removeAttribute("gameID");
+            ((HttpSession)sessions.get(Opponent.getID()).getUserProperties().get("HttpSession")).removeAttribute("gameID");
         } catch (SQLException e){
 
         }

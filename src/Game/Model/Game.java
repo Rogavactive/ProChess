@@ -2,6 +2,7 @@ package Game.Model;
 
 import Accounting.Model.Account;
 import Game.Controller.GameSocket;
+import Game.Model.Pieces.Pawn;
 import GameHistory.databaseConnection;
 import javafx.util.Pair;
 import java.sql.SQLException;
@@ -68,6 +69,7 @@ public class Game {
         }
         GameSocket.sendMessage(acc,this,"timeUp");
     }
+
     // Makes move on board
     public void pieceMoved(int srcRow, int srcCol, int dstRow, int dstCol)
             throws CloneNotSupportedException {
@@ -88,21 +90,25 @@ public class Game {
         }
 
         board.move(srcRow, srcCol, dstRow, dstCol);
+        if(dstRow == 7 && board.getCell(dstRow,dstCol).hasPiece() && board.getCell(dstRow,dstCol).getPieceColor()==Constants.pieceColor.white
+                && board.getCell(dstRow,dstCol).getPieceType()==Constants.pieceType.Pawn)
+            promotion(dstRow,dstCol,Constants.pieceType.Queen);
+        if(dstRow == 0 && board.getCell(dstRow,dstCol).hasPiece() && board.getCell(dstRow,dstCol).getPieceColor() == Constants.pieceColor.black
+                && board.getCell(dstRow,dstCol).getPieceType()==Constants.pieceType.Pawn)
+            promotion(dstRow,dstCol,Constants.pieceType.Queen);
 
         switchPlayer();
     }
 
     // Special move when pawn reaches end of board
     // it can change into another piece
-    public String promotion(int row, int col, Constants.pieceType type){
+    private void promotion(int row, int col, Constants.pieceType type){
         if(board.getCell(row,col).getPieceType() != Constants.pieceType.Pawn)
-            return getBoardState();
+            return;
 
         Constants.pieceColor color = board.getCell(row, col).getPieceColor();
         board.getCell(row,col).removePiece();
         board.getCell(row, col).putPiece(Piece.createPiece(type, color));
-
-        return getBoardState();
     }
 
     // Special move where two pieces change their position
@@ -251,11 +257,27 @@ public class Game {
             }
 
             // undo last move
-            if(killerPiece == null)
-            board.move(lastMove.getTo().getKey(), lastMove.getTo().getValue(),
-                    lastMove.getFrom().getKey(), lastMove.getFrom().getValue());
-            else
-                board.addPiece(lastMove.getFrom().getKey(), lastMove.getFrom().getValue(), killerPiece);
+            if(killerPiece == null) {
+                if(board.getCell(lastMove.getTo().getKey(), lastMove.getTo().getValue()).getPieceType() == lastMove.getType())
+                    board.move(lastMove.getTo().getKey(), lastMove.getTo().getValue(),
+                            lastMove.getFrom().getKey(), lastMove.getFrom().getValue());
+                else{
+                    Constants.pieceColor color = board.getCell(lastMove.getTo().getKey(), lastMove.getTo().getValue()).getPieceColor();
+                    board.getCell(lastMove.getTo().getKey(), lastMove.getTo().getValue()).removePiece();
+                    board.getCell(lastMove.getFrom().getKey(), lastMove.getFrom().getValue()).putPiece(
+                            new Pawn(color,true)
+                    );
+                }
+            }else{
+                if(killerPiece.getType() == lastMove.getType())
+                    board.addPiece(lastMove.getFrom().getKey(), lastMove.getFrom().getValue(), killerPiece);
+                else{
+                    Constants.pieceColor color = killerPiece.getColor();
+                    board.addPiece(lastMove.getFrom().getKey(), lastMove.getFrom().getValue(),
+                            Piece.createPiece(Constants.pieceType.Pawn, color));
+                }
+
+            }
 
             // if castling was done, return rook to it's starting position
             if(castling)
@@ -298,10 +320,11 @@ public class Game {
     }
 
     private void changeRatings(int winner) {
-        if(winner == 0)
-            return;
         int type = gameType.getGameTypeAsInt();
-        if(winner == 1){
+        if(winner == 0){
+            player1.getAccount().changeRating(0, type);
+            player2.getAccount().changeRating(0, type);
+        }else if(winner == 1){
             player1.getAccount().changeRating(25, type);
             player2.getAccount().changeRating(-25, type);
         }else{
