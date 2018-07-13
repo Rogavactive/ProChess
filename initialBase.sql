@@ -128,14 +128,3 @@ insert into puzzles (boardstate, computerMoves, correctMoves) values
   "6575 4376 7434", "3647 6777 2546 4765"),
   ("wK06t wP10f wP11f wP12f wP15f wP17f wQ25t bP32t bP33t wP36t bB51t wR54t wN55t bQ57t bP60f bP61f bP62f bN64t bR66t bR70f bK73t",
   "7372 7271 6472", "2543 4363 6374 5563");
-
--- VARIABLES FOR TESTING (DELETE BEFORE FINAL RELEASE)
-
-insert into accounts (username, pass_hash, email) values
-  ("bejanadato", "c0f95fe8d96cb131b7d4d7b4a0cda0de", "dbezh16@freeuni.edu.ge");
-
--- select count(ID) as count_matches from accounts
--- 	where username = "aa" and pass_hash = "aa";
-
-select *
-from account_stats;

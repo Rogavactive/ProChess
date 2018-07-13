@@ -71,13 +71,15 @@
 }
 
 .winner-condition-div{
-    height:10%;
+    height:13%;
     text-align:center;
 }
+
 
 .winner-condition-p{
     font-size: 150%;
     vertical-align: middle;
+    margin:0;
 }
 
 .main-container{
