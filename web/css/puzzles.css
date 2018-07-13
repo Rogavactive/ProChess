@@ -60,17 +60,18 @@
 .puzzles-list-container{
     display: block;
     width: 90%;
-    height: 70%;
+    height: 80%;
     margin: auto;
     margin-top: 4%;
     margin-bottom: 2%;
     overflow-y: scroll;
     background-color: #4f4c4e;
+
     /*border-radius: 5px;*/
 }
 
 .winner-condition-div{
-    height:20%;
+    height:10%;
     text-align:center;
 }
 
@@ -81,4 +82,27 @@
 
 .main-container{
     height:94%;
+}
+
+.puzzle-elem-a{
+
+}
+
+.puzzle-elem-p{
+    margin:3px;
+}
+
+.puzzle-elem-container{
+    text-align: center  ;
+    background-color: #333333;
+    border-radius: 13px;
+    color:white;
+}
+
+.puzzle-elem-container:hover{
+    opacity:.8;
+}
+
+.puzzle-elem-a:hover{
+    text-decoration: none;
 }

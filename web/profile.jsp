@@ -202,8 +202,8 @@
                     int opponentID = currPair.getValue();
                     int currGameID = currPair.getKey();
                     out.println("<li>");
-                    out.println("<a href=\"history.jsp?id="+currGameID+"\" class=\"histoty-elem-a\">");
-                    out.println("<div class=\"histoty-elem-container\">");
+                    out.println("<a href=\"history.jsp?id="+currGameID+"\" class=\"history-elem-a\">");
+                    out.println("<div class=\"history-elem-container\">");
                     out.println("<p class=\"history-elem-p\">Game ID : "+currGameID+"</p>");
                     String oponnentName = accountManager.getUsernameById(opponentID);
                     out.println("<p class=\"history-elem-p\">Opponent : "+oponnentName+"</p>");

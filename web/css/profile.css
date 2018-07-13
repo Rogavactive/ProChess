@@ -45,13 +45,13 @@ input{
     vertical-align:middle;
 }
 
-.histoty-elem-container{
+.history-elem-container{
     background-color: #333333;
     border-radius: 13px;
     color:white;
 }
 
-.histoty-elem-container:hover{
+.history-elem-container:hover{
     opacity: .8;
 }
 
@@ -65,10 +65,10 @@ ul {
     margin:3px;
 }
 
-.histoty-elem-a{
+.history-elem-a{
     /*width:50%;*/
 }
 
-.histoty-elem-a:hover{
+.history-elem-a:hover{
     text-decoration: none;
 }
