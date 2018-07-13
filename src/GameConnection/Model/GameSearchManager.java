@@ -32,6 +32,14 @@ public class GameSearchManager {
         //ranks roca daamateb accountshi iqneba eg rank da martivad amoigeb.
         //gameType:random-0, friendly-1, bot-2   ,   time_primary:1,2,5,10,15     ,    time_bonus:1,2,5,10
         int usernameID = player.getID();
+        int rating = 0;
+        if(timePrimary.equals("1")||timePrimary.equals("2")){
+            rating = player.getBulletRaiting();
+        }else if(timePrimary.equals("5")){
+            rating = player.getBlitzRaiting();
+        }else{
+            rating = player.getClassicalRaiting();
+        }
         Connection conn = null;
         lock.lock();
         try {
@@ -40,11 +48,11 @@ public class GameSearchManager {
                 if(!updateUserQueue(usernameID,timePrimary,timeBonus,conn))
                     return -1;
                 else{
-                    return lookForOpponnent(timePrimary,timeBonus,conn,usernameID);
+                    return lookForOpponnent(timePrimary,timeBonus,conn,usernameID,rating);
                 }
             }
-            int opponentID = lookForOpponnent(timePrimary,timeBonus,conn,usernameID);
-            if(opponentID==0&&!addToQueue(usernameID,timePrimary,timeBonus,conn))
+            int opponentID = lookForOpponnent(timePrimary,timeBonus,conn,usernameID,rating);
+            if(opponentID==0&&!addToQueue(usernameID,timePrimary,timeBonus,conn,rating))
                 return -1;
             return opponentID;
         }catch (SQLException e) {
@@ -57,9 +65,10 @@ public class GameSearchManager {
         //if exists match, return opponent username as string, else return "" and add to queue.
     }
 
-    private int lookForOpponnent(String timePrimary, String timeBonus, Connection conn,int username_ID) {
+    private int lookForOpponnent(String timePrimary, String timeBonus, Connection conn,int username_ID,int rating) {
         String sqlQueryStatement = "select username_ID from search_queue\n" +
-                "where timePrimary=" + timePrimary+ " and timeBonus="+timeBonus+" and username_ID!="+username_ID+";";
+                "where timePrimary=" + timePrimary+ " and timeBonus="+timeBonus+" and username_ID!="+username_ID+" " +
+                "and rating between "+(rating-500)+" and "+(rating+500)+";";
         ResultSet rslt = manager.executeQuerry(sqlQueryStatement,conn);
         int opponentID = 0;
         try {
@@ -76,9 +85,10 @@ public class GameSearchManager {
         }
     }
 
-    private boolean addToQueue(int username_ID, String timePrimary, String timeBonus, Connection conn) {
+    private boolean addToQueue(int username_ID, String timePrimary, String timeBonus, Connection conn,int rating) {
         String sqlQueryStatement = "insert INTO search_queue VALUE\n" +
-                "  ("+username_ID+","+timePrimary+","+timeBonus+");";
+                "  ("+username_ID+","+timePrimary+","+timeBonus+","+rating+");";
+        System.out.println(sqlQueryStatement);
         return manager.executeUpdate(sqlQueryStatement,conn);
     }
 

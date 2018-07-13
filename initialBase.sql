@@ -100,6 +100,7 @@ CREATE TABLE search_queue(
   username_ID   INT,
   timePrimary   nvarchar(64),
   timeBonus     nvarchar(64),
+  rating     INT,
   foreign key	(username_ID) references accounts(ID),
   primary key	(username_ID),
   unique key (username_ID)
