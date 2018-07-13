@@ -4,6 +4,8 @@ import Game.Model.Board;
 import Game.Model.Constants;
 import Game.Model.Move;
 import Game.Model.Piece;
+import Game.Model.Pieces.*;
+import com.sun.mail.imap.protocol.BODY;
 import javafx.util.Pair;
 import Analys.GenerateMove;
 
@@ -75,33 +77,62 @@ public class GameHistory {
             board.move(curMove.getFrom().getKey(), curMove.getFrom().getValue(),
                     curMove.getTo().getKey(), curMove.getTo().getValue());
 
-            if(curMove.getColor() == Constants.pieceColor.white)
-                move += 'W';
-            else
-                move += 'B';
-
-            if(curMove.getType() == Constants.pieceType.King)
-                move += 'K';
-            else if(curMove.getType() == Constants.pieceType.Pawn)
-                move += 'P';
-            else if(curMove.getType() == Constants.pieceType.Rook)
-                move += 'R';
-            else if(curMove.getType() == Constants.pieceType.Knight)
-                move += 'N';
-            else if(curMove.getType() == Constants.pieceType.Bishop)
-                move += 'B';
-            else
-                move += 'Q';
-
-
-
-            move += curMove.getFrom().getKey();
-            move += curMove.getFrom().getValue();
-            move += curMove.getTo().getKey();
-            move += curMove.getTo().getValue();
+            move = getMove(curMove);
         }
 
-        return new Pair<>(getBoardState(), move);
+        String move1 = move.substring(0, 2);
+        int rowCount = Character.getNumericValue(move.charAt(4));
+        int colCount = Character.getNumericValue(move.charAt(5));
+        board.getCell(rowCount,colCount).putPiece(createPiece(move1));
+        String boardState = getBoardState();
+
+        return new Pair<>(boardState, move);
+    }
+
+    private String getMove(Move curMove){
+        String move = new String();
+
+        if(curMove.getColor() == Constants.pieceColor.white)
+            move += 'W';
+        else
+            move += 'B';
+
+        if(curMove.getType() == Constants.pieceType.King)
+            move += 'K';
+        else if(curMove.getType() == Constants.pieceType.Pawn)
+            move += 'P';
+        else if(curMove.getType() == Constants.pieceType.Rook)
+            move += 'R';
+        else if(curMove.getType() == Constants.pieceType.Knight)
+            move += 'N';
+        else if(curMove.getType() == Constants.pieceType.Bishop)
+            move += 'B';
+        else
+            move += 'Q';
+
+        move += curMove.getFrom().getKey();
+        move += curMove.getFrom().getValue();
+        move += curMove.getTo().getKey();
+        move += curMove.getTo().getValue();
+
+        return move;
+    }
+
+    private Piece createPiece(String pc){
+        Constants.pieceColor col = null;
+        if(pc.charAt(0)=='W')
+            col = Constants.pieceColor.white;
+        else
+            col = Constants.pieceColor.black;
+        switch (pc.charAt(1)){
+            case 'K': return new King(col,true);
+            case 'Q': return new Queen(col,true);
+            case 'P': return new Pawn(col,true);
+            case 'N': return new Knight(col,true);
+            case 'B': return new Bishop(col,true);
+            case 'R': return new Rook(col,true);
+        }
+        return null;
     }
 
     public String previousMove(){
@@ -115,6 +146,12 @@ public class GameHistory {
 
                 board.move(prewMove.getTo().getKey(), prewMove.getTo().getValue(),
                         prewMove.getFrom().getKey(), prewMove.getFrom().getValue());
+
+                String move = getMove(prewMove);
+                String move1 = move.substring(0, 2);
+                int rowCount = Character.getNumericValue(move.charAt(2));
+                int colCount = Character.getNumericValue(move.charAt(3));
+                board.getCell(rowCount,colCount).putPiece(createPiece(move1));
 
                 board.getCell(curMove.getFrom().getKey(), curMove.getFrom().getValue()).putPiece(
                         Piece.createPiece(curMove.getType(), curMove.getColor())
@@ -132,6 +169,12 @@ public class GameHistory {
 
             board.move(curMove.getTo().getKey(), curMove.getTo().getValue(),
                     curMove.getFrom().getKey(), curMove.getFrom().getValue());
+
+            String move = getMove(curMove);
+            String move1 = move.substring(0, 2);
+            int rowCount = Character.getNumericValue(move.charAt(2));
+            int colCount = Character.getNumericValue(move.charAt(3));
+            board.getCell(rowCount,colCount).putPiece(createPiece(move1));
 
         }
 
