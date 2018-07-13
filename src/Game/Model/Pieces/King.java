@@ -54,7 +54,10 @@ public class King extends Piece {
                 !state.get(row).get(col+1).hasPiece() &&
                 !state.get(row).get(col+2).hasPiece() &&
                 (state.get(row).get(col+3).hasPiece() &&
-                        !state.get(row).get(col+3).getPiece().getHasMoved()))
+                        !state.get(row).get(col+3).getPiece().getHasMoved())&&
+                noCheckCaused(row, col, row, col+2, state, new Pair<>(row, col + 2)) &&
+                noCheckCaused(row, col, row, col+1, state, new Pair<>(row, col + 1))
+                )
             result.add(new Pair<>(row, col + 2));
         if(inBounds(row, col-1)&& inBounds(row, col-2) &&
                 inBounds(row, col-3) && inBounds(row, col - 4) &&
@@ -62,7 +65,11 @@ public class King extends Piece {
                 !state.get(row).get(col-2).hasPiece() &&
                 !state.get(row).get(col-3).hasPiece() &&
                 (state.get(row).get(col-4).hasPiece() &&
-                        !state.get(row).get(col-4).getPiece().getHasMoved()))
+                        !state.get(row).get(col-4).getPiece().getHasMoved()) &&
+                noCheckCaused(row, col, row, col-3 , state, new Pair<>(row, col - 3)) &&
+                noCheckCaused(row, col, row, col-2 , state, new Pair<>(row, col - 2)) &&
+                noCheckCaused(row, col, row, col-1 , state, new Pair<>(row, col - 1))
+                )
             result.add(new Pair<>(row, col - 3));
     }
 

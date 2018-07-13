@@ -203,12 +203,16 @@ public class Game {
     // This method undoes last move
     public String undo(){
         if(!history.isEmpty()){
+            Piece killerPiece = null;
             // if last move killed any of pieces
             // return killed piece to it's place
             Move lastMove = history.get(history.size() - 1);
             if(lastMove.getTo().equals(new Pair<>(deadRow, deadCol))){
                 Pair<Integer, Integer> cor = lastMove.getFrom();
-                board.addPiece(cor.getKey(), cor.getValue(), Piece.createPiece(lastMove.getType(), lastMove.getColor()));
+                killerPiece = Piece.createPiece(board.getCell(cor.getKey(), cor.getValue()).getPieceType(),
+                        board.getCell(cor.getKey(), cor.getValue()).getPieceColor(), true);
+
+                board.addPiece(cor.getKey(), cor.getValue(), Piece.createPiece(lastMove.getType(), lastMove.getColor(), true));
 
                 history.remove(history.size() - 1);
                 lastMove = history.get(history.size() - 1);
@@ -234,8 +238,12 @@ public class Game {
             }
 
             // undo last move
+            if(killerPiece == null)
             board.move(lastMove.getTo().getKey(), lastMove.getTo().getValue(),
                     lastMove.getFrom().getKey(), lastMove.getFrom().getValue());
+            else
+                board.addPiece(lastMove.getFrom().getKey(), lastMove.getFrom().getValue(), killerPiece);
+
             // if castling was done, return rook to it's starting position
             if(castling)
                 board.getCell(lastMove.getFrom().getKey(), lastMove.getFrom().getValue()).getPiece().setHasMoved(false);

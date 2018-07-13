@@ -39,18 +39,23 @@ public abstract class Piece implements Cloneable{
                                   Vector<Vector<Cell>> state, Pair<Integer,Integer> allieKingPos) {
         boolean NoCheck = true;
         // Save pieces on given coordinates
-        Piece killedPiece = state.get(newRow).get(newCol).getPiece();
-        Piece curPiece = state.get(row).get(col).getPiece();
-        // make move
-        state.get(row).get(col).removePiece();
-        state.get(newRow).get(newCol).putPiece(curPiece);
+        Piece killedPiece=null;
+        Piece curPiece=null;
+        if(newRow!=row || newCol!=col) {
+            killedPiece = state.get(newRow).get(newCol).getPiece();
+            curPiece = state.get(row).get(col).getPiece();
+            // make move
+            state.get(row).get(col).removePiece();
+            state.get(newRow).get(newCol).putPiece(curPiece);
+        }
         // Check if king is safe after this move
         if(checkForCheck(state, allieKingPos))
             NoCheck = false ;
         // Undo move
-        state.get(row).get(col).putPiece(curPiece);
-        state.get(newRow).get(newCol).putPiece(killedPiece);
-
+        if(newRow!=row || newCol!=col) {
+            state.get(row).get(col).putPiece(curPiece);
+            state.get(newRow).get(newCol).putPiece(killedPiece);
+        }
         return NoCheck;
     }
 

@@ -69,11 +69,11 @@ public class databaseConnection {
                     result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), -1 ));
             }else{
                 if(res.getInt(4) == 1)
-                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), -1 ));
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(2)), -1 ));
                 else if(res.getInt(4) == 0)
-                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 0 ));
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(2)), 0 ));
                 else
-                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(3)), 1 ));
+                    result.add(new Pair<>( new Pair<>(res.getInt(1), res.getInt(2)), 1 ));
             }
         }
 
