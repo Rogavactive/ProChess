@@ -173,7 +173,7 @@ public class Board {
     }
 
     // This method returns clone of board
-    private Vector<Vector<Cell>> getStateClone() {
+    public Vector<Vector<Cell>> getStateClone() {
         Vector<Vector<Cell>> clone = new Vector<>();
 
         for (int row = 0; row < Constants.NUMBER_OF_ROWS; row++) {

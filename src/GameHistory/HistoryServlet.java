@@ -1,5 +1,6 @@
 package GameHistory;
 
+import Accounting.Model.Account;
 import javafx.util.Pair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +17,15 @@ import java.sql.SQLException;
 public class HistoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String msg = (String) request.getParameter("msg");
+        Account acc = (Account)request.getSession().getAttribute("Account");
+        int accID = acc.getID();
         if(msg==null)
             return;
         switch (msg){
             case "first":
                 try {
                     int id = Integer.parseInt(request.getParameter("id"));
-                    GameHistory history_first = new GameHistory(id);
+                    GameHistory history_first = new GameHistory(id,accID);
                     request.getSession().setAttribute("History",history_first);
                     String board_first = history_first.previousMove();
                     JSONObject json_first = GenerateBoardJSON(board_first,"","");
@@ -39,6 +42,7 @@ public class HistoryServlet extends HttpServlet {
                 break;
             case "next":
                 GameHistory history_next = (GameHistory) request.getSession().getAttribute("History");
+//                history_next.getBestMove();
                 Pair<String,String> pair = history_next.nextMove();
                 JSONObject json_next = GenerateBoardJSON(pair.getKey(),"",pair.getValue());
                 response.getWriter().write(json_next.toString());

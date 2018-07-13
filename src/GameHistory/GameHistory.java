@@ -5,21 +5,57 @@ import Game.Model.Constants;
 import Game.Model.Move;
 import Game.Model.Piece;
 import javafx.util.Pair;
+import Analys.GenerateMove;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GameHistory {
-    private Board board;
-    private Vector<Move> history;
-    private databaseConnection con = databaseConnection.getInstance();
-    int currentMove;
+import Game.Model.*;
 
-    public GameHistory(int gameID) throws SQLException {
+import java.io.*;
+import java.lang.Process;
+import java.io.BufferedReader;
+import java.util.Vector;
+
+public class GameHistory {
+
+    private int accID;
+    private Board board;
+    private Vector < Move > history;
+    private databaseConnection con = databaseConnection.getInstance();
+    private int currentMove;
+
+    public GameHistory(int gameID, int accID) throws SQLException {
+        this.accID = accID;
         board = new Board();
         history = con.findMoves(gameID);
         currentMove = 0;
+    }
+
+    public String getBestMove() {
+        ArrayList < String > moves = new ArrayList < String > ();
+
+        for (int i = 0; i < 3; i++) {
+            String move = "";
+            move += (char)('a' + history.get(i).getFrom().getValue().intValue());
+            move += (char)('1' + history.get(i).getFrom().getKey().intValue());
+            if (history.get(i).getTo().getKey() == Constants.deadRow)
+                continue;
+            move += (char)('a' + history.get(i).getTo().getValue().intValue());
+            move += (char)('1' + history.get(i).getTo().getKey().intValue());
+            moves.add(move);
+        }
+
+        for (int i = 0; i < moves.size(); i++) {
+            System.out.print(moves.get(i) + " ");
+        }
+
+        GenerateMove gen = new GenerateMove(accID, moves);
+        String ans = gen.getBestMove();
+        System.out.println(ans);
+        return ans;
     }
 
     public Pair<String, String> nextMove(){
