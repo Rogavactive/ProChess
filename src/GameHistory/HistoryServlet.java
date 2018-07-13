@@ -42,9 +42,9 @@ public class HistoryServlet extends HttpServlet {
                 break;
             case "next":
                 GameHistory history_next = (GameHistory) request.getSession().getAttribute("History");
-//                history_next.getBestMove();
+                String bestMove = history_next.getBestMove();
                 Pair<String,String> pair = history_next.nextMove();
-                JSONObject json_next = GenerateBoardJSON(pair.getKey(),"",pair.getValue());
+                JSONObject json_next = GenerateBoardJSON(pair.getKey(),bestMove,pair.getValue());
                 response.getWriter().write(json_next.toString());
                 break;
             case "end_game":
