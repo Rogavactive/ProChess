@@ -80,6 +80,9 @@ public class GameSearchEndpoint {
                 }
                 HttpSession opponentHttpSession = (HttpSession) opponentSession.getUserProperties().get("HttpSession");
                 Account opponentAcc = (Account) opponentHttpSession.getAttribute("Account");
+                if(opponentAcc.getID()==acc.getID()){
+                    return;
+                }
                 GameManager gameManager = GameManager.getInstance();
                 //////////////
                 String time_primary = (String) opponentSession.getUserProperties().get("time_primary");
