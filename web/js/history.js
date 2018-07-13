@@ -105,9 +105,11 @@ function BoardStateChanged(msg){
         var moveStr = "" + intToACII[currMove[1]] + (1 +parseInt(currMove[0])) +"-"+ intToACII[currMove[3]] + (1 +parseInt(currMove[2]));
         console.log(moveStr);
         console.log(msg.piece);
-        addPiece(msg.piece,moveStr);
         var bestMove = msg.best_move;
-        addBestMove(bestMove)
+        // console.log("best move is: " + bestMove)
+        // addBestMove(bestMove)
+        moveStr += " " + bestMove;
+        addPiece(msg.piece,moveStr);
     }
 }
 

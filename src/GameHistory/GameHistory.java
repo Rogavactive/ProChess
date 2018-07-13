@@ -37,7 +37,7 @@ public class GameHistory {
     public String getBestMove() {
         ArrayList < String > moves = new ArrayList < String > ();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < currentMove; i++) {
             String move = "";
             move += (char)('a' + history.get(i).getFrom().getValue().intValue());
             move += (char)('1' + history.get(i).getFrom().getKey().intValue());
@@ -48,13 +48,9 @@ public class GameHistory {
             moves.add(move);
         }
 
-        for (int i = 0; i < moves.size(); i++) {
-            System.out.print(moves.get(i) + " ");
-        }
-
         GenerateMove gen = new GenerateMove(accID, moves);
         String ans = gen.getBestMove();
-        System.out.println(ans);
+//        System.out.println(ans);
         return ans;
     }
 

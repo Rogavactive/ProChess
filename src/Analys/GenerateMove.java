@@ -24,14 +24,12 @@ public class GenerateMove {
 
     public String getBestMove() {
 
-        String execString = "python3 Bot/generateMove.py";
+        String execString = "python3 /home/paranoid/Documents/ProChess/Bot/generateMove.py";
         execString += (" " + String.valueOf(accID));
 
         for (int i = 0; i < moves.size(); i++) {
             execString += (" " + moves.get(i));
         }
-
-        System.out.println(execString);
 
         try {
             Process p = Runtime.getRuntime().exec(execString);
@@ -42,22 +40,22 @@ public class GenerateMove {
             e.printStackTrace();
         }
 
-        String move = "";
+        String move = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         try {
-            File file = new File(String.valueOf(accID) + ".txt");
+            File file = new File("/home/paranoid/Documents/ProChess/Bot" + String.valueOf(accID) + ".txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             move = br.readLine();
         } catch(IOException e) {
             e.printStackTrace();
         }
 
-        //deleteFile();
+        deleteFile();
         return move.substring(33, 37);
     }
 
     private void deleteFile() {
         try {
-            File file = new File(String.valueOf(accID) + ".txt");
+            File file = new File("/home/paranoid/Documents/ProChess/Bot" + String.valueOf(accID) + ".txt");
             file.delete();
         } catch(Exception e) {
             e.printStackTrace();
