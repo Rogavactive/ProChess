@@ -61,9 +61,10 @@ function SearchRequest(){
         console.error('webSocket is not open. readyState=' + this.searchWebSocket.readyState);
     }
 
-    if(gameType==='0'||gameType==='1')
+    if(gameType==='0'){
         createFindGameTimer();
-    $('#search-btn').prop("disabled",true);
+        $('#search-btn').prop("disabled",true);
+    }
 }
 
 function createFindGameTimer() {
@@ -95,6 +96,8 @@ function callback(data) {
         return;
     }
     if(data.type===3){//0-random, 1-friendly, 2-bot, 3-friendly link
+        createFindGameTimer();
+        $('#search-btn').prop("disabled",true);
         setLink(data.link)
     }else {
         var url = "http://localhost:8080/game.jsp?id=" + data.id;
