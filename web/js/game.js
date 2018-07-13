@@ -187,6 +187,12 @@ function BoardStateChanged(msg){
         }
     }
 
+    if(Player===currentPlayer){
+        $('#undo').prop('disabled', true);
+    }else{
+        $('#undo').prop('disabled', false);
+    }
+
     MovesState="";
     var movesStateToParse = msg.moves;
     console.log(movesStateToParse);

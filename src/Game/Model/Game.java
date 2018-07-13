@@ -262,9 +262,8 @@ public class Game {
                 board.getCell(lastMove.getFrom().getKey(), lastMove.getFrom().getValue()).getPiece().setHasMoved(false);
 
             history.remove(history.size() - 1);
+            switchPlayer();
         }
-
-        switchPlayer();
         return getBoardState();
     }
 
