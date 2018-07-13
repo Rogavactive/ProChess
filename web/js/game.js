@@ -31,13 +31,49 @@ var gameStarted=false;
 
 var gameWebSocket = null;
 var chatWebSocket = null;
-
+var myName = "";
+var oppName = "";
+var myTime = 900;
+var oppTime = 900;
+var currentPlayer = "";
+var countDown = null;
 $(document).ready(function(){
     connectGame();
     connectChat();
     //BoardStateChanged("B60506040615161416252624263536343645464446555654566566646675767477150715276557657");
 });
+function startCountDown(){
+    clearInterval(countDown);
+    $('#myTime').html(getTimeStr(myTime));
+    $('#oppTime').html(getTimeStr(oppTime));
+    if(currentPlayer===Player){
+        countDown = setInterval(function () {
+            myTime--;
+            if(myTime==0)
+                clearInterval(countDown);
+            var timeStr = getTimeStr(myTime);
+            $('#myTime').html(timeStr)
+        },1000);
+    }else{
+        countDown = setInterval(function () {
+            oppTime--;
+            if(oppTime==0)
+                clearInterval(countDown);
+            var timeStr = getTimeStr(oppTime);
+            $('#oppTime').html(timeStr)
+        },1000);
+    }
+}
 
+function getTimeStr(time) {
+    var minutes = Math.floor(time/60);
+    if(minutes<10)
+        minutes = "0"+minutes;
+    var seconds = time%60;
+    if(seconds<10)
+        seconds = "0"+seconds;
+    return minutes + ":" + seconds;
+}
 //GAME SOCKET
 var drawIsInRequest;
 var undoIsInRequest;
@@ -96,7 +132,6 @@ function connectGame() {
 
 function endGame(status) {//status = "You win" or "You lose" or "Draw"
     console.log("endgame: " + status);
-
 }
 
 function reportError(err) {
@@ -119,8 +154,19 @@ function getValidMovesForPiece(pos){
 }
 
 var board;
+function writeNames() {
+    $('#myName').html(myName);
+    $('#oppName').html(oppName);
+}
 function BoardStateChanged(msg){
+    currentPlayer = msg.currentPlayer;
     Player=msg.player;
+    myTime = msg.myTime;
+    oppTime = msg.oppTime;
+    oppName = msg.oppName;
+    myName = msg.myName;
+    writeNames();
+    startCountDown();
     console.log("player: "+Player);
     board = msg.board;
     console.log("Board: "+board);

@@ -195,8 +195,8 @@
             <div class="grid-item" >
 
                 <div class="playersWindow" style="font-size:40px; font-family:monospace"  align="center">
-                    <div class="WindowsItem"> <span style="color:white">Player</span> <br/> <span style="color:black">Lasha</span> </div>
-                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span style="color:black">21:00</span></div>
+                    <div class="WindowsItem"> <span style="color:white">Player</span> <br/> <span id="myName" style="color:black"></span> </div>
+                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span  id="myTime" style="color:black">10:00</span></div>
                     <div class="WindowsItem">
                         <div class="buttons-container" id="buttons-container">
                             <div class="buttons-container-item"> <button id="undo"  onclick="requestUndo();"> <img src="undo.png"   width="50" height="50"> </button> </div>
@@ -208,8 +208,8 @@
                             <div class="buttons-container-item"> <button id="no" onclick="clickDecline();"><img src="decline.png"  width="50" height="50"> </button> </div>
                         </div>
                     </div>
-                    <div class="WindowsItem"> <span style="color:white" >Opponent</span> <br/> <span style="color:black">George</span> </div>
-                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span style="color:black">21:00</span></div>
+                    <div class="WindowsItem"> <span style="color:white" >Opponent</span> <br/> <span  id="oppName" style="color:black"></span></div>
+                    <div class="WindowsItem"> <span style="color:white">Time Left</span> <br/> <span  id="oppTime" style="color:black">10:00</span></div>
 
                 </div>
             </div>

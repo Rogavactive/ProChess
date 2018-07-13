@@ -35,11 +35,16 @@ public class GameSocket {
             String boardState = game.getBoardState();
             String color = game.getPlayerColor(acc);
             String possibleMoves = game.getCurrentPossibleMoves(acc);
+            String currentPlayerColor = game.getPlayerColor(game.getCurPlayer().getAccount());
+            String accTime = Long.toString(game.getPlayer(acc).getRemainingTimeSeconds());
+            String oppTime = Long.toString(game.getOpponent(acc).getRemainingTimeSeconds());
+
             JSONObject json_message;
             if(possibleMoves.equals("You Win")||possibleMoves.equals("You Lose")||possibleMoves.equals("Draw")){
                 json_message = GenerateWinnerJSON(possibleMoves);
             }else
-                json_message = GenerateBoardJSON(boardState,possibleMoves,color);
+                json_message = GenerateBoardJSON(boardState,possibleMoves,color,currentPlayerColor,accTime,oppTime,acc.getUsername(),
+                        game.getOpponent(acc).getAccount().getUsername());
             session.getBasicRemote().sendText(json_message.toString());
         } catch (IOException | SQLException e) {
             e.printStackTrace();
@@ -145,11 +150,11 @@ public class GameSocket {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            game.gameOver(0);
+            game.leaveGame(acc);
 
-            json.put("type","endgame");
+            /*json.put("type","endgame");
             json.put("status","Win");
-            sendToUser(json.toString(),Opponent);
+            sendToUser(json.toString(),Opponent);*/
             ////////////////////send loser message//////////////////
             JSONObject json2 = null;
             try {
@@ -157,10 +162,9 @@ public class GameSocket {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            game.gameOver(0);
 
             json2.put("type","endgame");
-            json2.put("status","Win");
+            json2.put("status","Lose");
             sendToUser(json2.toString(),acc);
 
         } catch (SQLException e){
@@ -201,9 +205,14 @@ public class GameSocket {
             String currColor = game.getPlayerColor(acc);
             String opponentColor = game.getPlayerColor(Opponent);
             String boardState = game.getBoardState();
+            String currentPlayerColor = game.getPlayerColor(game.getCurPlayer().getAccount());
+            String accTime = Long.toString(game.getPlayer(acc).getRemainingTimeSeconds());
+            String oppTime = Long.toString(game.getPlayer(Opponent).getRemainingTimeSeconds());
 
-            opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor);
-            curr_json = GenerateBoardJSON(boardState,currMoves,currColor);
+            opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor,currentPlayerColor,
+                    oppTime,accTime,Opponent.getUsername(),acc.getUsername());
+            curr_json = GenerateBoardJSON(boardState,currMoves,currColor,currentPlayerColor,accTime,
+                    oppTime,acc.getUsername(),Opponent.getUsername());
             try {
                 OpponentSession.getBasicRemote().sendText(opponent_json.toString());
                 session.getBasicRemote().sendText(curr_json.toString());
@@ -252,6 +261,9 @@ public class GameSocket {
             String currColor = game.getPlayerColor(acc);
             String opponentColor = game.getPlayerColor(Opponent);
             String boardState = game.getBoardState();
+            String currentPlayerColor = game.getPlayerColor(game.getCurPlayer().getAccount());
+            String accTime = Long.toString(game.getPlayer(acc).getRemainingTimeSeconds());
+            String oppTime = Long.toString(game.getPlayer(Opponent).getRemainingTimeSeconds());
 
             if(opponentMoves.equals("You Win") || opponentMoves.equals("You Lose") || opponentMoves.equals("Draw")){
                 opponent_json = GenerateWinnerJSON(opponentMoves);
@@ -263,8 +275,8 @@ public class GameSocket {
                     opponentHttpSession.removeAttribute("gameID");
                 }
             }else{
-                opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor);
-                curr_json = GenerateBoardJSON(boardState,currMoves,currColor);
+                opponent_json = GenerateBoardJSON(boardState,opponentMoves,opponentColor,currentPlayerColor,oppTime,accTime,Opponent.getUsername(),acc.getUsername());
+                curr_json = GenerateBoardJSON(boardState,currMoves,currColor,currentPlayerColor,accTime,oppTime,acc.getUsername(),Opponent.getUsername());
             }
 
             if(OpponentSession.isOpen()) {
@@ -276,7 +288,8 @@ public class GameSocket {
         }
     }
 
-    private static JSONObject GenerateBoardJSON(String boardState, String currentMovesPossible, String playerColor){
+    private static JSONObject GenerateBoardJSON(String boardState, String currentMovesPossible, String playerColor,
+                                                String currentPlayer, String accTime, String oppTime,String accName, String oppName){
         JSONObject json = null;
         try {
             json = new JSONObject();
@@ -287,6 +300,11 @@ public class GameSocket {
         json.put("board",boardState);
         json.put("player",playerColor);
         json.put("moves",currentMovesPossible);
+        json.put("currentPlayer",currentPlayer);
+        json.put("myTime", accTime);
+        json.put("oppTime",oppTime);
+        json.put("myName", accName);
+        json.put("oppName",oppName);
         return json;
     }
 
@@ -324,6 +342,7 @@ public class GameSocket {
         }
         if(status == "OpponentLeft"){
             Session myS = sessions.get(acc.getID());
+
             try {
                 myS.getBasicRemote().sendText(GenerateWinnerJSON("Opponent Left, You Won").toString());
                 ((HttpSession)myS.getUserProperties().get("HttpSession")).removeAttribute("gameID");

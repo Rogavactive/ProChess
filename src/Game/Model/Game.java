@@ -243,6 +243,7 @@ public class Game {
             history.remove(history.size() - 1);
         }
 
+        switchPlayer();
         return getBoardState();
     }
 
