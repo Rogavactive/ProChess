@@ -90,6 +90,7 @@
 <div class="main-container">
     <div class="puzzles-container-div">
         <div class="winner-condition-div">
+            <button id="search-btn" onclick="ReloadPage()">Reload</button>
             <p id="winner-p" class="winner-condition-p"></p>
         </div>
         <div class="puzzles-list-container">
